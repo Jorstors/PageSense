@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Card,
   CardContent,
@@ -28,14 +29,15 @@ import {
   ChevronRightIcon,
   CheckIcon,
   MailWarning,
+  Loader2Icon,
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Checkbox } from "@/components/ui/checkbox";
 
 const FormSchema = z.object({
   url: z.string().url().max(255),
   email: z.string().email().max(255),
+  subscribe: z.boolean(),
 });
 
 export function AuditForm() {
@@ -46,10 +48,20 @@ export function AuditForm() {
     defaultValues: {
       url: "",
       email: "",
+      subscribe: false,
     },
   });
 
+  const showLoader = () => {
+    toast("Sending...", {
+      icon: <Loader2Icon className="animate-spin" />,
+    });
+  };
+
   const onFormSubmit = async (data: z.infer<typeof FormSchema>) => {
+    console.log(data);
+    showLoader();
+
     try {
       // Example: send data to an API endpoint
       const response = await fetch("/api/audit", {
@@ -64,7 +76,7 @@ export function AuditForm() {
         throw new Error("Failed to send data");
       }
 
-      // Optionally handle response data
+      // handle response data
       // const result = await response.json();
 
       toast("Email sent!", {
@@ -88,14 +100,14 @@ export function AuditForm() {
         }}
         className=" w-fit h-fit mx-auto"
       >
-        <Card className="space-y-3 relative overflow-hidden w-115">
+        <Card className="space-y-5 relative overflow-hidden w-115">
           <ShineBorder
             shineColor={[
               "oklch(0.4341 0.0392 41.9938)",
               "oklch(0.92 0.0651 74.3695)",
             ]}
           />
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-8">
             <FormField
               control={form.control}
               name="url"
@@ -122,13 +134,35 @@ export function AuditForm() {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="subscribe"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center space-x-3">
+                    <FormControl>
+                      <Checkbox
+                        {...field}
+                        type="button"
+                        id="subscribe"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <Label htmlFor="subscribe">
+                      Yes, I’d like to receive 3 follow-up tips
+                    </Label>
+                  </div>
+                </FormItem>
+              )}
+            />
           </CardContent>
           <CardFooter>
             <AnimatedSubscribeButton
               type="submit"
               subscribeStatus={sent}
-              disabled={sent}
-              className={`w-36`}
+              disabled={sent || form.formState.isSubmitting}
+              className={"w-36 active:scale-95"}
             >
               <span className="group inline-flex items-center">
                 Email
