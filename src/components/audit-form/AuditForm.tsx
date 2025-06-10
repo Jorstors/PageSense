@@ -95,9 +95,18 @@ export function AuditForm() {
           setIsSubmitting(false);
         })(),
         {
-          position: "bottom-center",
+          position: "top-center",
           loading: "Sending...",
-          success: "Sent!",
+          success: (
+            <div className="pl-2">
+              <div style={{ fontWeight: "bold", fontSize: "1.1em" }}>
+                Audit sent!
+              </div>
+              <div style={{ fontSize: "0.95em", color: "#666" }}>
+                Sent to your email & your downloads folder.
+              </div>
+            </div>
+          ),
           error: "Failed to send email.",
         }
       );

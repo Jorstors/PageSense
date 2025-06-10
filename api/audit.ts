@@ -195,6 +195,10 @@ async function sendEmail(email: string, htmlContent: string) {
 }
 
 export default async function handler(req, res) {
+  // // Ending early for testing toasts
+  // res.status(255).end();
+  // return;
+
   if (req.method === "POST") {
     const recieved = req.body;
     const url = recieved.url;
