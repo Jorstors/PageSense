@@ -1,56 +1,40 @@
+<!DOCTYPE html>
 <html>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Audit Report</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-</head>
-
-<body
-  style="margin:0; padding:0; background-color:#242424; color:rgba(255,255,255,0.87); font-family:'Inter',system-ui,Avenir,Helvetica,Arial,sans-serif; line-height:1.5;">
-  <div style="max-width:800px; margin:0 auto; padding:40px 20px;">
-    <h1
-      style="font-size:36px; font-weight:700; color:oklch(0.92 0.0651 74.3695); display:flex; align-items:center; margin-bottom:24px;">
-      <img src="${logoUrl}" alt="Logo" style="width:32px; height:32px; margin-right:12px; display:inline-block;">
-      PageSense:&nbsp;
-      <span style="color:oklch(0.72 0.15 230); font-weight:600; font-size: large; padding-top: 6px;">${url}</span>
-    </h1>
-
-    <div
-      style="background-color:oklch(0.9911 0 0); color:oklch(0.2435 0 0); border-right:4px solid oklch(0.4341 0.0392 41.9938); border-bottom:4px solid oklch(0.4341 0.0392 41.9938); border-radius:0.5rem; padding:20px; margin-bottom:24px; box-shadow:0 1px 3px 0px hsl(0 0% 0% / 0.1),0 4px 6px -1px hsl(0 0% 0% / 0.1); page-break-inside:avoid; break-inside:avoid-column;">
-      <h2
-        style="font-size:24px; font-weight:700; margin:0 0 16px; text-decoration:underline; text-decoration-color:oklch(0.92 0.0651 74.3695);">
-        Conversion Blockers
-      </h2>
-      <pre
-        style="font-family:'Inter',system-ui,Avenir,Helvetica,Arial,sans-serif; line-height:1.5; white-space:pre-wrap; word-wrap:break-word; overflow-wrap:break-word; background-color:oklch(0.9911 0 0); color:oklch(0.2435 0 0); padding:16px; border-radius:6px; margin:0;">
-${blockers}
-          </pre>
-    </div>
-
-    <div
-      style="background-color:oklch(0.9911 0 0); color:oklch(0.2435 0 0); border-right:4px solid oklch(0.4341 0.0392 41.9938); border-bottom:4px solid oklch(0.4341 0.0392 41.9938); border-radius:0.5rem; padding:20px; margin-bottom:24px; box-shadow:0 1px 3px 0px hsl(0 0% 0% / 0.1),0 4px 6px -1px hsl(0 0% 0% / 0.1); page-break-inside:avoid; break-inside:avoid-column;">
-      <h2
-        style="font-size:24px; font-weight:700; margin:0 0 16px; text-decoration:underline; text-decoration-color:oklch(0.92 0.0651 74.3695);">
-        Recommendations
-      </h2>
-      <pre
-        style="font-family:'Inter',system-ui,Avenir,Helvetica,Arial,sans-serif; line-height:1.5; white-space:pre-wrap; word-wrap:break-word; overflow-wrap:break-word; background-color:oklch(0.9911 0 0); color:oklch(0.2435 0 0); padding:16px; border-radius:6px; margin:0;">
-${recommendations}
-          </pre>
-    </div>
-
-    <div
-      style="text-align:center;  padding:20px; border-right:4px solid oklch(0.4341 0.0392 41.9938); border-bottom:4px solid oklch(0.4341 0.0392 41.9938); background-color:oklch(1 0 81.72); border-radius:0.5rem; box-shadow:0 1px 3px 0px hsl(0 0% 0% / 0.1),0 4px 6px -1px hsl(0 0% 0% / 0.1); page-break-inside:avoid; break-inside:avoid-column;">
-      <p style=" font-size:18px; font-weight:700; margin:0 0 12px; color:oklch(0.4341 0.0392 41.9938)">
-        Elevate Your Landing Pages Instantly!
-      </p>
-      <a href="https://pagesense.co/templates"
-        style="display:inline-block; text-decoration:underline; padding:12px 24px; background-color:oklch(0.92 0.0651 74.3695); color:oklch(0.2435 0 0); font-weight:700; border-radius:0.5rem;">
-        Explore Plug-and-Play Templates &rarr;
-      </a>
-    </div>
-  </div>
+<body style="margin:0; padding:0; background:#f9f9f9; color:#222; font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" border="0"
+          style="background:#fff; margin:40px 0; border-radius:8px; box-shadow:0 2px 8px #eee;">
+          <tr>
+            <td style="padding:32px 24px 16px 24px; text-align:left;">
+              <img src="${logoUrl}" alt="Logo" width="32" height="32" style="vertical-align:middle; margin-right:12px;">
+              <span style="font-size:28px; font-weight:bold; color:#393028;">PageSense Audit for ${url}</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 24px 24px 24px;">
+              <h2 style="font-size:20px; color:#393028; border-bottom:1px solid #eee; padding-bottom:8px;">Conversion
+                Blockers</h2>
+              <pre
+                style="white-space:pre-wrap; font-family:inherit; background:#f4f4f4; padding:12px; border-radius:4px; color:#222;">${blockers}</pre>
+              <h2
+                style="font-size:20px; color:#393028; border-bottom:1px solid #eee; padding-bottom:8px; margin-top:24px;">
+                Recommendations</h2>
+              <pre
+                style="white-space:pre-wrap; font-family:inherit; background:#f4f4f4; padding:12px; border-radius:4px; color:#222;">${recommendations}</pre>
+              <div style="margin-top:32px; text-align:center;">
+                <a href="https://pagesense.co/templates"
+                  style="display:inline-block; color:#393028; padding:12px 24px; border-radius:4px; text-decoration:none; font-weight:bold;">Explore
+                  Our High Conversion Templates &rarr;</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 
 </html>

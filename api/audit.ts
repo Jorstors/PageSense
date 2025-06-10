@@ -43,63 +43,46 @@ async function generateAuditPDF(
     .replace(/Suggestions:/g, "<b>Suggestions:</b>");
 
   const htmlContent = `
+<!DOCTYPE html>
 <html>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Audit Report</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-</head>
-
-<body
-  style="margin:0; padding:0; background-color:#242424; color:rgba(255,255,255,0.87); font-family:'Inter',system-ui,Avenir,Helvetica,Arial,sans-serif; line-height:1.5;">
-  <div style="max-width:800px; margin:0 auto; padding:40px 20px;">
-    <h1
-      style="font-size:36px; font-weight:700; color:oklch(0.92 0.0651 74.3695); display:flex; align-items:center; margin-bottom:24px;">
-      <img src="${logoUrl}" alt="Logo" style="width:32px; height:32px; margin-right:12px; display:inline-block;">
-      PageSense:&nbsp;
-      <span style="color:oklch(0.72 0.15 230); font-weight:600; font-size: large; padding-top: 6px;">${url}</span>
-    </h1>
-
-    <div
-      style="background-color:oklch(0.9911 0 0); color:oklch(0.2435 0 0); border-right:4px solid oklch(0.4341 0.0392 41.9938); border-bottom:4px solid oklch(0.4341 0.0392 41.9938); border-radius:0.5rem; padding:20px; margin-bottom:24px; box-shadow:0 1px 3px 0px hsl(0 0% 0% / 0.1),0 4px 6px -1px hsl(0 0% 0% / 0.1); page-break-inside:avoid; break-inside:avoid-column;">
-      <h2
-        style="font-size:24px; font-weight:700; margin:0 0 16px; text-decoration:underline; text-decoration-color:oklch(0.92 0.0651 74.3695);">
-        Conversion Blockers
-      </h2>
-      <pre
-        style="font-family:'Inter',system-ui,Avenir,Helvetica,Arial,sans-serif; line-height:1.5; white-space:pre-wrap; word-wrap:break-word; overflow-wrap:break-word; background-color:oklch(0.9911 0 0); color:oklch(0.2435 0 0); padding:16px; border-radius:6px; margin:0;">
-${blockers}
-          </pre>
-    </div>
-
-    <div
-      style="background-color:oklch(0.9911 0 0); color:oklch(0.2435 0 0); border-right:4px solid oklch(0.4341 0.0392 41.9938); border-bottom:4px solid oklch(0.4341 0.0392 41.9938); border-radius:0.5rem; padding:20px; margin-bottom:24px; box-shadow:0 1px 3px 0px hsl(0 0% 0% / 0.1),0 4px 6px -1px hsl(0 0% 0% / 0.1); page-break-inside:avoid; break-inside:avoid-column;">
-      <h2
-        style="font-size:24px; font-weight:700; margin:0 0 16px; text-decoration:underline; text-decoration-color:oklch(0.92 0.0651 74.3695);">
-        Recommendations
-      </h2>
-      <pre
-        style="font-family:'Inter',system-ui,Avenir,Helvetica,Arial,sans-serif; line-height:1.5; white-space:pre-wrap; word-wrap:break-word; overflow-wrap:break-word; background-color:oklch(0.9911 0 0); color:oklch(0.2435 0 0); padding:16px; border-radius:6px; margin:0;">
-${recommendations}
-          </pre>
-    </div>
-
-    <div
-      style="text-align:center;  padding:20px; border-right:4px solid oklch(0.4341 0.0392 41.9938); border-bottom:4px solid oklch(0.4341 0.0392 41.9938); background-color:oklch(1 0 81.72); border-radius:0.5rem; box-shadow:0 1px 3px 0px hsl(0 0% 0% / 0.1),0 4px 6px -1px hsl(0 0% 0% / 0.1); page-break-inside:avoid; break-inside:avoid-column;">
-      <p style=" font-size:18px; font-weight:700; margin:0 0 12px; color:oklch(0.4341 0.0392 41.9938)">
-        Elevate Your Landing Pages Instantly!
-      </p>
-      <a href="https://pagesense.co/templates"
-        style="display:inline-block; text-decoration:underline; padding:12px 24px; background-color:oklch(0.92 0.0651 74.3695); color:oklch(0.2435 0 0); font-weight:700; border-radius:0.5rem;">
-        Explore Plug-and-Play Templates &rarr;
-      </a>
-    </div>
-  </div>
+<body style="margin:0; padding:0; background:#f9f9f9; color:#222; font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" border="0"
+          style="background:#fff; margin:40px 0; border-radius:8px; box-shadow:0 2px 8px #eee;">
+          <tr>
+            <td style="padding:32px 24px 16px 24px; text-align:left;">
+              <img src="${logoUrl}" alt="Logo" width="32" height="32" style="vertical-align:middle; margin-right:12px;">
+              <span style="font-size:28px; font-weight:bold; color:#393028;">PageSense Audit for ${url}</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 24px 24px 24px;">
+              <h2 style="font-size:20px; color:#393028; border-bottom:1px solid #eee; padding-bottom:8px;">Conversion
+                Blockers</h2>
+              <pre
+                style="white-space:pre-wrap; font-family:inherit; background:#f4f4f4; padding:12px; border-radius:4px; color:#222;">${blockers}</pre>
+              <h2
+                style="font-size:20px; color:#393028; border-bottom:1px solid #eee; padding-bottom:8px; margin-top:24px;">
+                Recommendations</h2>
+              <pre
+                style="white-space:pre-wrap; font-family:inherit; background:#f4f4f4; padding:12px; border-radius:4px; color:#222;">${recommendations}</pre>
+              <div style="margin-top:32px; text-align:center;">
+                <a href="https://pagesense.co/templates"
+                  style="display:inline-block; color:#393028; padding:12px 24px; border-radius:4px; text-decoration:none; font-weight:bold;">Explore
+                  Our High Conversion Templates &rarr;</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 
 </html>
-
 
 `;
 
@@ -107,7 +90,8 @@ ${recommendations}
   const pdfBuffer = await page.pdf({ format: "A4" });
   await browser.close();
   console.log("PDF generated successfully");
-  return pdfBuffer;
+  // Return pdfBuffer for download, and html for email
+  return { pdfBuffer, htmlContent };
 }
 
 async function audit(url: string) {
@@ -170,6 +154,46 @@ Provide your response as JSON:
   }
 }
 
+// Send to user's email with Brevo API
+async function sendEmail(email: string, htmlContent: string) {
+  // Get Brevo API key from environment variables
+  console.log("Grabbing Brevo API key...");
+  const BREVO_API_KEY = process.env.BREVO_API_KEY;
+
+  if (!BREVO_API_KEY) {
+    console.error("BREVO_API_KEY is not defined");
+    // Throw an error instead of using res
+    throw new Error("Email service configuration error");
+  }
+
+  // Send email
+  console.log("Sending email...");
+
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "api-key": BREVO_API_KEY,
+    },
+    body: JSON.stringify({
+      sender: {
+        name: "PageSense",
+        email: "info@pagesense.co",
+      },
+      to: [{ email }],
+      subject: "🚀 Your landing page audit is ready!",
+      htmlContent: htmlContent,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("Failed to send email:", errorText);
+    throw new Error("Failed to send email");
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const recieved = req.body;
@@ -183,6 +207,7 @@ export default async function handler(req, res) {
 
     console.log("Auditing URL:", url);
     const result = await audit(url);
+
     if (!result) {
       res.status(500).json({ error: "Audit failed" });
       return;
@@ -190,6 +215,7 @@ export default async function handler(req, res) {
     console.log("Audit result:", result);
 
     // Parsing result into strings
+    console.log("Parsing result into strings...");
     let blockers = "";
     let recommendations = "";
 
@@ -202,10 +228,27 @@ export default async function handler(req, res) {
 
     recommendations = result.recommendations.join("\n\n");
 
-    const pdfBuffer = await generateAuditPDF(url, blockers, recommendations);
+    console.log("Genenerating PDF...");
+
+    const { pdfBuffer, htmlContent } = await generateAuditPDF(
+      url,
+      blockers,
+      recommendations
+    );
+
+    // Send to user's email with Brevo API
+    try {
+      await sendEmail(email, htmlContent);
+      console.log("Email sent successfully to:", email);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+
+    // Save email to MailerLite if user subscribed
+    // TODO...
 
     // Send PDF as a download
-    console.log("Sending PDF...");
+    console.log("Sending PDF to client...");
 
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Disposition", "attachment; filename=audit.pdf");
