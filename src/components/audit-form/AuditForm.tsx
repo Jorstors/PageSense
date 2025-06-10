@@ -31,7 +31,7 @@ import {
   MailWarning,
   Loader2Icon,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { toast } from "sonner";
 
 const FormSchema = z.object({
@@ -42,6 +42,7 @@ const FormSchema = z.object({
 
 export function AuditForm() {
   const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -52,49 +53,71 @@ export function AuditForm() {
     },
   });
 
-  const showLoader = () => {
-    toast("Sending...", {
-      icon: <Loader2Icon className="animate-spin" />,
-    });
-  };
-
   const onFormSubmit = async (data: z.infer<typeof FormSchema>) => {
+    if (isSubmitting) return; // <-- block immediately
+    setIsSubmitting(true);
+
     console.log(data);
-    showLoader();
 
     try {
-      // Example: send data to an API endpoint
-      const response = await fetch("/api/audit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      // Show loader toast
+      await toast.promise(
+        (async () => {
+          // Send data to API endpoint
+          const response = await fetch("/api/audit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
 
-      if (!response.ok) {
-        throw new Error("Failed to send data");
-      }
+          if (!response.ok) {
+            throw new Error("Failed to send data");
+          }
 
-      // handle response data
-      // const result = await response.json();
+          // handle response data
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          // Open PDF in another window
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "audit.pdf";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          window.URL.revokeObjectURL(url);
 
-      toast("Email sent!", {
-        icon: <SendHorizontal />,
-      });
-      setSent(true);
+          // Successfully downloaded and sent audit
+          setSent(true);
+
+          // Reset form state
+          setIsSubmitting(false);
+        })(),
+        {
+          position: "bottom-center",
+          loading: "Sending...",
+          success: "Sent!",
+          error: "Failed to send email.",
+        }
+      );
     } catch (error) {
-      toast("Failed to send email.", {
-        icon: <MailWarning />,
-      });
-      setSent(false);
+      console.error(error);
     }
   };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onFormSubmit)}
+        onSubmit={(e) => {
+          // If already submitting, prevent further submissions
+          if (isSubmitting) {
+            e.preventDefault();
+            return;
+          }
+          // Otherwise, continue
+          form.handleSubmit(onFormSubmit)(e);
+        }}
         onChange={() => {
           setSent(false);
         }}
@@ -161,7 +184,7 @@ export function AuditForm() {
             <AnimatedSubscribeButton
               type="submit"
               subscribeStatus={sent}
-              disabled={sent || form.formState.isSubmitting}
+              disabled={sent || isSubmitting}
               className={"w-36 active:scale-95"}
             >
               <span className="group inline-flex items-center">
