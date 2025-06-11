@@ -82,7 +82,10 @@ export function AuditForm() {
           // Open PDF in another window
           const a = document.createElement("a");
           a.href = url;
-          a.download = "audit.pdf";
+          // Dynamic download name
+          a.download = `audit-${data.url
+            .replace(/https?:\/\//, "")
+            .replace(/\//g, "-")}.pdf`;
           document.body.appendChild(a);
           a.click();
           a.remove();
