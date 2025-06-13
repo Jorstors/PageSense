@@ -1,7 +1,73 @@
+/**
+ * API route handler for auditing a landing page, generating a PDF report, and emailing the results.
+ *
+ * - Accepts POST requests with a JSON body containing:
+ *   - `url`: The landing page URL to audit.
+ *   - `email`: The user's email address to send the audit report.
+ *   - `subscribe`: Boolean indicating if the user wants to subscribe (not yet implemented).
+ * - Enforces rate limiting per email address using Firebase.
+ * - Uses OpenAI to analyze the landing page and generate audit results.
+ * - Generates a PDF report of the audit using Puppeteer and Chromium.
+ * - Sends the audit report via email using the Brevo API.
+ * - Returns the PDF as a downloadable response.
+ *
+ * @param req - The HTTP request object (expects POST with JSON body).
+ * @param res - The HTTP response object.
+ * @returns Sends a PDF file as a response or an error status.
+ */
+
 import OpenAI from "openai";
 import Chromium from "@sparticuz/chromium";
 
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+  setDoc,
+  doc,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  orderBy,
+} from "firebase/firestore";
+
+import admin from "firebase-admin";
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      // Replace escaped newlines with real newlines
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    }),
+  });
+}
+const db = admin.firestore();
+
+
 // Helper to generate PDF from audit result (serverless safe)
+
+/**
+ * Generates a PDF audit report for a given landing page URL, including conversion blockers and recommendations.
+ *
+ * This function uses Puppeteer (or Puppeteer-core with a custom Chromium binary in serverless environments)
+ * to render an HTML report and export it as a PDF. The report includes the provided blockers and recommendations,
+ * formatted for clarity and professionalism. The function also returns the HTML content used for the PDF,
+ * which can be reused for email delivery.
+ *
+ * @param url - The landing page URL being audited.
+ * @param blockers - A string containing the main conversion blockers, formatted for display.
+ * @param recommendations - A string containing actionable recommendations, formatted for display.
+ * @returns An object containing:
+ *   - `pdfBuffer`: The generated PDF as a Buffer.
+ *   - `htmlContent`: The HTML string used to generate the PDF (for use in emails).
+ *
+ * @throws Will throw an error if Puppeteer fails to launch or PDF generation fails.
+ */
+
 async function generateAuditPDF(
   url: string,
   blockers: string,
@@ -105,6 +171,23 @@ async function generateAuditPDF(
   return { pdfBuffer, htmlContent };
 }
 
+
+/**
+ * Audits a landing page URL using OpenAI's GPT model to identify major conversion blockers
+ * and provide actionable recommendations for improvement.
+ *
+ * This function sends a prompt to the OpenAI Chat API, instructing it to analyze the given
+ * landing page URL for 3–5 major conversion blockers (such as headline issues, CTA problems,
+ * layout flaws, or load speed issues). For each blocker, it requests three concrete, practical
+ * suggestions for improvement. The response is expected to be strictly valid JSON, containing
+ * an array of blockers (with issues and suggestions) and a list of general recommendations.
+ *
+ * @param url - The landing page URL to audit.
+ * @returns A Promise resolving to an object containing:
+ *   - blockers: An array of objects, each with an "issue" string and a "suggestions" string array.
+ *   - recommendations: An array of recommendation strings.
+ *   Returns null if the audit fails or the response is invalid.
+ */
 async function audit(url: string) {
   // 1. Initialize the client
   const openai = new OpenAI({
@@ -166,6 +249,18 @@ Provide your response as JSON:
 }
 
 // Send to user's email with Brevo API
+/**
+ * Sends an audit report email to the specified user using the Brevo API.
+ *
+ * This function composes and sends an email containing the audit report HTML to the user's email address.
+ * The subject line includes the audited domain name. Uses the Brevo transactional email API for delivery.
+ *
+ * @param email - The recipient's email address.
+ * @param htmlContent - The HTML content of the audit report to be sent in the email body.
+ * @param url - The audited landing page URL (used to extract the domain name for the subject).
+ * @throws Will throw an error if the Brevo API key is missing or if the email fails to send.
+ */
+
 async function sendEmail(email: string, htmlContent: string, url: string) {
   // Get Brevo API key from environment variables
   console.log("[sendEmail] Grabbing Brevo API key...");
@@ -216,10 +311,57 @@ async function sendEmail(email: string, htmlContent: string, url: string) {
   }
 }
 
+// Check and enforce rate limits on email w/ Firebase
+
+
+async function checkRateLimit(email: string) {
+  if (!db) {
+    console.warn(
+      "[checkRateLimit] Firebase not initialized. Cannot check rate limit."
+    );
+    // If Firebase is not initialized, allow requests
+    return false;
+  }
+
+  const now = Date.now();
+  const oneDayAgo = new Date(now - 24 * 60 * 60 * 1000); // Date object
+
+  try {
+    // Reference to the user's audit_requests subcollection
+    const auditRequestsRef = db
+      .collection("users")
+      .doc(email.toLowerCase())
+      .collection("audit_requests");
+
+    // Query for requests in the last 24 hours
+    const snapshot = await auditRequestsRef
+      .where("timestamp", ">", oneDayAgo)
+      .get();
+
+      console.log("[checkRateLimit] Audits from last 24 hours:", snapshot.size);
+
+
+    if (snapshot.size >= 3) {
+      // Block request
+      return true;
+    }
+
+    // Otherwise log this audit:
+    await auditRequestsRef.add({
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    console.log("[checkRateLimit] Audit request logged for:", email);
+
+    return false;
+  } catch (error) {
+    console.error("[checkRateLimit] Error checking rate limit:", error);
+    return false;
+  }
+}
+
+
 export default async function handler(req, res) {
-  // // Ending early for testing toasts
-  // res.status(255).end();
-  // return;
 
   if (req.method === "POST") {
     const recieved = req.body;
@@ -230,6 +372,22 @@ export default async function handler(req, res) {
     console.log(url);
     console.log(email);
     console.log(subscribe);
+
+    // Use Firebase logs to check audit history, rate limit
+    const exceedsRateLimit = await checkRateLimit(email);
+    if (exceedsRateLimit)
+    {
+      console.log("[handler] Rate limit exceeded.")
+      res.status(429).json({ error: "Rate limit exceeded" });
+      return;
+    }
+    console.log("[handler] Rate limit check passed.");
+
+      // Ending early for testing firebase
+      res.status(255).end();
+      return;
+
+    // Audit URL
 
     console.log("[handler] Auditing URL:", url);
     const result = await audit(url);
