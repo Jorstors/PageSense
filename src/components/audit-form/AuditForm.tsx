@@ -59,63 +59,68 @@ export function AuditForm() {
 
     console.log(data);
 
-    try {
-      // Show loader toast
-      await toast.promise(
-        (async () => {
-          // Send data to API endpoint
-          const response = await fetch("/api/audit", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          });
+    // Show loader toast
+    await toast.promise(
+      (async () => {
+        // Send data to API endpoint
+        const response = await fetch("/api/audit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
 
-          if (!response.ok) {
-            throw new Error("Failed to send data");
+        let errorMsg = "";
+
+        if (response.headers.get("content-type")?.includes("application/json")) {
+          const json = await response.json();
+          if (json.error) {
+            errorMsg = json.error;
+            throw new Error(errorMsg);
           }
-
-          // handle response data
-          const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-          // Open PDF in another window
-          const a = document.createElement("a");
-          a.href = url;
-          // Dynamic download name
-          a.download = `audit-${data.url
-            .replace(/https?:\/\//, "")
-            .replace(/\//g, "-")}.pdf`;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          window.URL.revokeObjectURL(url);
-
-          // Successfully downloaded and sent audit
-          setSent(true);
-
-          // Reset form state
-          setIsSubmitting(false);
-        })(),
-        {
-          position: "top-center",
-          loading: "Sending...",
-          success: (
-            <div className="pl-2">
-              <div style={{ fontWeight: "bold", fontSize: "1.1em" }}>
-                Audit sent!
-              </div>
-              <div style={{ fontSize: "0.95em", color: "#666" }}>
-                Sent to your email & your downloads folder.
-              </div>
-            </div>
-          ),
-          error: "Failed to send email.",
+        } else if (!response.ok) {
+          errorMsg = "Failed to send data";
+          throw new Error(errorMsg);
         }
-      );
-    } catch (error) {
-      console.error(error);
-    }
+
+        // handle response data
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        // Open PDF in another window
+        const a = document.createElement("a");
+        a.href = url;
+        // Dynamic download name
+        a.download = `audit-${data.url
+          .replace(/https?:\/\//, "")
+          .replace(/\//g, "-")}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+        // Successfully downloaded and sent audit
+        setSent(true);
+
+        // Reset form state
+        setIsSubmitting(false);
+      })(),
+      {
+        position: "top-center",
+        loading: "Sending...",
+        success: (
+          <div className="pl-2">
+            <div style={{ fontWeight: "bold", fontSize: "1.1em" }}>
+              Audit sent!
+            </div>
+            <div style={{ fontSize: "0.95em", color: "#666" }}>
+              Sent to your email & your downloads folder.
+            </div>
+          </div>
+        ),
+        error: (err: any) => <>{err.message}</>,
+      }
+    );
   };
 
   return (
