@@ -98,7 +98,7 @@ async function generateAuditPDF(
   const page = await browser.newPage();
 
   const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
+    ? `${process.env.VERCEL_URL}`
     : "http://localhost:3000";
   const logoUrl = `${baseUrl}/BOW-Big.png`;
   console.log("[generateAuditPDF] Logo URL:", logoUrl);
