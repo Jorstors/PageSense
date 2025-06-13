@@ -384,10 +384,10 @@ export default async function handler(req, res) {
     }
     console.log("[handler] Rate limit check passed.");
 
-    // Ending early for testing firebase
-      console.log("Exiting audit handler...")
-      res.status(255).end();
-      return;
+    // // Ending early for testing firebase
+    //   console.log("Exiting audit handler...")
+    //   res.status(255).end();
+    //   return;
 
     // Audit URL
 
