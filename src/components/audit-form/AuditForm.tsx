@@ -102,9 +102,10 @@ export function AuditForm() {
         // Successfully downloaded and sent audit
         setSent(true);
 
-        // Reset form state
+
+      })().finally(() => {
         setIsSubmitting(false);
-      })(),
+      }),
       {
         position: "top-center",
         loading: "Sending...",
@@ -121,6 +122,8 @@ export function AuditForm() {
         error: (err: any) => <>{err.message}</>,
       }
     );
+
+
   };
 
   return (

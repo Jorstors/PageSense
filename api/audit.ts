@@ -378,12 +378,14 @@ export default async function handler(req, res) {
     if (exceedsRateLimit)
     {
       console.log("[handler] Rate limit exceeded.")
+      console.log("Exiting audit handler...")
       res.status(429).json({ error: "Rate limit exceeded" });
       return;
     }
     console.log("[handler] Rate limit check passed.");
 
-      // Ending early for testing firebase
+    // Ending early for testing firebase
+      console.log("Exiting audit handler...")
       res.status(255).end();
       return;
 
@@ -393,7 +395,8 @@ export default async function handler(req, res) {
     const result = await audit(url);
 
     if (!result) {
-      res.status(500).json({ error: "[handler] Audit failed" });
+      console.log("Exiting audit handler...")
+      res.status(500).json({ error: "OpenAI model failed or returned invalid JSON"}).end();
       return;
     }
     console.log("[handler] Audit result:", result);
