@@ -436,6 +436,7 @@ export default async function handler(req, res) {
 
     // Send PDF as a download
     console.log("[handler] Sending PDF to client...");
+    console.log("Exiting audit handler...");
 
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Disposition", "attachment; filename=audit.pdf");

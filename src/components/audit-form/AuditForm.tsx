@@ -143,7 +143,7 @@ export function AuditForm() {
         }}
         className=" w-fit h-fit mx-auto"
       >
-        <Card className="space-y-5 relative overflow-hidden w-115">
+        <Card className="space-y-5 relative overflow-hidden max-w-full lg:w-115 md:w-100">
           <ShineBorder
             shineColor={[
               "oklch(0.4341 0.0392 41.9938)",

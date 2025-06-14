@@ -5,10 +5,20 @@ import "./index.css";
 import { BrowserRouter, useRoutes } from "react-router";
 
 import routes from "~react-pages";
+import MainLayout from "./layouts/MainLayout";
 import { Toaster } from "sonner";
+import path from "path";
+import Loading from "./components/loading/Loading";
 
 function App() {
-  return <Suspense>{useRoutes(routes)}</Suspense>;
+  const wrappedRoutes = [
+    {
+      element: <MainLayout />,
+      children: routes,
+    }
+  ]
+
+  return <Suspense fallback={<Loading />}>{useRoutes(wrappedRoutes)}</Suspense>;
 }
 
 console.log(routes);

@@ -7,7 +7,7 @@ export default function Main() {
       <div className="w-screen h-screen flex">
         <ScrollArea type="always" className="w-full h-full">
           <div className="h-screen w-full flex flex-col items-center justify-center">
-            <AuditForm />
+            Landing Page
           </div>
         </ScrollArea>
       </div>
