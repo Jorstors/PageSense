@@ -191,7 +191,7 @@ async function generateAuditPDF(
 async function audit(url: string) {
   // 1. Initialize the client
   const openai = new OpenAI({
-    apiKey: process.env.VITE_OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
   });
 
   // 2. Build chat request
