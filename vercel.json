@@ -7,10 +7,18 @@
       "config": {
         "distDir": "dist"
       }
+    },
+    {
+      "src": "api/**/*.ts",
+      "use": "@vercel/node"
     }
   ],
   "devCommand": "npm run dev",
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1.ts"
+    },
     {
       "handle": "filesystem"
     },
