@@ -10,7 +10,9 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: new URL(process.env.NEXT_PUBLIC_URL).hostname,
+        hostname: process.env.NEXT_PUBLIC_URL
+          ? new URL(process.env.NEXT_PUBLIC_URL).hostname
+          : "localhost",
       },
       {
         protocol: "http",
@@ -19,7 +21,7 @@ const nextConfig: NextConfig = {
     ],
     deviceSizes: [640, 750, 828, 1080, 1200],
     imageSizes: [16, 32, 48, 64, 96],
-  }
+  },
 };
 
 export default nextConfig;
