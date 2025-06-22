@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+<div align="center">
+  <a href="https://www.pagesense.co/tool">
+    <img src="public/Title-WOB.png" alt="PageSense Logo" width="400">
+  </a>
+  <h2>An AI-powered landing-page auditing tool.
+</div>
+
+
+<div align="center">
+
+[![Vercel](https://img.shields.io/badge/deploy-on%20Vercel-blue?logo=vercel)](https://vercel.com/new)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+</div>
+
+PageSense is an intelligent website auditing platform that uses AI to analyze landing pages and provide actionable conversion optimization recommendations. Built with Next.js 15 and powered by OpenAI, it generates comprehensive PDF reports and delivers them via email.
+
+🌐 **Available at: [pagesense.co](https:/www.pagesense.co/tool)**
+
+## ✨ Features
+
+- **🤖 AI-Powered Analysis** - Uses OpenAI's GPT-4o to identify conversion blockers and optimization opportunities
+- **📄 PDF Report Generation** - Creates professional audit reports using Puppeteer and Chromium
+- **📧 Email Delivery** - Automatically sends reports to users via Brevo API
+- **🔒 Rate Limiting** - Firebase-powered rate limiting to prevent abuse
+- **⚡ Real-time Processing** - Serverless functions for fast, scalable auditing
+- **🎨 Modern UI** - Beautiful interface built with Tailwind CSS and shadcn/ui
+- **📱 Responsive Design** - Works seamlessly across all devices
+
+## 🚀 Tech Stack
+
+- **Frontend**: Next.js 15 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui components
+- **Backend**: Next.js API Routes (Serverless Functions)
+- **AI**: OpenAI GPT-4o-mini-search-preview
+- **PDF Generation**: Puppeteer + @sparticuz/chromium (serverless-optimized)
+- **Email**: Brevo API for transactional emails
+- **Database**: Firebase Firestore for rate limiting
+- **Deployment**: Vercel-ready with automatic serverless function deployment
+
+## 📁 Project Structure
+
+```
+pagesense/
+├── app/
+│   ├── api/
+│   │   └── audit/
+│   │       └── route.ts          # Main audit API endpoint
+│   ├── about/
+│   ├── templates/
+│   ├── tool/
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── audit-form/
+│   │   └── AuditForm.tsx         # Main audit form component
+│   ├── ui/                       # shadcn/ui components
+│   └── magicui/                  # Custom UI components
+├── lib/
+│   └── utils.ts
+└── public/
+    └── [assets]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 API Endpoints
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### POST `/api/audit`
+Main audit endpoint that processes website analysis requests.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Request Body:**
+```json
+{
+  "url": "https://example.com",
+  "email": "user@example.com",
+  "subscribe": true
+}
+```
 
-## Learn More
+**Response:**
+- Returns PDF file as downloadable attachment
+- Sends email with audit report to provided email address
+- Implements rate limiting (3 requests per 24 hours per email)
 
-To learn more about Next.js, take a look at the following resources:
+## 🎯 How It Works
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **User Input** - User enters website URL and email address
+2. **AI Analysis** - OpenAI analyzes the landing page for conversion blockers
+3. **Report Generation** - Puppeteer generates a professional PDF report
+4. **Email Delivery** - Brevo sends the report to the user's email
+5. **Download** - User receives immediate PDF download
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## 🔍 Key Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Serverless Function Architecture
+- API routes automatically become serverless functions on Vercel
+- Optimized for cold starts with efficient imports
+- Environment-aware (local vs. production) configuration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Rate Limiting
+- Firebase Firestore tracks audit requests per email
+- Configurable limits (currently 3 per 24 hours)
+- Graceful fallback if Firebase is unavailable
+
+### PDF Generation
+- Uses Puppeteer in local development
+- Switches to puppeteer-core + @sparticuz/chromium for serverless
+- Responsive HTML template with professional styling
+
+## 📝 License
+
+This project is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+See the [LICENSE](./LICENSE) file for full details.
+
+## 🙋‍♂️ Support
+
+For support, email info@pagesense.co or create an issue in this repository.
+
+---
+
+Built with ❤️
