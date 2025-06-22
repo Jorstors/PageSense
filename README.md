@@ -6,20 +6,25 @@
   <a href="https://www.pagesense.co/tool">
     <img src="public/Title-WOB.png" alt="PageSense Logo" width="400">
   </a>
-  <h2>An AI-powered landing-page auditing tool.
+  <h2>A landing-page auditing tool.
 </div>
 
 
+
+#### PageSense is an intelligent website auditing platform that uses AI to analyze landing pages and provide actionable conversion optimization recommendations. Built with Next.js 15 and powered by OpenAI, it generates comprehensive PDF reports and delivers them via email.
+
+
+<div align="center">
+
+🌐 **Available at: [pagesense.co](https:/www.pagesense.co/tool)**
+</div>
+<br/>
 <div align="center">
 
 [![Vercel](https://img.shields.io/badge/deploy-on%20Vercel-blue?logo=vercel)](https://vercel.com/new)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 </div>
-
-PageSense is an intelligent website auditing platform that uses AI to analyze landing pages and provide actionable conversion optimization recommendations. Built with Next.js 15 and powered by OpenAI, it generates comprehensive PDF reports and delivers them via email.
-
-🌐 **Available at: [pagesense.co](https:/www.pagesense.co/tool)**
 
 ## ✨ Features
 
