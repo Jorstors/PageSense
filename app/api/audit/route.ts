@@ -133,12 +133,21 @@ async function generateAuditPDF(
     browser = await getBrowser();
 
     console.log("[generateAuditPDF] Creating new page...");
-    const page = await browser.newPage();
+    const page = await browser.newPage();    // Get the correct base URL for different Vercel environments
+    let baseUrl: string;
+    if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+      // Use production domain
+      baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+    } else if (process.env.VERCEL_URL) {
+      // Use deployment URL (preview/branch deployments)
+      baseUrl = `https://${process.env.VERCEL_URL}`;
+    } else {
+      // Local development
+      baseUrl = "http://localhost:3000";
+    }
 
-    const baseUrl = process.env.VERCEL_URL
-      ? `${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
     const logoUrl = `${baseUrl}/BOW-Big.png`;
+    console.log("[generateAuditPDF] Base URL:", baseUrl);
     console.log("[generateAuditPDF] Logo URL:", logoUrl);
 
     // Add bold to "Issue:" and "Suggestions:" within the Blockers text
