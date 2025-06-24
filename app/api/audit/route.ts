@@ -438,11 +438,10 @@ async function checkRateLimit(email: string) {
 
 
 export async function POST(request: Request) {
-
-  generateAuditPDF("","","");
-
-  // Return early for testing
-  return Response.json({ message: "Audit request received!" }, { status: 200 });
+  // Remove the test code to enable full functionality
+  // generateAuditPDF("","","");
+  // // Return early for testing
+  // return Response.json({ message: "Audit request received!" }, { status: 200 });
 
   try {
     const recieved = await request.json();
