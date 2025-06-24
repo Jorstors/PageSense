@@ -17,9 +17,14 @@
  */
 
 import OpenAI from "openai";
-import Chromium from "@sparticuz/chromium";
-
 import admin from "firebase-admin";
+
+// Force dynamic rendering for serverless compatibility
+export const dynamic = "force-dynamic";
+
+// CDN URL for Chromium binary - more reliable than @sparticuz/chromium
+const CHROMIUM_PATH =
+  "https://vomrghiulbmrfvmhlflk.supabase.co/storage/v1/object/public/chromium-pack/chromium-v123.0.0-pack.tar";
 
 if (!admin.apps.length) {
   try {
@@ -39,6 +44,61 @@ if (!admin.apps.length) {
   }
 }
 const db = admin.firestore();
+
+// Helper function to get browser instance based on environment
+async function getBrowser() {
+
+  let browser;
+
+  if (process.env.NODE_ENV === "production") {
+    console.log("[getBrowser] Using production environment with chromium-min");
+
+    const chromium = await import("@sparticuz/chromium-min").then(
+      (mod) => mod.default
+    );
+
+    const puppeteerCore = await import("puppeteer-core").then(
+      (mod) => mod.default
+    );
+
+    const executablePath = await chromium.executablePath(CHROMIUM_PATH);
+
+    browser = await puppeteerCore.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath,
+      headless: chromium.headless,
+    });
+
+  } else {
+    console.log("[getBrowser] Using local environment with puppeteer");
+
+    const puppeteer = await import("puppeteer").then((mod) => mod.default);
+
+    browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--disable-gpu'
+      ]
+    });
+  }
+
+  if (!browser) {
+    console.error("[getBrowser] Failed to launch browser.");
+    throw new Error("Failed to launch browser");
+  }
+
+  console.log("[getBrowser] Browser successfully launched.");
+  console.log("[getBrowser] Browser instance:", browser);
+
+  return browser;
+}
 
 
 // Helper to generate PDF from audit result (serverless safe)
@@ -66,43 +126,11 @@ async function generateAuditPDF(
   blockers: string,
   recommendations: string
 ) {
-  let puppeteer;
   let browser;
 
   try {
-    const launchOptions = {
-      args: Chromium.args,
-      defaultViewport: Chromium.defaultViewport,
-      headless: Chromium.headless,
-    };
-
-    console.log(
-      "[generateAuditPDF] Checking for local environment... ",
-      process.env.LOCAL_ENVIRONMENT
-    );
-
-    // Dynamically import the correct puppeteer package
-    if (process.env.LOCAL_ENVIRONMENT != null) {
-      console.log("[generateAuditPDF] Using local environment");
-      puppeteer = (await import("puppeteer")).default;
-      // Add additional args for local environment stability
-      launchOptions.args = [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--disable-gpu'
-      ];
-    } else {
-      console.log("[generateAuditPDF] Using remote environment");
-      puppeteer = (await import("puppeteer-core")).default;
-      launchOptions.executablePath = await Chromium.executablePath();
-    }
-
-    console.log("[generateAuditPDF] Launching browser...");
-    browser = await puppeteer.launch(launchOptions);
+    console.log("[generateAuditPDF] Getting browser instance...");
+    browser = await getBrowser();
 
     console.log("[generateAuditPDF] Creating new page...");
     const page = await browser.newPage();
@@ -411,8 +439,10 @@ async function checkRateLimit(email: string) {
 
 export async function POST(request: Request) {
 
-  // Return early for testing toasts
-  // return Response.json({ message: "Audit request received!" }, { status: 200 });
+  generateAuditPDF("","","");
+
+  // Return early for testing
+  return Response.json({ message: "Audit request received!" }, { status: 200 });
 
   try {
     const recieved = await request.json();
