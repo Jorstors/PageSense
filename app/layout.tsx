@@ -4,6 +4,8 @@ import { Toaster } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import "./globals.css";
 import { Footer } from "@/components/Footer";
+import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Pagesense",
@@ -72,6 +74,16 @@ export default function RootLayout({
           </div>
           <div className="flex-1 w-full overflow-hidden">
             <ScrollArea type="always" className="w-full h-full">
+              <AnimatedGridPattern
+                maxOpacity={0.3}
+                className={cn(
+                  "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+                  "md:[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
+                  "lg:[mask-image:radial-gradient(1000px_circle_at_center,white,transparent)]",
+                  "inset-x-0 inset-y-[-30%] h-[200%] skew-y-12",
+                  "opacity-20"
+                )}
+              />
               {children}
               <Toaster />
               <Footer />
