@@ -1,5 +1,5 @@
 import React from "react";
-import { ChevronRightIcon, ConstructionIcon } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
 import { TypingAnimation } from "./magicui/typing-animation";
 import { TextEffect } from "./motion-primitives/text-effect";
 import { Button } from "./ui/button";
