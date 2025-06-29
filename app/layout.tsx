@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { Toaster } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import "./globals.css";
-
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Pagesense",
@@ -27,14 +28,15 @@ export const metadata: Metadata = {
     "site health check",
     "digital audit",
     "web app audit",
-    "AI website analysis"
+    "AI website analysis",
   ],
   authors: [{ name: "Pagesense Team", url: "https://pagesense.co" }],
   creator: "Pagesense",
   publisher: "Pagesense",
   openGraph: {
     title: "Pagesense – AI Powered Audit Tool",
-    description: "Audit your website or application for SEO, accessibility, and performance with Pagesense's AI-powered platform.",
+    description:
+      "Audit your website or application for SEO, accessibility, and performance with Pagesense's AI-powered platform.",
     url: "https://pagesense.co",
     siteName: "Pagesense",
     images: [
@@ -42,11 +44,11 @@ export const metadata: Metadata = {
         url: "/WOB-Big.png",
         width: 1200,
         height: 630,
-        alt: "Pagesense AI Audit Tool"
-      }
+        alt: "Pagesense AI Audit Tool",
+      },
     ],
     locale: "en_US",
-    type: "website"
+    type: "website",
   },
   category: "Technology",
 };
@@ -64,13 +66,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-      <div className="dark w-full min-h-screen bg-background text-primary">
-        <div className="fixed z-10 top-0 w-full h-fit">
-          <Navbar />
+        <div className="dark w-full h-screen bg-background text-primary flex flex-col">
+          <div className="fixed z-10 top-0 w-full h-fit">
+            <Navbar />
+          </div>
+          <div className="flex-1 w-full overflow-hidden">
+            <ScrollArea type="always" className="w-full h-full">
+              {children}
+              <Toaster />
+              <Footer />
+            </ScrollArea>
+          </div>
         </div>
-            {children}
-        <Toaster />
-      </div>
       </body>
     </html>
   );

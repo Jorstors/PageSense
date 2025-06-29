@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Menu } from "lucide-react";
 import Image from "next/image";
@@ -75,7 +75,7 @@ const Navbar = ({
   },
 }: NavbarProps) => {
   return (
-    <section className="py-4 grid place-items-center">
+    <section className="py-4 grid place-items-center bg-background/100">
       <div className="container pl-14 pr-14">
         {/* desktop nav */}
         <nav className="hidden lg:flex w-full items-center justify-between">
