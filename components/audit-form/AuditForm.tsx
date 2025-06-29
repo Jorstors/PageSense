@@ -1,11 +1,7 @@
-'use client'
+"use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -22,10 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { AnimatedSubscribeButton } from "../magicui/animated-subscribe-button";
-import {
-  ChevronRightIcon,
-  CheckIcon,
-} from "lucide-react";
+import { ChevronRightIcon, CheckIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -35,7 +28,7 @@ const FormSchema = z.object({
   subscribe: z.boolean(),
 });
 
-export function AuditForm() {
+export function AuditForm({ className }: { className?: string }) {
   const [sent, setSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -68,7 +61,9 @@ export function AuditForm() {
 
         let errorMsg = "";
 
-        if (response.headers.get("content-type")?.includes("application/json")) {
+        if (
+          response.headers.get("content-type")?.includes("application/json")
+        ) {
           const json = await response.json();
           if (json.error) {
             errorMsg = json.error;
@@ -96,8 +91,6 @@ export function AuditForm() {
 
         // Successfully downloaded and sent audit
         setSent(true);
-
-
       })().finally(() => {
         setIsSubmitting(false);
       }),
@@ -117,8 +110,6 @@ export function AuditForm() {
         error: (err) => <>{err.message}</>,
       }
     );
-
-
   };
 
   return (
@@ -136,9 +127,9 @@ export function AuditForm() {
         onChange={() => {
           setSent(false);
         }}
-        className=" w-fit h-fit mx-auto"
+        className={`container h-fit mx-auto py-10 grid place-items-center ${className}`}
       >
-        <Card className="space-y-5 relative overflow-hidden max-w-full lg:w-115 md:w-100">
+        <Card className="space-y-5 relative overflow-hidden w-2xs sm:w-md md:w-2xl lg:w-4xl">
           <ShineBorder
             shineColor={[
               "oklch(0.4341 0.0392 41.9938)",
