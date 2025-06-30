@@ -1,13 +1,9 @@
-import Construction from "@/components/Construction";
+import { Hero } from "@/components/hero";
 
 export default function Main() {
   return (
-    <div className="dark w-screen min-h-screen bg-background text-primary ">
-      <div className="w-screen h-screen flex">
-        <div className="h-screen w-full flex flex-col items-center justify-center">
-          <Construction />
-        </div>
-      </div>
+    <div className="w-screen min-h-screen grid place-items-center mt-20">
+      <Hero />
     </div>
   );
 }
