@@ -57,7 +57,7 @@ const Hero = ({
 }: Hero) => {
   return (
     <section className="py-20">
-      <div className="container overflow-hidden">
+      <div className="container overflow-hidden px-14">
         <div className="mb-20 flex flex-col items-center gap-6 text-center">
           <h1 className="scroll-m-20 text-center text-4xl font-bold tracking-tight text-balance">
             <span className="bg-gradient-to-t from-foreground to-foreground/30 bg-clip-text text-transparent">
