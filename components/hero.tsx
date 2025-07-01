@@ -65,18 +65,20 @@ const Hero = ({
             </span>
           </h1>
         </div>
-        <div className="relative mx-auto max-w-5xl w-fit skew-x-[-22deg] transition-transform duration-300 ease-in-out hover:scale-105">
-          <div className="relative group">
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary to-background blur-lg opacity-80 transition-all duration-500 group-hover:opacity-100 group-hover:blur-xl"></div>
-            <div className="[mask-image:linear-gradient(to_bottom,white_15%,transparent_97%)]">
-              <Image
-                src={imageSrc}
-                alt={imageAlt}
-                width={width}
-                height={height}
-                className="relative max-h-[300px] md:max-h-[400px] w-fit mx-auto rounded-2xl object-contain bg-background/10"
-                priority
-              />
+        <div className="relative mx-auto w-full max-w-5xl flex justify-center items-center">
+          <div className="relative w-fit transform skew-x-[-22deg] transition-transform duration-300 ease-in-out hover:scale-105">
+            <div className="relative group">
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary to-background blur-lg opacity-80 transition-all duration-500 group-hover:opacity-100 group-hover:blur-xl"></div>
+              <div className="relative [mask-image:linear-gradient(to_bottom,white_15%,transparent_97%)]">
+                <Image
+                  src={imageSrc}
+                  alt={imageAlt}
+                  width={width}
+                  height={height}
+                  className="relative max-h-[300px] md:max-h-[400px] w-auto rounded-2xl object-contain bg-background/10"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>
