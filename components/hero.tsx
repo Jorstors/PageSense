@@ -19,11 +19,15 @@ interface Hero {
   imageSrc?: string;
   imageAlt?: string;
   features?: Feature[];
+  width?: number;
+  height?: number;
 }
 
 const Hero = ({
   imageSrc = "/Hero.png",
   imageAlt = "placeholder",
+  width = 800,
+  height = 450,
   features = [
     {
       icon: <FileSearchIcon className="h-auto w-5" />,
@@ -62,15 +66,21 @@ const Hero = ({
             </span>
           </h1>
         </div>
-
-        <div className="relative mx-auto max-w-5xl w-fit shadow-xl shadow-white">
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary to-background blur-lg"></div>
-          <Image
-            src={imageSrc}
-            alt={imageAlt}
-            className="relative max-h-[300px] md:max-h-[400px] w-fit mx-auto rounded-2xl object-contain bg-white shadow-white shadow-2xl"
-          />
-          <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent"></div>
+        {/*  */}
+        <div className="relative mx-auto max-w-5xl w-fit skew-x-[-20deg]  transition-transform duration-500 ease-in-out hover:scale-105">
+          <div className="relative group">
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary to-background blur-lg opacity-80 transition-all duration-500 group-hover:opacity-100 group-hover:blur-3xl"></div>
+            <div className="[mask-image:linear-gradient(to_bottom,white_0%,transparent_100%)]">
+              <Image
+                src={imageSrc}
+                alt={imageAlt}
+                width={width}
+                height={height}
+                className="relative max-h-[300px] md:max-h-[400px] w-fit mx-auto rounded-2xl object-contain bg-background/10"
+                priority
+              />
+            </div>
+          </div>
         </div>
         <div className="mx-auto mt-10 flex max-w-5xl flex-col md:flex-row">
           {features.map((feature, index) => (
