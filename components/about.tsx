@@ -97,7 +97,7 @@ const About = ({
 }: AboutProps = {}) => {
   return (
     <section className="py-20">
-      <div className="container px-14">
+      <div className="container px-2 md:px-14">
         <div className="mb-20 grid gap-8 text-center md:grid-cols-2 md:text-left">
           <h1 className="text-5xl font-semibold tracking-tight leading-[1.15] bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70 min-h-20">
             {title}
