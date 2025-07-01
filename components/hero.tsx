@@ -61,10 +61,7 @@ const Hero = ({
         <div className="mb-20 flex flex-col items-center gap-6 text-center">
           <h1 className="scroll-m-20 text-center text-4xl font-bold tracking-tight text-balance">
             <span className="bg-gradient-to-t from-foreground to-foreground/30 bg-clip-text text-transparent">
-              Find Conversion Rate Blockers in{" "}
-            </span>
-            <span className="bg-gradient-to-t from-foreground to-foreground/30 bg-clip-text text-transparent italic underline-offset-10 underline decoration-primary">
-              10 Seconds.
+              Find Conversion Rate Blockers in 10 Seconds.
             </span>
           </h1>
         </div>
