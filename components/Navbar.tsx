@@ -76,7 +76,7 @@ const Navbar = ({
 }: NavbarProps) => {
   return (
     <section className="py-4 grid place-items-center bg-background/100">
-      <div className="container pl-14 pr-14">
+      <div className="container px-14">
         {/* desktop nav */}
         <nav className="hidden lg:flex w-full items-center justify-between">
           {/* left side: logo + menu */}
