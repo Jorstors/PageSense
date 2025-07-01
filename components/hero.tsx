@@ -33,13 +33,13 @@ const Hero = ({
       icon: <FileSearchIcon className="h-auto w-5" />,
       title: "Identify Conversion Blockers",
       description:
-        "Get instant insights into what’s hurting your signups, sales, or leads—and how to fix them.",
+        "Get instant insights into what's hurting your signups, sales, or leads—and how to fix them.",
     },
     {
       icon: <Zap className="h-auto w-5" />,
       title: "Performance-Driven Suggestions",
       description:
-        "Discover what’s slowing your page down or causing users to leave, and get fast, actionable fixes.",
+        "Discover what's slowing your page down or causing users to leave, and get fast, actionable fixes.",
     },
     {
       icon: <BrainCircuitIcon className="h-auto w-5" />,
@@ -65,8 +65,7 @@ const Hero = ({
             </span>
           </h1>
         </div>
-        {/*  */}
-        <div className="relative mx-auto max-w-5xl w-fit skew-x-[-22deg]  transition-transform duration-300 ease-in-out hover:scale-105">
+        <div className="relative mx-auto max-w-5xl w-fit skew-x-[-22deg] transition-transform duration-300 ease-in-out hover:scale-105">
           <div className="relative group">
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary to-background blur-lg opacity-80 transition-all duration-500 group-hover:opacity-100 group-hover:blur-xl"></div>
             <div className="[mask-image:linear-gradient(to_bottom,white_15%,transparent_97%)]">
@@ -90,13 +89,15 @@ const Hero = ({
                   className="mx-6 hidden h-auto w-[2px] bg-linear-to-b from-muted via-transparent to-muted md:block"
                 />
               )}
-              <div
-                key={index}
-                className="flex grow basis-0 flex-col rounded-md bg-background p-4"
-              >
-                <div className="mb-6 flex size-10 items-center justify-center rounded-full bg-background drop-shadow-lg">
-                  <ShineBorder shineColor="var(--primary)" />
-                  {feature.icon}
+              <div className="flex grow basis-0 flex-col rounded-md bg-background p-4">
+                <div className="relative mb-6 flex size-10 items-center justify-center rounded-full bg-background drop-shadow-lg">
+                  <div className="absolute inset-0 rounded-full">
+                    <ShineBorder
+                      shineColor="var(--primary)"
+                      className="!absolute"
+                    />
+                  </div>
+                  <div className="relative z-10">{feature.icon}</div>
                 </div>
                 <h3 className="mb-2 font-semibold">{feature.title}</h3>
                 <p className="text-sm text-muted-foreground">
