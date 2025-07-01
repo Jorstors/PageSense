@@ -127,7 +127,7 @@ export function AuditForm({ className }: { className?: string }) {
         onChange={() => {
           setSent(false);
         }}
-        className={`container px-14 h-fit mx-auto py-10 grid place-items-center ${className}`}
+        className={`container px-2 md:px-14 h-fit mx-auto py-10 grid place-items-center ${className}`}
       >
         <Card className="space-y-5 relative overflow-hidden w-full">
           <ShineBorder
