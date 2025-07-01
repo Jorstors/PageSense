@@ -72,7 +72,7 @@ export default function RootLayout({
           <div className="fixed z-10 top-0 w-full h-fit">
             <Navbar />
           </div>
-          <div className="flex-1 w-full overflow-hidden">
+          <div className="flex-1 w-full overflow-hidden relative mt-20">
             <ScrollArea type="always" className="w-full h-full">
               <AnimatedGridPattern
                 maxOpacity={0.3}
