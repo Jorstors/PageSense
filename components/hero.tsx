@@ -60,17 +60,19 @@ const Hero = ({
       <div className="container overflow-hidden">
         <div className="mb-20 flex flex-col items-center gap-6 text-center">
           <h1 className="scroll-m-20 text-center text-4xl font-bold tracking-tight text-balance">
-            Find Conversion Rate Blockers in{" "}
-            <span className="relative inline-block after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-current after:transition-all after:duration-300 after:w-full">
+            <span className="bg-gradient-to-t from-foreground to-foreground/30 bg-clip-text text-transparent">
+              Find Conversion Rate Blockers in{" "}
+            </span>
+            <span className="bg-gradient-to-t from-foreground to-foreground/30 bg-clip-text text-transparent italic underline-offset-10 underline decoration-primary">
               10 Seconds.
             </span>
           </h1>
         </div>
         {/*  */}
-        <div className="relative mx-auto max-w-5xl w-fit skew-x-[-20deg]  transition-transform duration-500 ease-in-out hover:scale-105">
+        <div className="relative mx-auto max-w-5xl w-fit skew-x-[-22deg]  transition-transform duration-300 ease-in-out hover:scale-105">
           <div className="relative group">
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary to-background blur-lg opacity-80 transition-all duration-500 group-hover:opacity-100 group-hover:blur-3xl"></div>
-            <div className="[mask-image:linear-gradient(to_bottom,white_0%,transparent_100%)]">
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary to-background blur-lg opacity-80 transition-all duration-500 group-hover:opacity-100 group-hover:blur-xl"></div>
+            <div className="[mask-image:linear-gradient(to_bottom,white_15%,transparent_97%)]">
               <Image
                 src={imageSrc}
                 alt={imageAlt}

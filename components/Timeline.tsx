@@ -35,7 +35,9 @@ const Timeline = () => {
     <section className="bg-background py-10">
       <div className="container w-2xs sm:w-md md:w-2xl lg:w-4xl">
         <h1 className="text-foreground mb-10 text-center text-3xl font-bold tracking-tighter sm:text-6xl">
-          How to use it?
+          <span className="bg-gradient-to-b from-foreground to-foreground/50 bg-clip-text text-transparent">
+            How to use it?
+          </span>
         </h1>
         <div className="relative mx-auto max-w-4xl">
           <Separator
