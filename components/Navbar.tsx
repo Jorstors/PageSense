@@ -82,13 +82,15 @@ const Navbar = ({
           {/* left side: logo + menu */}
           <div className="flex items-center gap-6">
             <a href={logo.url} className="flex items-center gap-2">
-              <Image
-                src={logo.src}
-                width={32}
-                height={32}
-                alt={logo.alt}
-                suppressHydrationWarning
-              />
+              <div className="relative w-8 h-8">
+                <Image
+                  src={logo.src}
+                  fill
+                  priority
+                  alt={logo.alt}
+                  className="object-contain"
+                />
+              </div>
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
               </span>
@@ -117,13 +119,15 @@ const Navbar = ({
         <div className="flex lg:hidden items-center justify-between">
           {/* alt logo */}
           <a href={logo.url} className="flex items-center gap-2">
-            <Image
-              src={logo.src}
-              width={32}
-              height={32}
-              alt={logo.alt}
-              suppressHydrationWarning
-            />
+            <div className="relative w-8 h-8">
+              <Image
+                src={logo.src}
+                fill
+                priority
+                alt={logo.alt}
+                className="object-contain"
+              />
+            </div>
             <span className="text-lg font-semibold tracking-tighter">
               {logo.title}
             </span>
@@ -139,13 +143,15 @@ const Navbar = ({
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2">
                   <a href={logo.url} className="flex items-center gap-2">
-                    <Image
-                      src={logo.src}
-                      width={32}
-                      height={32}
-                      alt={logo.alt}
-                      suppressHydrationWarning
-                    />
+                    <div className="relative w-8 h-8">
+                      <Image
+                        src={logo.src}
+                        fill
+                        priority
+                        alt={logo.alt}
+                        className="object-contain"
+                      />
+                    </div>
                   </a>
                 </SheetTitle>
               </SheetHeader>

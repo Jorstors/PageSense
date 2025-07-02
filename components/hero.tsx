@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import { ShineBorder } from "./magicui/shine-border";
-import Image from "next/image";
+import { OptimizedImage } from "./ui/optimized-image";
 import { Separator } from "@/components/ui/separator";
 import { BlurFade } from "./magicui/blur-fade";
 import { delay } from "@/lib/delay";
@@ -75,13 +75,14 @@ const Hero = ({
               <div className="relative group">
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary to-background blur-lg opacity-80 transition-all duration-500 group-hover:opacity-100 group-hover:blur-xl"></div>
                 <div className="relative [mask-image:linear-gradient(to_bottom,white_15%,transparent_97%)]">
-                  <Image
+                  <OptimizedImage
                     src={imageSrc}
                     alt={imageAlt}
                     width={width}
                     height={height}
+                    aboveFold={true}
+                    quality={90}
                     className="relative max-h-[300px] md:max-h-[400px] w-auto rounded-2xl object-contain bg-background/10"
-                    priority
                   />
                 </div>
               </div>

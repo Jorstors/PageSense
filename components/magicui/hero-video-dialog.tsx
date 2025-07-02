@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Play, XIcon } from "lucide-react";
-import Image from "next/image";
-
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { cn } from "@/lib/utils";
 
 type AnimationStyle =
@@ -85,12 +84,14 @@ export default function HeroVideoDialog({
         onClick={() => setIsVideoOpen(true)}
       >
         <div className="w-full rounded-md border shadow-lg transition-all duration-200 ease-out group-hover:brightness-[0.8]">
-          <Image
+          <OptimizedImage
             src={thumbnailSrc}
-            alt={thumbnailAlt}
+            alt={thumbnailAlt || "Video thumbnail"}
             width={1920}
             height={1080}
             className="w-full rounded-md"
+            aboveFold={true}
+            quality={90}
           />
         </div>
         <div className="absolute inset-0 flex scale-[0.9] items-center justify-center rounded-2xl transition-all duration-200 ease-out group-hover:scale-100">

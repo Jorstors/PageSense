@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import HeroVideoDialog from "./magicui/hero-video-dialog";
-import Image from "next/image";
+import { OptimizedImage } from "./ui/optimized-image";
 import { delay } from "@/lib/delay";
 import { BlurFade } from "./magicui/blur-fade";
 
@@ -122,11 +122,12 @@ const About = ({
             <div className="flex flex-col gap-8">
               <div className="flex flex-col justify-between gap-8 rounded-xl bg-muted/50 backdrop-blur-sm p-8 lg:w-1/2 xl:w-auto border border-border/50">
                 <div className="mr-auto h-12">
-                  <Image
+                  <OptimizedImage
                     src={breakout.src}
                     alt={breakout.alt}
                     width={50}
                     height={50}
+                    aboveFold={false}
                   />
                 </div>
                 <div className="space-y-4">
@@ -142,12 +143,13 @@ const About = ({
                 </Button>
               </div>
               <div className="grow basis-0 rounded-xl md:w-auto h-15 md:h-13 lg:w-auto object-contain bg-muted/50 p-4">
-                <Image
+                <OptimizedImage
                   src={secondaryImage.src}
                   alt={secondaryImage.alt}
                   width={140}
                   height={20}
                   className="m-auto"
+                  aboveFold={false}
                 />
               </div>
             </div>
@@ -165,11 +167,12 @@ const About = ({
                   key={company.src + idx}
                 >
                   <div className="h-8 w-auto md:h-10">
-                    <Image
+                    <OptimizedImage
                       src={company.src}
                       alt={company.alt}
                       width={35}
                       height={35}
+                      aboveFold={false}
                     />
                   </div>
                 </div>

@@ -5,14 +5,10 @@ import Link from "next/link";
 export const generateMetadata = () => {
   const metadata = getMetadata({
     title: "Page Not Found - 404",
-    description: "Sorry, we couldn't find the page you're looking for. Please check the URL or navigate back to our homepage.",
+    description:
+      "Sorry, we couldn't find the page you're looking for. Please check the URL or navigate back to our homepage.",
     path: "/404",
-    keywords: [
-      "404",
-      "page not found",
-      "error page",
-      "missing page"
-    ]
+    keywords: ["404", "page not found", "error page", "missing page"],
   });
 
   return {
@@ -22,8 +18,8 @@ export const generateMetadata = () => {
       follow: true,
       googleBot: {
         index: false,
-        follow: true
-      }
+        follow: true,
+      },
     },
     other: {
       "script:ld+json": generateJSONLD({
@@ -40,19 +36,19 @@ export const generateMetadata = () => {
                 "@type": "ListItem",
                 position: 1,
                 name: "Home",
-                item: "https://pagesense.co"
+                item: "https://pagesense.co",
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "Page Not Found",
-                item: "https://pagesense.co/404"
-              }
-            ]
-          }
-        }
-      })
-    }
+                item: "https://pagesense.co/404",
+              },
+            ],
+          },
+        },
+      }),
+    },
   };
 };
 
@@ -64,18 +60,15 @@ export default function NotFound() {
           404 - Page Not Found
         </h1>
         <p className="text-muted-foreground text-xl">
-          Sorry, we couldn&apos;t find the page you&apos;re looking for. The page might have been moved, deleted, or never existed.
+          Sorry, we couldn&apos;t find the page you&apos;re looking for. The
+          page might have been moved, deleted, or never existed.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8">
           <Button asChild variant="default" size="lg">
-            <Link href="/">
-              Return Home
-            </Link>
+            <Link href="/">Return Home</Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href="/tool">
-              Try Our Audit Tool
-            </Link>
+            <Link href="/tool">Try Our Audit Tool</Link>
           </Button>
         </div>
       </div>
