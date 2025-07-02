@@ -16,7 +16,7 @@
 
 <div align="center">
 
-🌐 **Available at: [pagesense.co](https:/www.pagesense.co/tool)**
+🌐 **Available at: [pagesense.co](https://www.pagesense.co/)**
 </div>
 <br/>
 <div align="center">
