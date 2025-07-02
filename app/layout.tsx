@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Navbar } from "@/components/Navbar";
 import { Toaster } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -55,9 +55,13 @@ export const metadata: Metadata = {
   category: "Technology",
 };
 
-export const viewport = {
-  themeColor: "#ffe0c2",
-  viewport: "width=device-width, initial-scale=1.0",
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#000000",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
