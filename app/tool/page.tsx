@@ -2,6 +2,8 @@ import { AuditForm } from "@/components/audit-form/AuditForm";
 import { Timeline } from "@/components/Timeline";
 import { AuditTitle } from "@/components/audit-form/AuditTitle";
 import { getMetadata, generateJSONLD } from "@/lib/seo";
+import { BlurFade } from "@/components/magicui/blur-fade";
+import { delay } from "@/lib/delay";
 
 export const generateMetadata = () => {
   const metadata = getMetadata({
@@ -56,11 +58,15 @@ export const generateMetadata = () => {
 export default function Tool() {
   return (
     <div className="w-screen min-h-screen grid place-items-center mt-20">
-      <div className="flex flex-col items-center">
-        <AuditTitle />
-        <AuditForm />
-      </div>
-      <Timeline />
+      <BlurFade delay={delay}>
+        <div className="flex flex-col items-center">
+          <AuditTitle />
+          <AuditForm />
+        </div>
+      </BlurFade>
+      <BlurFade delay={delay * 5}>
+        <Timeline />
+      </BlurFade>
     </div>
   );
 }

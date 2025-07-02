@@ -1,5 +1,7 @@
 import { Feature } from "@/components/Feature";
 import { Hero } from "@/components/hero";
+import { BlurFade } from "@/components/magicui/blur-fade";
+import { delay } from "@/lib/delay";
 import { getMetadata, generateJSONLD } from "@/lib/seo";
 
 export const generateMetadata = () => {
@@ -56,7 +58,9 @@ export default function Main() {
   return (
     <div className="w-screen min-h-screen grid place-items-center">
       <Hero />
-      <Feature />
+      <BlurFade delay={delay * 15}>
+        <Feature />
+      </BlurFade>
     </div>
   );
 }
