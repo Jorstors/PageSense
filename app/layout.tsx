@@ -8,13 +8,16 @@ import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern"
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Pagesense",
-  description: "An AI powered audit tool for websites and applications",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_URL),
-  icons: {
-    icon: "/WOB-Big.ico",
-    apple: "/WOB-Big.ico",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || "https://pagesense.co"),
+  title: {
+    default: "PageSense - AI-Powered Website Optimization",
+    template: "%s | PageSense",
   },
+  description:
+    "Transform your website's performance with PageSense's AI-powered audit tool. Get instant insights and actionable recommendations for SEO, accessibility, and user experience.",
+  applicationName: "PageSense",
+  authors: [{ name: "PageSense Team" }],
+  generator: "Next.js",
   keywords: [
     "AI audit tool",
     "website audit",
@@ -23,45 +26,51 @@ export const metadata: Metadata = {
     "accessibility checker",
     "performance audit",
     "web optimization",
-    "Pagesense",
+    "PageSense",
     "automated audit",
     "usability audit",
     "web compliance",
     "site health check",
-    "digital audit",
-    "web app audit",
-    "AI website analysis",
+    "conversion rate optimization",
+    "CRO tool",
+    "website analytics",
   ],
-  authors: [{ name: "Pagesense Team", url: "https://pagesense.co" }],
-  creator: "Pagesense",
-  publisher: "Pagesense",
-  openGraph: {
-    title: "Pagesense – AI Powered Audit Tool",
-    description:
-      "Audit your website or application for SEO, accessibility, and performance with Pagesense's AI-powered platform.",
-    url: "https://pagesense.co",
-    siteName: "Pagesense",
-    images: [
-      {
-        url: "/WOB-Big.png",
-        width: 1200,
-        height: 630,
-        alt: "Pagesense AI Audit Tool",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
+  icons: {
+    icon: "/WOB-Big.ico",
+    apple: "/WOB-Big.ico",
   },
-  category: "Technology",
+  openGraph: {
+    type: "website",
+    siteName: "PageSense",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@pagesense",
+    creator: "@pagesense",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
 };
 
 export const viewport: Viewport = {
+  themeColor: [{ media: "(prefers-color-scheme: dark)", color: "black" }],
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  themeColor: "#000000",
-  colorScheme: "dark",
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({

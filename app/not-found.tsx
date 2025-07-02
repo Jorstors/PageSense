@@ -4,11 +4,42 @@ import Link from "next/link";
 
 export const generateMetadata = () => {
   const metadata = getMetadata({
-    title: "Page Not Found - 404",
+    title: "Page Not Found - 404 Error",
     description:
       "Sorry, we couldn't find the page you're looking for. Please check the URL or navigate back to our homepage.",
     path: "/404",
-    keywords: ["404", "page not found", "error page", "missing page"],
+    keywords: [
+      "404",
+      "page not found",
+      "error page",
+      "missing page",
+      "PageSense help",
+    ],
+  });
+
+  const errorSchema = generateJSONLD({
+    type: "WebPage",
+    data: {
+      "@type": "WebPage",
+      name: "404 - Page Not Found",
+      description: "Sorry, we couldn't find the page you're looking for",
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://pagesense.co",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Error 404",
+          },
+        ],
+      },
+    },
   });
 
   return {
@@ -21,33 +52,14 @@ export const generateMetadata = () => {
         follow: true,
       },
     },
+    openGraph: {
+      title: "Page Not Found - PageSense",
+      description: "Sorry, we couldn't find the page you're looking for",
+      type: "website",
+      url: "https://pagesense.co/404",
+    },
     other: {
-      "script:ld+json": generateJSONLD({
-        type: "WebPage",
-        data: {
-          "@type": "WebPage",
-          name: "404 - Page Not Found",
-          description: "Sorry, we couldn't find the page you're looking for",
-          url: "https://pagesense.co/404",
-          breadcrumb: {
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://pagesense.co",
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "Page Not Found",
-                item: "https://pagesense.co/404",
-              },
-            ],
-          },
-        },
-      }),
+      "script:ld+json": errorSchema,
     },
   };
 };

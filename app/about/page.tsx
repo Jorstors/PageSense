@@ -1,5 +1,9 @@
 import { About as AboutComp } from "@/components/about";
-import { getMetadata, generateJSONLD } from "@/lib/seo";
+import {
+  getMetadata,
+  generateJSONLD,
+  generateBreadcrumbSchema,
+} from "@/lib/seo";
 
 export const generateMetadata = () => {
   const metadata = getMetadata({
@@ -17,10 +21,26 @@ export const generateMetadata = () => {
     ],
   });
 
+  const jsonLd = generateJSONLD({
+    type: "WebPage",
+    name: "About PageSense",
+    description:
+      "Learn about PageSense's mission to revolutionize conversion rate optimization with AI technology.",
+  });
+
+  const breadcrumbSchema = generateBreadcrumbSchema(["about"]);
+
   return {
     ...metadata,
+    title: "About Us | PageSense - AI-Powered CRO",
+    openGraph: {
+      title: "About Us | PageSense - AI-Powered CRO",
+      description:
+        "Learn about PageSense's mission to revolutionize conversion rate optimization with AI technology.",
+      url: "/about",
+    },
     alternates: {
-      canonical: "https://pagesense.co/about",
+      canonical: "/about",
     },
     other: {
       "script:ld+json": generateJSONLD({
@@ -43,6 +63,7 @@ export const generateMetadata = () => {
           },
         },
       }),
+      schema: [jsonLd, breadcrumbSchema],
     },
   };
 };
