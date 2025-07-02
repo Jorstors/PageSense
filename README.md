@@ -3,7 +3,7 @@
 
 
 <div align="center">
-  <a href="https://www.pagesense.co/tool">
+  <a href="https://www.pagesense.co/">
     <img src="public/Title-WOB.png" alt="PageSense Logo" width="400">
   </a>
   <h2>A landing-page auditing tool.
