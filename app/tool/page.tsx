@@ -1,6 +1,7 @@
 import { AuditForm } from "@/components/audit-form/AuditForm";
 import { Timeline } from "@/components/Timeline";
 import { AuditTitle } from "@/components/audit-form/AuditTitle";
+import { FAQ } from "@/components/FAQ";
 import {
   getMetadata,
   generateJSONLD,
@@ -98,6 +99,9 @@ export default function Tool() {
       </BlurFade>
       <BlurFade delay={delay * 5}>
         <Timeline />
+      </BlurFade>
+      <BlurFade delay={delay * 10}>
+        <FAQ />
       </BlurFade>
     </div>
   );
