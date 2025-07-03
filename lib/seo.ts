@@ -9,11 +9,6 @@ interface SEOProps {
   alternateLanguages?: { [key: string]: string };
 }
 
-interface JSONLDProps {
-  type: "Organization" | "WebSite" | "WebPage" | "BreadcrumbList";
-  data: Record<string, unknown>;
-}
-
 // Base keywords that should be included on all pages
 const baseKeywords = [
   "AI audit tool",
@@ -39,15 +34,27 @@ function getBaseUrl(): string {
 }
 
 // Generate JSON-LD structured data
-export function generateJSONLD({ type, data }: JSONLDProps): string {
-  const baseStructure = {
+export function generateJSONLD({
+  type,
+  data,
+}: {
+  type: string;
+  data: Record<string, unknown>;
+}) {
+  const baseUrl = getBaseUrl();
+
+  const base = {
     "@context": "https://schema.org",
     "@type": type,
+    url: baseUrl,
     ...data,
   };
 
-  return JSON.stringify(baseStructure);
+  return base;
 }
+
+// Export alias for backward compatibility
+export const generateJsonLd = generateJSONLD;
 
 // Generate breadcrumb JSON-LD
 export function generateBreadcrumbJSONLD(
@@ -64,6 +71,39 @@ export function generateBreadcrumbJSONLD(
       })),
     },
   });
+}
+
+/**
+ * Generate breadcrumb schema for a given path
+ * @param path Current page path segments
+ * @returns JSON-LD breadcrumb schema
+ */
+export function generateBreadcrumbSchema(path: string[]) {
+  const items = path.map((segment, index) => {
+    const position = index + 1;
+    const name = segment.charAt(0).toUpperCase() + segment.slice(1);
+    const item = {
+      "@type": "ListItem",
+      position: position,
+      name: name,
+      item: `${getBaseUrl()}/${path.slice(0, position + 1).join("/")}`,
+    };
+    return item;
+  });
+
+  // Always include homepage as first item
+  items.unshift({
+    "@type": "ListItem",
+    position: 1,
+    name: "Home",
+    item: getBaseUrl(),
+  });
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items,
+  };
 }
 
 export function getMetadata({

@@ -1,15 +1,19 @@
 import { AuditForm } from "@/components/audit-form/AuditForm";
 import { Timeline } from "@/components/Timeline";
 import { AuditTitle } from "@/components/audit-form/AuditTitle";
-import { getMetadata, generateJSONLD } from "@/lib/seo";
+import {
+  getMetadata,
+  generateJSONLD,
+  generateBreadcrumbSchema,
+} from "@/lib/seo";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { delay } from "@/lib/delay";
 
 export const generateMetadata = () => {
   const metadata = getMetadata({
-    title: "Website Audit Tool",
+    title: "Free Website Audit Tool - Instant AI Analysis",
     description:
-      "Run a comprehensive website audit powered by AI. Get detailed reports on SEO, accessibility, performance, and user experience instantly.",
+      "Run a comprehensive website audit powered by AI. Get detailed reports on SEO, accessibility, performance, and user experience instantly. Start optimizing your site now.",
     path: "/tool",
     keywords: [
       "website audit tool",
@@ -19,38 +23,66 @@ export const generateMetadata = () => {
       "accessibility audit",
       "AI analysis tool",
       "website health check",
+      "free website audit",
+      "site optimization tool",
+      "conversion rate audit",
+      "user experience analysis",
+      "website speed test",
     ],
   });
+
+  const toolSchema = generateJSONLD({
+    type: "SoftwareApplication",
+    data: {
+      name: "PageSense Website Audit Tool",
+      description:
+        "AI-powered website audit tool for comprehensive site analysis",
+      applicationCategory: "WebApplication",
+      operatingSystem: "Any",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      featureList: [
+        "SEO Analysis",
+        "Performance Testing",
+        "Accessibility Audit",
+        "User Experience Analysis",
+        "Conversion Rate Optimization",
+      ],
+    },
+  });
+
+  const breadcrumbSchema = generateBreadcrumbSchema(["tool"]);
 
   return {
     ...metadata,
     alternates: {
       canonical: "https://pagesense.co/tool",
     },
-    other: {
-      "script:ld+json": generateJSONLD({
-        type: "WebPage",
-        data: {
-          "@type": "WebApplication",
-          name: "Pagesense Audit Tool",
-          url: "https://pagesense.co/tool",
-          applicationCategory: "WebApplication",
-          description: "AI-powered website audit and analysis tool",
-          offers: {
-            "@type": "Offer",
-            availability: "https://schema.org/OnlineOnly",
-            price: "0",
-            priceCurrency: "USD",
-          },
-          featureList: [
-            "SEO Analysis",
-            "Accessibility Testing",
-            "Performance Optimization",
-            "User Experience Audit",
-            "AI-Powered Recommendations",
-          ],
+    openGraph: {
+      title: "Free Website Audit Tool - PageSense",
+      description:
+        "Get instant AI-powered insights about your website's performance, SEO, and accessibility",
+      url: "https://pagesense.co/tool",
+      images: [
+        {
+          url: "https://pagesense.co/pagesensedemo.mp4",
+          width: 1200,
+          height: 630,
+          alt: "PageSense Website Audit Tool Demo",
         },
-      }),
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Free Website Audit Tool - PageSense",
+      description: "Get instant AI-powered insights for your website",
+      images: ["https://pagesense.co/pagesensestill.png"],
+    },
+    other: {
+      "script:ld+json": [toolSchema, breadcrumbSchema],
     },
   };
 };

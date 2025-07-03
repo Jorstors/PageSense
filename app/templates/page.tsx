@@ -1,61 +1,90 @@
 import Construction from "@/components/Construction";
-import { getMetadata, generateJSONLD } from "@/lib/seo";
+import {
+  generateJSONLD,
+  generateBreadcrumbSchema,
+  getMetadata,
+} from "@/lib/seo";
 
-export const generateMetadata = () => {
+export async function generateMetadata() {
   const metadata = getMetadata({
-    title: "Audit Templates",
+    title: "CRO Templates | PageSense - AI-Powered Analysis",
     description:
-      "Explore pre-built templates for website audits, accessibility checks, and performance analysis. Start with expert-crafted templates to analyze your site.",
+      "Browse our collection of conversion rate optimization templates for instant website analysis and improvement.",
     path: "/templates",
     keywords: [
+      "CRO templates",
+      "website optimization templates",
+      "conversion rate templates",
       "audit templates",
       "website analysis templates",
       "SEO templates",
-      "accessibility templates",
-      "performance audit templates",
+      "performance optimization templates",
+      "PageSense templates",
     ],
   });
+
+  const jsonLd = generateJSONLD({
+    type: "CollectionPage",
+    data: {
+      name: "CRO Templates | PageSense",
+      description:
+        "Browse our collection of conversion rate optimization templates for instant website analysis and improvement.",
+      mainEntityOfPage: {
+        "@type": "ItemList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "E-commerce Optimization Template",
+            description:
+              "Complete audit template for online stores and e-commerce websites",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Landing Page Template",
+            description:
+              "Conversion optimization template for landing pages and sales funnels",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: "Blog & Content Template",
+            description:
+              "SEO and readability template for content-heavy websites",
+          },
+        ],
+      },
+    },
+  });
+
+  const breadcrumbSchema = generateBreadcrumbSchema(["templates"]);
 
   return {
     ...metadata,
     alternates: {
       canonical: "https://pagesense.co/templates",
     },
-    other: {
-      "script:ld+json": generateJSONLD({
-        type: "WebPage",
-        data: {
-          name: "Audit Templates | Pagesense",
-          description: "Pre-built templates for comprehensive website audits",
-          url: "https://pagesense.co/templates",
-          mainEntity: {
-            "@type": "ItemList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "SEO Audit Template",
-                description: "Comprehensive SEO analysis template",
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "Accessibility Audit Template",
-                description: "WCAG compliance audit template",
-              },
-              {
-                "@type": "ListItem",
-                position: 3,
-                name: "Performance Audit Template",
-                description: "Website performance analysis template",
-              },
-            ],
-          },
+    openGraph: {
+      title: "CRO Templates | PageSense - AI-Powered Analysis",
+      description:
+        "Browse our collection of conversion rate optimization templates for instant website analysis and improvement.",
+      url: "https://pagesense.co/templates",
+      type: "website",
+      images: [
+        {
+          url: "https://pagesense.co/Hero.png",
+          width: 1200,
+          height: 630,
+          alt: "PageSense CRO Templates",
         },
-      }),
+      ],
+    },
+    other: {
+      "script:ld+json": [jsonLd, breadcrumbSchema],
     },
   };
-};
+}
 
 export default function Templates() {
   return (

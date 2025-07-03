@@ -2,13 +2,17 @@ import { Feature } from "@/components/Feature";
 import { Hero } from "@/components/hero";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { delay } from "@/lib/delay";
-import { getMetadata, generateJSONLD } from "@/lib/seo";
+import {
+  getMetadata,
+  generateJSONLD,
+  generateBreadcrumbSchema,
+} from "@/lib/seo";
 
 export const generateMetadata = () => {
   const metadata = getMetadata({
-    title: "AI-Powered Website Audit Tool",
+    title: "AI-Powered Website Audit Tool - Improve Your Site in Minutes",
     description:
-      "Automatically analyze and improve your website's SEO, accessibility, and performance with Pagesense's AI-powered audit tool.",
+      "Transform your website's performance with PageSense's AI-powered audit tool. Get instant insights and actionable recommendations for SEO, accessibility, and conversion rate optimization.",
     path: "/",
     keywords: [
       "website analysis",
@@ -17,38 +21,74 @@ export const generateMetadata = () => {
       "website performance",
       "accessibility testing",
       "AI website audit",
+      "conversion rate optimization",
+      "website improvement",
+      "user experience analysis",
+      "web analytics",
+      "PageSense",
+      "site audit tool",
     ],
   });
 
-  // SEO: Add JSON-LD structured data for homepage
+  const websiteSchema = generateJSONLD({
+    type: "WebSite",
+    data: {
+      name: "PageSense",
+      description: "AI-Powered Website Optimization Platform",
+      url: "https://pagesense.co",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: "https://pagesense.co/search?q={search_term_string}",
+        },
+        "query-input": "required name=search_term_string",
+      },
+    },
+  });
+
+  const organizationSchema = generateJSONLD({
+    type: "Organization",
+    data: {
+      name: "PageSense",
+      url: "https://pagesense.co",
+      logo: "https://pagesense.co/WOB-Big.png",
+      sameAs: ["https://twitter.com/pagesense", "https://github.com/pagesense"],
+    },
+  });
+
   return {
     ...metadata,
     alternates: {
       canonical: "https://pagesense.co/",
     },
+    openGraph: {
+      type: "website",
+      title: "PageSense - AI-Powered Website Optimization Tool",
+      description:
+        "Transform your website's performance with instant AI-powered insights and recommendations.",
+      url: "https://pagesense.co",
+      images: [
+        {
+          url: "https://pagesense.co/Hero.png",
+          width: 1200,
+          height: 630,
+          alt: "PageSense - AI-Powered Website Optimization",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "PageSense - AI-Powered Website Optimization",
+      description:
+        "Transform your website's performance with instant AI-powered insights",
+      images: ["https://pagesense.co/Hero.png"],
+    },
     other: {
       "script:ld+json": [
-        generateJSONLD({
-          type: "Organization",
-          data: {
-            name: "Pagesense",
-            url: "https://pagesense.co",
-            logo: "https://pagesense.co/WOB-Big.png",
-            description: "AI-powered website audit and optimization tool",
-          },
-        }),
-        generateJSONLD({
-          type: "WebSite",
-          data: {
-            name: "Pagesense",
-            url: "https://pagesense.co",
-            potentialAction: {
-              "@type": "SearchAction",
-              target: "https://pagesense.co/search?q={search_term_string}",
-              "query-input": "required name=search_term_string",
-            },
-          },
-        }),
+        websiteSchema,
+        organizationSchema,
+        generateBreadcrumbSchema([]), // Empty array for homepage, representing root of site
       ],
     },
   };
