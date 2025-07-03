@@ -85,7 +85,11 @@ export const generateMetadata = () => {
       images: ["https://pagesense.co/Hero.png"],
     },
     other: {
-      "script:ld+json": [websiteSchema, organizationSchema],
+      "script:ld+json": [
+        websiteSchema,
+        organizationSchema,
+        generateBreadcrumbSchema([]), // Empty array for homepage, representing root of site
+      ],
     },
   };
 };
