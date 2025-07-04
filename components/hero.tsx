@@ -77,7 +77,7 @@ const Hero = ({
         </BlurFade>
         <BlurFade delay={delay * 5}>
           <div className="relative mx-auto w-full max-w-5xl flex justify-center items-center">
-            <div className="relative w-fit transform skew-x-[-22deg] transition-transform duration-300 ease-in-out hover:scale-105">
+            <div className="relative w-fit transform-[perspective(800px)_rotateX(12deg)_scaleY(1.08)] transition-transform duration-300 ease-in-out hover:scale-105">
               <div className="relative group">
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary to-background blur-lg opacity-80 transition-all duration-500 group-hover:opacity-100 group-hover:blur-xl"></div>
                 <div className="relative [mask-image:linear-gradient(to_bottom,white_15%,transparent_97%)]">
@@ -88,7 +88,7 @@ const Hero = ({
                     height={height}
                     aboveFold={true}
                     quality={90}
-                    className="relative max-h-[300px] md:max-h-[400px] w-auto rounded-2xl object-contain bg-background/10"
+                    className="relative max-h-[400px] md:max-h-[550px] w-auto rounded-t-2xl object-contain bg-background/10 antialiased"
                   />
                 </div>
               </div>
