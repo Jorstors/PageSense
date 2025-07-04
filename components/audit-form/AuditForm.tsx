@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { AnimatedSubscribeButton } from "../magicui/animated-subscribe-button";
-import { ChevronRightIcon, CheckIcon } from "lucide-react";
+import { ChevronRightIcon, CheckIcon, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -107,7 +107,7 @@ export function AuditForm({ className }: { className?: string }) {
             </div>
           </div>
         ),
-        error: (err) => <>{err.message}</>,
+        error: (err) => <span>{err.message}</span>,
       }
     );
   };
@@ -191,11 +191,20 @@ export function AuditForm({ className }: { className?: string }) {
               type="submit"
               subscribeStatus={sent}
               disabled={sent || isSubmitting}
-              className={"w-36 active:scale-95"}
+              className={`w-36 active:scale-95 ${isSubmitting && " bg-primary/85" }`}
             >
               <span className="group inline-flex items-center">
-                Email
-                <ChevronRightIcon className="ml-1 size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                {isSubmitting ? (
+                    <span className="flex items-center gap-2 font-medium">
+                    <Loader2Icon className="size-4 animate-spin" />
+                    <span className="font-medium tracking-wide">Sending...</span>
+                    </span>
+                ) : (
+                    <span className="flex items-center gap-2 font-medium">
+                    <span>Email</span>
+                    <ChevronRightIcon className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
+                )}
               </span>
               <span className="group inline-flex items-center">
                 <CheckIcon className="mr-2 size-4" />
