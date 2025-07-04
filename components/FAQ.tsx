@@ -11,42 +11,52 @@ const faqData = [
   {
     question: "How does the AI website audit work?",
     answer:
-      "Our AI analyzes your website across multiple dimensions including SEO, accessibility, performance, and user experience. It crawls your site, examines the code structure, content quality, and technical implementation to provide comprehensive insights and actionable recommendations.",
+      "Our AI analyzes your website using advanced algorithms that examine SEO, accessibility, performance, and user experience. It crawls your site, evaluates code structure, content quality, and technical implementation, then identifies specific conversion blockers and provides actionable recommendations based on proven optimization techniques.",
   },
   {
     question: "Is the website audit really free?",
     answer:
-      "Yes, our basic website audit is completely free with no hidden costs. You can analyze any website and receive detailed reports without creating an account or providing payment information. Premium features with advanced analytics will soon be available for users who need deeper insights.",
+      "Yes, our basic website audit is completely free with no hidden costs or credit card required. You can analyze any website and receive detailed reports without creating an account. We believe in providing value upfront - our free audits include conversion blockers, SEO analysis, and actionable recommendations that many tools charge for.",
   },
   {
     question: "How long does it take to complete an audit?",
     answer:
-      "Most website audits are completed within 10-15 seconds. The exact time depends on your website's size and complexity. Simple sites with fewer pages typically finish faster, while larger sites with extensive content may take a bit longer to analyze thoroughly.",
+      "Most website audits are completed and delivered within 10-15 seconds. Our AI works incredibly fast to analyze your site's SEO, performance, accessibility, and user experience. You'll receive both your PDF download and email report almost instantly.",
   },
   {
-    question: "What aspects of my website are analyzed?",
+    question: "What formats do I receive my audit results in?",
     answer:
-      "Our audit covers SEO optimization, page speed performance, mobile responsiveness, accessibility compliance, security issues, content quality, technical SEO elements, user experience factors, and conversion rate optimization opportunities.",
+      "You'll receive your audit results in two convenient formats: a detailed PDF report that's automatically downloaded to your device, and an HTML email version sent directly to your inbox. Both contain the same comprehensive analysis, conversion blockers, and actionable recommendations.",
+  },
+  {
+    question: "What specific issues does the audit identify?",
+    answer:
+      "Our audit identifies conversion blockers like weak headlines, poor call-to-actions, layout issues, slow loading times, mobile responsiveness problems, SEO gaps, accessibility violations, security concerns, and user experience friction points that prevent visitors from converting.",
   },
   {
     question: "Can I audit any website, including competitors?",
     answer:
-      "Yes, you can audit any publicly accessible website, including competitor sites. This is useful for competitive analysis and benchmarking your performance against industry standards. However, please respect privacy and use this information ethically.",
+      "Yes, you can audit any publicly accessible website, including competitor sites. This is perfect for competitive analysis and benchmarking your performance against industry leaders. Use these insights ethically to improve your own site's conversion rates.",
   },
   {
-    question: "How accurate are the AI recommendations?",
+    question: "Are there any limits on how many audits I can run?",
     answer:
-      "Our AI recommendations are based on current web standards, best practices, and proven optimization techniques. While highly accurate, we recommend reviewing suggestions in context of your specific business goals and having technical changes implemented by qualified developers.",
+      "Yes, to ensure fair usage and optimal performance for all users, we have a rate limit of 3 free audits per email address every 24 hours. This helps us manage server resources while providing quality service to everyone. Need more? Contact us about premium plans.",
   },
   {
-    question: "Do I need technical knowledge to understand the results?",
+    question: "Do you store my website data or audit results?",
     answer:
-      "No, our reports are designed to be accessible to both technical and non-technical users. We provide clear explanations, prioritized recommendations, and actionable next steps. Technical details are available for developers who need implementation guidance.",
+      "We respect your privacy. We only temporarily process your website data to generate the audit report, then delete it from our servers. Your audit results are sent directly to you via email and PDF download - we don't store or share your reports with anyone.",
   },
   {
-    question: "How often should I audit my website?",
+    question: "How accurate and actionable are the AI recommendations?",
     answer:
-      "We recommend auditing your website monthly or after major updates. Regular audits help identify new issues, track improvements, and ensure your site maintains optimal performance as search engine algorithms and web standards evolve.",
+      "Our AI recommendations are based on current web standards, conversion rate optimization best practices, and proven techniques used by high-converting websites. Each suggestion includes specific implementation guidance, though we recommend having technical changes reviewed by qualified developers.",
+  },
+  {
+    question: "What makes Pagesense different from other audit tools?",
+    answer:
+      "Pagesense focuses specifically on conversion rate optimization, not just technical SEO. Our AI identifies actual conversion blockers that prevent sales and leads, provides specific improvement suggestions, and delivers results in seconds - not hours. Plus, it's completely free with no account required.",
   },
 ];
 
