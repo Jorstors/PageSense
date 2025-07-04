@@ -32,7 +32,7 @@ const timelineData: TimelineEntry[] = [
 
 const Timeline = () => {
   return (
-    <section className="bg-background py-10">
+    <section className="bg-transparent py-10">
       <div className="container px-2 md:px-14 w-full">
         <h1 className="text-foreground mb-10 text-center text-3xl font-bold tracking-tighter sm:text-6xl">
           <span className="bg-gradient-to-b from-foreground to-foreground/50 bg-clip-text text-transparent">
