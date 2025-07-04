@@ -448,7 +448,7 @@ async function checkRateLimit(email: string) {
 
 export async function POST(request: Request) {
   // // Return early for testing
-  return new Response(null, { status: 200 });
+  // return new Response(null, { status: 200 });
 
   try {
     const recieved = await request.json();
