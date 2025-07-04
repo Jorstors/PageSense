@@ -127,7 +127,7 @@ const About = ({
                     alt={breakout.alt}
                     width={50}
                     height={50}
-                    aboveFold={false}
+                    aboveFold
                   />
                 </div>
                 <div className="space-y-4">
@@ -142,14 +142,14 @@ const About = ({
                   <a href={breakout.buttonUrl}>{breakout.buttonText}</a>
                 </Button>
               </div>
-              <div className="grow basis-0 rounded-xl md:w-auto h-15 md:h-13 lg:w-auto object-contain bg-muted/50 p-4">
+              <div className="grow basis-0 rounded-xl md:w-auto h-15 md:h-13 lg:w-auto object-contain bg-muted/50 p-4 grid place-items-center">
                 <OptimizedImage
                   src={secondaryImage.src}
                   alt={secondaryImage.alt}
                   width={140}
                   height={20}
                   className="m-auto"
-                  aboveFold={false}
+                  aboveFold
                 />
               </div>
             </div>
