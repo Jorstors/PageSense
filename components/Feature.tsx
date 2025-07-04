@@ -26,7 +26,7 @@ const Feature = ({
   },
 }: FeatureProps) => {
   return (
-    <section className="pb-50 pt-10 overflow-hidden">
+    <section className="pb-50 overflow-hidden">
       <div className="container px-2 md:px-14">
         <div className="grid items-center justify-center gap-8 md:gap-16">
           <div className="flex flex-col items-start text-start">
