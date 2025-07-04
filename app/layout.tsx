@@ -98,11 +98,11 @@ export default function RootLayout({
                 )}
               />
               {children}
-              <Toaster />
               <Footer />
             </ScrollArea>
           </div>
         </div>
+        <Toaster />
       </body>
     </html>
   );
