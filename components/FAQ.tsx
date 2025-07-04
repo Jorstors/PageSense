@@ -62,7 +62,7 @@ const faqData = [
 
 export function FAQ() {
   return (
-    <section className="py-20" aria-labelledby="faq-heading">
+    <section className="py-10" aria-labelledby="faq-heading">
       <div className="container px-2 md:px-14">
         <div className="text-center mb-16">
         <h1 id="faq-heading" className="text-foreground mb-4 text-center text-3xl font-bold tracking-tighter sm:text-6xl">

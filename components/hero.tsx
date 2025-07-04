@@ -1,5 +1,6 @@
 import {
   BrainCircuitIcon,
+  ChevronDownIcon,
   FileSearchIcon,
   ShieldXIcon,
   Zap,
@@ -88,7 +89,7 @@ const Hero = ({
                     height={height}
                     aboveFold={true}
                     quality={90}
-                    className="relative max-h-[400px] md:max-h-[550px] w-auto rounded-t-2xl object-contain bg-background/10 antialiased"
+                    className="relative max-h-[350px] md:max-h-[450px] w-auto rounded-t-2xl object-contain bg-background/10 antialiased"
                   />
                 </div>
               </div>
@@ -107,7 +108,7 @@ const Hero = ({
                   />
                 )}
                 <div
-                  className="flex grow basis-0 flex-col rounded-md bg-background p-4"
+                  className="flex grow basis-0 flex-col rounded-md bg-transparent p-4"
                   role="article"
                 >
                   <div className="relative mb-6 flex size-10 items-center justify-center rounded-full bg-background drop-shadow-lg">
@@ -131,6 +132,9 @@ const Hero = ({
               </React.Fragment>
             ))}
           </div>
+        </BlurFade>
+        <BlurFade delay={delay * 15}>
+          <ChevronDownIcon className="size-10 mx-auto mt-15" />
         </BlurFade>
       </div>
     </section>
