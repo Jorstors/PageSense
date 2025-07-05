@@ -58,7 +58,7 @@ const whiteLogoSrc = `${process.env.NEXT_PUBLIC_URL}/WOB-Big.png`;
 
 const Navbar = ({
   logo = {
-    url: "https://www.pagesense.co",
+    url: "/",
     src: whiteLogoSrc,
     alt: "logo",
     title: "Pagesense.co",
