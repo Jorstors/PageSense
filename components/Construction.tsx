@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const Construction: React.FC = () => {
   return (
-    <div className="text-center container px-2 md:px-14 text-[11px] md:text-base grid place-items-center mt-[-20%]">
+    <div className="text-center px-2 md:px-14 text-[11px] md:text-base absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <div className="inline-flex gap-5 w-fit">
         <BlurFade delay={2} duration={1}>
           <ConstructionIcon size={60} />
