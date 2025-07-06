@@ -1,7 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -139,7 +139,7 @@ export function AuditForm({ className }: { className?: string }) {
                   <FormItem>
                     <FormLabel>What to audit</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter the URL" {...field} />
+                      <Input placeholder="Enter the URL" {...field} required />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,7 +152,7 @@ export function AuditForm({ className }: { className?: string }) {
                   <FormItem>
                     <FormLabel>Where to send it</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your email" {...field} />
+                      <Input placeholder="Enter your email" {...field} required />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
