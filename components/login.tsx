@@ -3,47 +3,73 @@
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { OptimizedImage } from "@/components/ui/optimized-image";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import Link from "next/link";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 interface LoginProps {
   heading?: string;
-  logo: {
-    url: string;
-    src: string;
-    alt: string;
-    title?: string;
-  };
   buttonText?: string;
   googleText?: string;
   signupText?: string;
   signupUrl?: string;
 }
 
+const FormSchema = z.object({
+  email: z.string().email("Invalid email address").max(255, "Email too long"),
+  password: z.string().min(1, "Password is required"),
+});
+
 const Login = ({
   heading = "Welcome back",
-  logo = {
-    url: "/",
-    src: "/WOB-Big.png",
-    alt: "PageSense logo",
-    title: "PageSense",
-  },
   buttonText = "Sign in to your account",
   googleText = "Continue with Google",
   signupText = "Don't have an account?",
   signupUrl = "/auth/signup",
 }: LoginProps) => {
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    }
+  });
+
+  const onFormSubmit = async (data: z.infer<typeof FormSchema>) => {
+    if (isSubmitting) return; // <-- block immediately
+    setIsSubmitting(true);
+
+    console.log(data);
+
+    // Send data to API endpoint
+
+    // Reenable Form Submission
+    setIsSubmitting(false);
+  };
+
   return (
-    <section className="min-h-screen bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
+    <section className="h-screen bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
       <BlurFade delay={0.1}>
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-lg">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-2">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent pb-2">
               {heading}
             </h1>
             <p className="text-muted-foreground">
@@ -59,51 +85,83 @@ const Login = ({
                 "oklch(0.92 0.0651 74.3695)",
               ]}
             />
-            <CardHeader className="text-center pb-4">
-              <div className="w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
-            </CardHeader>
             <CardContent className="space-y-6">
-              <form className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">
-                    Email address
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="password" className="text-sm font-medium">
-                      Password
-                    </Label>
-                    <Link
-                      href="/auth/forgot-password"
-                      className="text-sm text-primary hover:text-primary/80 transition-colors"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Enter your password"
-                    className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                    required
-                  />
-                </div>
+              <Form {...form}>
+              <form
+              className="space-y-4"
+              onSubmit={(e) => {
+              // If already submitting, prevent further submissions
+                if (isSubmitting) {
+                  e.preventDefault();
+                  return;
+                }
+                // Otherwise, continue
+                form.handleSubmit(onFormSubmit)(e);
+              }}>
+
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email address</FormLabel>
+                      <FormControl>
+                        <Input
+                        {...field}
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                      />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Password</FormLabel>
+                        <Link
+                          href="/auth/forgot-password"
+                          className="text-sm text-primary hover:text-primary/80 transition-colors"
+                        >
+                          Forgot password?
+                        </Link>
+                      </div>
+                      <FormControl>
+                        <Input
+                        {...field}
+                        id="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                      />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
 
                 <div className="space-y-3 pt-4">
                   <Button
                     type="submit"
+                    disabled={isSubmitting}
                     className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
-                    {buttonText}
+                    {isSubmitting ? "Signing in..." : buttonText}
                   </Button>
+
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-border/50" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                    </div>
+                  </div>
 
                   <Button
                     variant="outline"
@@ -115,6 +173,7 @@ const Login = ({
                   </Button>
                 </div>
               </form>
+              </Form>
             </CardContent>
           </Card>
 

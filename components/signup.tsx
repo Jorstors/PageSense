@@ -4,15 +4,15 @@ import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { OptimizedImage } from "@/components/ui/optimized-image";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
-import { z } from "zod";
 import { useState } from "react";
-
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -21,19 +21,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 
 interface SignupProps {
   heading?: string;
-  logo: {
-    url: string;
-    src: string;
-    alt: string;
-    title?: string;
-  };
   signupText?: string;
   googleText?: string;
   loginText?: string;
@@ -57,19 +48,12 @@ const FormSchema = z.object({
 
 const Signup = ({
   heading = "Create your account",
-  logo = {
-    url: "/",
-    src: "/WOB-Big.png",
-    alt: "PageSense logo",
-    title: "PageSense",
-  },
   googleText = "Continue with Google",
   signupText = "Create account",
   loginText = "Already have an account?",
   loginUrl = "/auth/login",
 }: SignupProps) => {
 
-  const [sent, setSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -84,7 +68,12 @@ const Signup = ({
   });
 
   const onFormSubmit = async (data: z.infer<typeof FormSchema>) => {
+    if (isSubmitting) return; // <-- block immediately
+    setIsSubmitting(true);
 
+    console.log(data);
+
+    // Send data to API endpoint
 
     // Reenable Form Submission
     setIsSubmitting(false);
@@ -92,12 +81,12 @@ const Signup = ({
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
+    <section className="h-screen bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
       <BlurFade delay={0.1}>
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-lg">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-2">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent pb-2">
               {heading}
             </h1>
             <p className="text-muted-foreground">
@@ -139,16 +128,16 @@ const Signup = ({
                       <FormLabel>Full name</FormLabel>
                       <FormControl>
                         <Input
+                        {...field}
                         id="fullName"
                         type="text"
                         placeholder="Enter your full name"
                         className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                        required
                       />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
-                  )} />
+        )} />
               <FormField
                 control={form.control}
                 name="email"
@@ -157,11 +146,11 @@ const Signup = ({
                     <FormLabel>Email address</FormLabel>
                     <FormControl>
                       <Input
+                      {...field}
                       id="email"
                       type="email"
                       placeholder="Enter your email"
                       className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                      required
                       />
                     </FormControl>
                     <FormMessage />
@@ -175,13 +164,14 @@ const Signup = ({
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
+                      {...field}
                       id="password"
                       type="password"
                       placeholder="Create a password"
                       className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                      required
                     />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
                 />
@@ -193,11 +183,11 @@ const Signup = ({
                     <FormLabel>Confirm password</FormLabel>
                     <FormControl>
                       <Input
+                      {...field}
                       id="confirmPassword"
                       type="password"
                       placeholder="Confirm your password"
                       className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                      required
                     />
                     </FormControl>
                     <FormMessage />
@@ -237,10 +227,20 @@ const Signup = ({
                 <div className="space-y-3 pt-4">
                   <Button
                     type="submit"
+                    disabled={isSubmitting}
                     className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
-                    {signupText}
+                    {isSubmitting ? "Creating account..." : signupText}
                   </Button>
+
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-border/50" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                    </div>
+                  </div>
 
                   <Button
                     variant="outline"
