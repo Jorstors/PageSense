@@ -74,14 +74,17 @@ const Signup = ({
     console.log(data);
 
     // Send data to API endpoint
+    setTimeout(() => {
+      console.log("Form submitted");
+      // Reenable Form Submission
+      setIsSubmitting(false);
+    }, 1000)
 
-    // Reenable Form Submission
-    setIsSubmitting(false);
-    setSent(true);
+
   };
 
   return (
-    <section className="h-screen bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
+    <section className="h-[calc(100vh_-_4rem)] bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
       <BlurFade delay={0.1}>
         <div className="w-full max-w-lg">
           {/* Header */}
@@ -114,9 +117,6 @@ const Signup = ({
                 }
                 // Otherwise, continue
                 form.handleSubmit(onFormSubmit)(e);
-              }}
-              onChange={() => {
-                setSent(false);
               }}>
 
 
