@@ -1,7 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -113,107 +113,109 @@ export function AuditForm({ className }: { className?: string }) {
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={(e) => {
-          // If already submitting, prevent further submissions
-          if (isSubmitting) {
-            e.preventDefault();
-            return;
-          }
-          // Otherwise, continue
-          form.handleSubmit(onFormSubmit)(e);
-        }}
-        onChange={() => {
-          setSent(false);
-        }}
-        className={`container px-2 md:px-14 h-fit mx-auto py-10 grid place-items-center ${className}`}
-      >
-        <Card className="space-y-5 relative overflow-hidden w-full">
-          <ShineBorder
-            shineColor={[
-              "oklch(0.4341 0.0392 41.9938)",
-              "oklch(0.92 0.0651 74.3695)",
-            ]}
-          />
-          <CardContent className="space-y-8">
-            <FormField
-              control={form.control}
-              name="url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>What to audit</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter the URL" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Where to send it</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="subscribe"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center space-x-3">
+    <Card className={`container px-2 md:px-14 h-fit mx-auto py-10 grid place-items-center relative ${className}`}>
+
+      <Form {...form}>
+        <form
+          className="w-full h-full"
+          onSubmit={(e) => {
+            // If already submitting, prevent further submissions
+            if (isSubmitting) {
+              e.preventDefault();
+              return;
+            }
+            // Otherwise, continue
+            form.handleSubmit(onFormSubmit)(e);
+          }}
+          onChange={() => {
+            setSent(false);
+          }}
+        >
+            <CardContent className="space-y-8">
+              <FormField
+                control={form.control}
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>What to audit</FormLabel>
                     <FormControl>
-                      <Checkbox
-                        {...field}
-                        type="button"
-                        id="subscribe"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Input placeholder="Enter the URL" {...field} required />
                     </FormControl>
-                    <Label htmlFor="subscribe">
-                      Yes, I’d like to receive 3 follow-up tips
-                    </Label>
-                  </div>
-                </FormItem>
-              )}
-            />
-          </CardContent>
-          <CardFooter>
-            <AnimatedSubscribeButton
-              type="submit"
-              subscribeStatus={sent}
-              disabled={sent || isSubmitting}
-              className={`w-36 active:scale-95 ${isSubmitting && " bg-primary/85" }`}
-            >
-              <span className="group inline-flex items-center">
-                {isSubmitting ? (
-                    <span className="flex items-center gap-2 font-medium">
-                    <Loader2Icon className="size-4 animate-spin" />
-                    <span className="font-medium tracking-wide">Sending...</span>
-                    </span>
-                ) : (
-                    <span className="flex items-center gap-2 font-medium">
-                    <span>Email</span>
-                    <ChevronRightIcon className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </span>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </span>
-              <span className="group inline-flex items-center">
-                <CheckIcon className="mr-2 size-4" />
-                Sent!
-              </span>
-            </AnimatedSubscribeButton>
-          </CardFooter>
-        </Card>
-      </form>
-    </Form>
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Where to send it</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your email" {...field} required />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="subscribe"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-3">
+                      <FormControl>
+                        <Checkbox
+                          {...field}
+                          type="button"
+                          id="subscribe"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <Label htmlFor="subscribe">
+                        Yes, I’d like to receive 3 follow-up tips
+                      </Label>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <AnimatedSubscribeButton
+                type="submit"
+                subscribeStatus={sent}
+                disabled={sent || isSubmitting}
+                className={`w-36 active:scale-95 ${isSubmitting && " bg-primary/85" }`}
+              >
+                <span className="group inline-flex items-center">
+                  {isSubmitting ? (
+                      <span className="flex items-center gap-2 font-medium">
+                      <Loader2Icon className="size-4 animate-spin" />
+                      <span className="font-medium tracking-wide">Sending...</span>
+                      </span>
+                  ) : (
+                      <span className="flex items-center gap-2 font-medium">
+                      <span>Email</span>
+                      <ChevronRightIcon className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                      </span>
+                  )}
+                </span>
+                <span className="group inline-flex items-center">
+                  <CheckIcon className="mr-2 size-4" />
+                  Sent!
+                </span>
+              </AnimatedSubscribeButton>
+
+
+            </CardContent>
+        </form>
+      </Form>
+
+      <ShineBorder
+              shineColor={[
+                "oklch(0.4341 0.0392 41.9938)",
+                "oklch(0.92 0.0651 74.3695)",
+              ]}
+            />
+    </Card>
   );
 }

@@ -101,7 +101,7 @@ const Signup = ({
               {heading}
             </h1>
             <p className="text-muted-foreground">
-              Start auditing your website's SEO performance
+              Start auditing your website&apos;s SEO performance
             </p>
           </div>
 
