@@ -22,6 +22,32 @@ export const generateMetadata = () => {
     ],
   });
 
+  const webPageSchema = generateJSONLD({
+    type: "WebPage",
+    data: {
+      name: "Authentication - PageSense",
+      description: "Access your PageSense account or create a new one to save your website audits and track your optimization progress.",
+      url: "https://pagesense.co/auth",
+      isPartOf: {
+        "@type": "WebSite",
+        name: "PageSense",
+        url: "https://pagesense.co",
+      },
+      mainEntity: {
+        "@type": "WebApplication",
+        name: "PageSense Authentication",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web Browser",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          description: "Free access to website optimization tools",
+        },
+      },
+    },
+  });
+
   const breadcrumbSchema = generateBreadcrumbSchema(["auth"]);
 
   return {
@@ -30,17 +56,28 @@ export const generateMetadata = () => {
       canonical: "https://pagesense.co/auth",
     },
     openGraph: {
+      type: "website",
       title: "Authentication - PageSense",
       description: "Access or create your PageSense account",
       url: "https://pagesense.co/auth",
+      images: [
+        {
+          url: "https://pagesense.co/WOB-Big.png",
+          width: 512,
+          height: 512,
+          alt: "PageSense Logo",
+        },
+      ],
+      siteName: "PageSense",
     },
     twitter: {
       card: "summary",
       title: "Authentication - PageSense",
       description: "Access or create your PageSense account",
+      images: ["https://pagesense.co/WOB-Big.png"],
     },
     other: {
-      "script:ld+json": [breadcrumbSchema],
+      "script:ld+json": [webPageSchema, breadcrumbSchema],
     },
   };
 };
