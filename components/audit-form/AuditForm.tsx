@@ -139,7 +139,7 @@ export function AuditForm({ className }: { className?: string }) {
                   <FormItem>
                     <FormLabel>What to audit</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter the URL" {...field} required />
+                      <Input placeholder="Enter the URL" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,7 +152,7 @@ export function AuditForm({ className }: { className?: string }) {
                   <FormItem>
                     <FormLabel>Where to send it</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your email" {...field} required />
+                      <Input placeholder="Enter your email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
