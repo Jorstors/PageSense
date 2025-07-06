@@ -4,12 +4,27 @@ import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
+import { z } from "zod";
+import { useState } from "react";
+
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 
 interface SignupProps {
   heading?: string;
@@ -25,6 +40,21 @@ interface SignupProps {
   loginUrl?: string;
 }
 
+const FormSchema = z.object({
+  fullName: z.string().min(1, "Full name is required"),
+  email: z.string().email("Invalid email address").max(255, "Email too long"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string(),
+  terms: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions",
+  })
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+
+
 const Signup = ({
   heading = "Create your account",
   logo = {
@@ -38,27 +68,35 @@ const Signup = ({
   loginText = "Already have an account?",
   loginUrl = "/auth/login",
 }: SignupProps) => {
+
+  const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      terms: false,
+    }
+  });
+
+  const onFormSubmit = async (data: z.infer<typeof FormSchema>) => {
+
+
+    // Reenable Form Submission
+    setIsSubmitting(false);
+    setSent(true);
+  };
+
   return (
     <section className="min-h-screen bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
       <BlurFade delay={0.1}>
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
-            <Link href={logo.url} className="inline-block mb-6">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/60 rounded-full blur-lg opacity-20 animate-pulse"></div>
-                <div className="relative w-16 h-16 mx-auto bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center shadow-lg">
-                  <OptimizedImage
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={32}
-                    height={32}
-                    className="invert"
-                    aboveFold
-                  />
-                </div>
-              </div>
-            </Link>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-2">
               {heading}
             </h1>
@@ -75,73 +113,126 @@ const Signup = ({
                 "oklch(0.92 0.0651 74.3695)",
               ]}
             />
-            <CardHeader className="text-center pb-4">
-              <div className="w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
-            </CardHeader>
             <CardContent className="space-y-6">
-              <form className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="fullName" className="text-sm font-medium">
-                    Full name
-                  </Label>
-                  <Input
-                    id="fullName"
-                    type="text"
-                    placeholder="Enter your full name"
-                    className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">
-                    Email address
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium">
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Create a password"
-                    className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-sm font-medium">
-                    Confirm password
-                  </Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="Confirm your password"
-                    className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                    required
-                  />
-                </div>
+              <Form {...form}>
+              <form
+              className="space-y-4"
+              onSubmit={(e) => {
+              // If already submitting, prevent further submissions
+                if (isSubmitting) {
+                  e.preventDefault();
+                  return;
+                }
+                // Otherwise, continue
+                form.handleSubmit(onFormSubmit)(e);
+              }}
+              onChange={() => {
+                setSent(false);
+              }}>
 
-                <div className="flex items-center space-x-2 pt-2">
-                  <Checkbox id="terms" className="border-border/50" />
-                  <Label htmlFor="terms" className="text-sm text-muted-foreground leading-none">
-                    I agree to the{" "}
-                    <Link href="/terms" className="text-primary hover:text-primary/80 transition-colors">
-                      Terms of Service
-                    </Link>
-                    {" "}and{" "}
-                    <Link href="/privacy" className="text-primary hover:text-primary/80 transition-colors">
-                      Privacy Policy
-                    </Link>
-                  </Label>
-                </div>
+
+                <FormField
+                  control={form.control}
+                  name="fullName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full name</FormLabel>
+                      <FormControl>
+                        <Input
+                        id="fullName"
+                        type="text"
+                        placeholder="Enter your full name"
+                        className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                        required
+                      />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email address</FormLabel>
+                    <FormControl>
+                      <Input
+                      id="email"
+                      type="email"
+                      placeholder="Enter your email"
+                      className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                      required
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                      id="password"
+                      type="password"
+                      placeholder="Create a password"
+                      className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                      required
+                    />
+                    </FormControl>
+                  </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm password</FormLabel>
+                    <FormControl>
+                      <Input
+                      id="confirmPassword"
+                      type="password"
+                      placeholder="Confirm your password"
+                      className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                      required
+                    />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="terms"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2 pt-2">
+                      <FormControl>
+                        <Checkbox
+                        id="terms"
+                        className="border-border/50"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <Label htmlFor="terms" className="text-sm text-muted-foreground leading-none">
+                        I agree to the{" "}
+                        <Link href="/terms" className="text-primary hover:text-primary/80 transition-colors">
+                          Terms of Service
+                        </Link>
+                        {" "}and{" "}
+                        <Link href="/privacy" className="text-primary hover:text-primary/80 transition-colors">
+                          Privacy Policy
+                        </Link>
+                      </Label>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+                />
 
                 <div className="space-y-3 pt-4">
                   <Button
@@ -161,6 +252,7 @@ const Signup = ({
                   </Button>
                 </div>
               </form>
+              </Form>
             </CardContent>
           </Card>
 

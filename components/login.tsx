@@ -43,21 +43,6 @@ const Login = ({
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
-            <Link href={logo.url} className="inline-block mb-6">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/60 rounded-full blur-lg opacity-20 animate-pulse"></div>
-                <div className="relative w-16 h-16 mx-auto bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center shadow-lg">
-                  <OptimizedImage
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={32}
-                    height={32}
-                    className="invert"
-                    aboveFold
-                  />
-                </div>
-              </div>
-            </Link>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-2">
               {heading}
             </h1>
