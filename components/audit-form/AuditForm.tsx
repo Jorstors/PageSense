@@ -113,8 +113,9 @@ export function AuditForm({ className }: { className?: string }) {
   };
 
   return (
-    <Card className={`container px-2 md:px-14 h-fit mx-auto py-10 grid place-items-center relative ${className}`}>
+    <section className="container h-fit grid place-items-center px-4">
 
+    <Card className={`h-full w-full grid place-items-center relative ${className}`}>
       <Form {...form}>
         <form
           className="w-full h-full"
@@ -217,5 +218,8 @@ export function AuditForm({ className }: { className?: string }) {
               ]}
             />
     </Card>
+
+    </section>
+
   );
 }
