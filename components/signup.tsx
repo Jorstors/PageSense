@@ -21,6 +21,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useRouter } from "next/navigation";
+import { auth, db } from "@/lib/Firebase/firebaseInit";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
+import { CircleXIcon } from "lucide-react";
 
 interface SignupProps {
   heading?: string;
@@ -53,6 +58,8 @@ const Signup = ({
   loginUrl = "/auth/login",
 }: SignupProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  let errorMessage = "";
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -69,16 +76,74 @@ const Signup = ({
     if (isSubmitting) return; // <-- block immediately
     setIsSubmitting(true);
 
-    console.log(data);
+    try {
+      // Create new user account
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      console.log("User created:", userCredential.user);
 
-    // Send data to API endpoint
-    setTimeout(() => {
-      console.log("Form submitted");
-      // Reenable Form Submission
+      // Success - log user information in db, then redirect to home
+      await addDoc(collection(db, "users"), {
+        uid: userCredential.user.uid,
+        name: data.fullName,
+        createdAt: new Date(),
+        subscription: "free",
+        email: data.email
+      });
+
+      console.log("User data saved to Firestore");
+
+      // Success - redirect to home
+      console.log("Sign up successful. Redirecting to home...");
+      router.push("/");
+    } catch (error) {
+      console.error("Signup error:", error);
+      if (error instanceof Error) {
+        // Parse Firebase error messages to be more user-friendly
+        errorMessage = error.message;
+        if (errorMessage.includes("auth/email-already-in-use")) {
+          errorMessage = "This email address is already in use.";
+        } else if (errorMessage.includes("auth/invalid-email")) {
+          errorMessage = "Invalid email address.";
+        } else if (errorMessage.includes("auth/operation-not-allowed")) {
+          errorMessage = "Email/password accounts are not enabled.";
+        } else if (errorMessage.includes("auth/weak-password")) {
+          errorMessage = "Password is too weak.";
+        } else if (errorMessage.includes("auth/network-request-failed")) {
+          errorMessage = "Network error. Please check your connection and try again.";
+        }
+
+        form.setError("root", { message: errorMessage });
+      } else {
+        form.setError("root", { message: "An unknown error occurred." });
+      }
+    } finally {
       setIsSubmitting(false);
-    }, 1000)
+    }
 
+  };
 
+  const handleGoogleSignIn = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithRedirect(auth, provider);
+
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      if (error instanceof Error) {
+        let errorMessage = error.message;
+        if (errorMessage.includes("auth/popup-closed-by-user")) {
+          errorMessage = "Sign-in was cancelled.";
+        } else if (errorMessage.includes("auth/popup-blocked")) {
+          errorMessage = "Pop-up was blocked. Please allow pop-ups and try again.";
+        }
+
+        form.setError("root", { message: errorMessage });
+      }
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -115,9 +180,6 @@ const Signup = ({
                     }
                     // Otherwise, continue
                     form.handleSubmit(onFormSubmit)(e);
-                  }}
-                  onChange={() => {
-                    setSent(false);
                   }}
                 >
                   <FormField
@@ -235,6 +297,16 @@ const Signup = ({
                     )}
                   />
 
+                  {/* Display form-level errors */}
+                  {form.formState.errors.root && (
+                    <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg p-4 backdrop-blur-sm">
+                      <div className="flex items-center gap-2">
+                        <CircleXIcon className="size-4 text-destructive"/>
+                        <span className="font-medium">{form.formState.errors.root.message}</span>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="space-y-3 pt-4">
                     <Button
                       type="submit"
@@ -259,6 +331,8 @@ const Signup = ({
                       variant="outline"
                       className="w-full border-border/50 hover:bg-muted/50 transition-colors"
                       type="button"
+                      onClick={handleGoogleSignIn}
+                      disabled={isSubmitting}
                     >
                       <FcGoogle className="mr-2 size-5" />
                       {googleText}

@@ -6,6 +6,7 @@ import "./globals.css";
 import { Footer } from "@/components/Footer";
 import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
 import { cn } from "@/lib/utils";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || "https://pagesense.co"),
@@ -81,7 +82,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <div className="dark w-full h-screen bg-background text-primary flex flex-col">
+        <AuthProvider>
+          <div className="dark w-full h-screen bg-background text-primary flex flex-col">
           <div className="sticky z-10 top-0 w-full h-fit">
             <Navbar />
           </div>
@@ -104,7 +106,8 @@ export default function RootLayout({
           </div>
         </div>
         <Toaster />
-      </body>
+      </AuthProvider>
+    </body>
     </html>
   );
 }
