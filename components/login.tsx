@@ -104,7 +104,7 @@ const Login = ({
     try {
       const provider = new GoogleAuthProvider();
       await signInWithRedirect(auth, provider);
-      const result = await getRedirectResult(auth);
+      await getRedirectResult(auth);
       // Success - you can redirect or update UI here
       console.log("Google sign-in successful. Redirecting to home...");
       router.push("/");
