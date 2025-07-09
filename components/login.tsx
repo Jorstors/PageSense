@@ -40,7 +40,6 @@ const Login = ({
   signupText = "Don't have an account?",
   signupUrl = "/auth/signup",
 }: LoginProps) => {
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -48,7 +47,7 @@ const Login = ({
     defaultValues: {
       email: "",
       password: "",
-    }
+    },
   });
 
   const onFormSubmit = async (data: z.infer<typeof FormSchema>) => {
@@ -68,7 +67,7 @@ const Login = ({
   };
 
   return (
-    <section className="h-[calc(100vh_-_4rem)] bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
+    <section className="h-full bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
       <BlurFade delay={0.1}>
         <div className="w-full max-w-lg">
           {/* Header */}
@@ -91,92 +90,96 @@ const Login = ({
             />
             <CardContent className="space-y-6">
               <Form {...form}>
-              <form
-              className="space-y-4"
-              onSubmit={(e) => {
-              // If already submitting, prevent further submissions
-                if (isSubmitting) {
-                  e.preventDefault();
-                  return;
-                }
-                // Otherwise, continue
-                form.handleSubmit(onFormSubmit)(e);
-              }}>
+                <form
+                  className="space-y-4"
+                  onSubmit={(e) => {
+                    // If already submitting, prevent further submissions
+                    if (isSubmitting) {
+                      e.preventDefault();
+                      return;
+                    }
+                    // Otherwise, continue
+                    form.handleSubmit(onFormSubmit)(e);
+                  }}
+                >
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email address</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            id="email"
+                            type="email"
+                            placeholder="Enter your email"
+                            className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email address</FormLabel>
-                      <FormControl>
-                        <Input
-                        {...field}
-                        id="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                      />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center justify-between">
+                          <FormLabel>Password</FormLabel>
+                          <Link
+                            href="/auth/forgot-password"
+                            className="text-sm text-primary hover:text-primary/80 transition-colors"
+                          >
+                            Forgot password?
+                          </Link>
+                        </div>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            id="password"
+                            type="password"
+                            placeholder="Enter your password"
+                            className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex items-center justify-between">
-                        <FormLabel>Password</FormLabel>
-                        <Link
-                          href="/auth/forgot-password"
-                          className="text-sm text-primary hover:text-primary/80 transition-colors"
-                        >
-                          Forgot password?
-                        </Link>
+                  <div className="space-y-3 pt-4">
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    >
+                      {isSubmitting ? "Signing in..." : buttonText}
+                    </Button>
+
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-border/50" />
                       </div>
-                      <FormControl>
-                        <Input
-                        {...field}
-                        id="password"
-                        type="password"
-                        placeholder="Enter your password"
-                        className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                      />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-
-                <div className="space-y-3 pt-4">
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 shadow-lg hover:shadow-xl"
-                  >
-                    {isSubmitting ? "Signing in..." : buttonText}
-                  </Button>
-
-                  <div className="relative">
-                    <div className="absolute inset-0 flex items-center">
-                      <span className="w-full border-t border-border/50" />
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-card px-2 text-muted-foreground">
+                          Or continue with
+                        </span>
+                      </div>
                     </div>
-                    <div className="relative flex justify-center text-xs uppercase">
-                      <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
-                    </div>
+
+                    <Button
+                      variant="outline"
+                      className="w-full border-border/50 hover:bg-muted/50 transition-colors"
+                      type="button"
+                    >
+                      <FcGoogle className="mr-2 size-5" />
+                      {googleText}
+                    </Button>
                   </div>
-
-                  <Button
-                    variant="outline"
-                    className="w-full border-border/50 hover:bg-muted/50 transition-colors"
-                    type="button"
-                  >
-                    <FcGoogle className="mr-2 size-5" />
-                    {googleText}
-                  </Button>
-                </div>
-              </form>
+                </form>
               </Form>
             </CardContent>
           </Card>

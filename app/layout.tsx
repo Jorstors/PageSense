@@ -82,21 +82,21 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <div className="dark w-full h-screen bg-background text-primary flex flex-col">
-          <div className="fixed z-10 top-0 w-full h-fit">
+          <div className="sticky z-10 top-0 w-full h-fit">
             <Navbar />
           </div>
-          <div className="flex-1 w-full overflow-hidden relative mt-20">
+          <div className="flex-1 w-full overflow-hidden relative">
             <ScrollArea type="always" className="w-full h-full">
               <AnimatedGridPattern
-              maxOpacity={0.3}
-              className={cn(
-                "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
-                "md:[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
-                "lg:[mask-image:radial-gradient(1000px_circle_at_center,white,transparent)]",
-                "inset-x-0 inset-y-[-30%] h-[200%]",
-                "transform-[perspective(800px)_rotateX(12deg)_scaleY(1.08)]",
-                "opacity-20"
-              )}
+                maxOpacity={0.3}
+                className={cn(
+                  "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+                  "md:[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
+                  "lg:[mask-image:radial-gradient(1000px_circle_at_center,white,transparent)]",
+                  "inset-x-0 inset-y-[-30%] h-[200%]",
+                  "transform-[perspective(800px)_rotateX(12deg)_scaleY(1.08)]",
+                  "opacity-20"
+                )}
               />
               {children}
               <Footer />
