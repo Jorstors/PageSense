@@ -20,7 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { auth } from "@/lib/Firebase/firebaseInit";
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { CircleXIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -104,7 +104,10 @@ const Login = ({
     try {
       const provider = new GoogleAuthProvider();
       await signInWithRedirect(auth, provider);
+      const result = await getRedirectResult(auth);
       // Success - you can redirect or update UI here
+      console.log("Google sign-in successful. Redirecting to home...");
+      router.push("/");
 
     } catch (error) {
       console.error("Google sign-in error:", error);
