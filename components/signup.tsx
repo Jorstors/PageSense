@@ -22,7 +22,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-
 interface SignupProps {
   heading?: string;
   signupText?: string;
@@ -31,20 +30,20 @@ interface SignupProps {
   loginUrl?: string;
 }
 
-const FormSchema = z.object({
-  fullName: z.string().min(1, "Full name is required"),
-  email: z.string().email("Invalid email address").max(255, "Email too long"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string(),
-  terms: z.boolean().refine((val) => val === true, {
-    message: "You must accept the terms and conditions",
+const FormSchema = z
+  .object({
+    fullName: z.string().min(1, "Full name is required"),
+    email: z.string().email("Invalid email address").max(255, "Email too long"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string(),
+    terms: z.boolean().refine((val) => val === true, {
+      message: "You must accept the terms and conditions",
+    }),
   })
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
-
-
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 const Signup = ({
   heading = "Create your account",
@@ -53,7 +52,6 @@ const Signup = ({
   loginText = "Already have an account?",
   loginUrl = "/auth/login",
 }: SignupProps) => {
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -64,7 +62,7 @@ const Signup = ({
       password: "",
       confirmPassword: "",
       terms: false,
-    }
+    },
   });
 
   const onFormSubmit = async (data: z.infer<typeof FormSchema>) => {
@@ -81,7 +79,7 @@ const Signup = ({
   };
 
   return (
-    <section className="h-screen bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
+    <section className="h-full bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4 py-20">
       <BlurFade delay={0.1}>
         <div className="w-full max-w-lg">
           {/* Header */}
@@ -104,154 +102,166 @@ const Signup = ({
             />
             <CardContent className="space-y-6">
               <Form {...form}>
-              <form
-              className="space-y-4"
-              onSubmit={(e) => {
-              // If already submitting, prevent further submissions
-                if (isSubmitting) {
-                  e.preventDefault();
-                  return;
-                }
-                // Otherwise, continue
-                form.handleSubmit(onFormSubmit)(e);
-              }}
-              onChange={() => {
-                setSent(false);
-              }}>
+                <form
+                  className="space-y-4"
+                  onSubmit={(e) => {
+                    // If already submitting, prevent further submissions
+                    if (isSubmitting) {
+                      e.preventDefault();
+                      return;
+                    }
+                    // Otherwise, continue
+                    form.handleSubmit(onFormSubmit)(e);
+                  }}
+                  onChange={() => {
+                    setSent(false);
+                  }}
+                >
+                  <FormField
+                    control={form.control}
+                    name="fullName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Full name</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            id="fullName"
+                            type="text"
+                            placeholder="Enter your full name"
+                            className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email address</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            id="email"
+                            type="email"
+                            placeholder="Enter your email"
+                            className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            id="password"
+                            type="password"
+                            placeholder="Create a password"
+                            className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm password</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            id="confirmPassword"
+                            type="password"
+                            placeholder="Confirm your password"
+                            className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="terms"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center space-x-2 pt-2">
+                          <FormControl>
+                            <Checkbox
+                              id="terms"
+                              className="border-border/50"
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <Label
+                            htmlFor="terms"
+                            className="text-sm text-muted-foreground leading-none"
+                          >
+                            I agree to the{" "}
+                            <Link
+                              href="/terms"
+                              className="text-primary hover:text-primary/80 transition-colors"
+                            >
+                              Terms of Service
+                            </Link>{" "}
+                            and{" "}
+                            <Link
+                              href="/privacy"
+                              className="text-primary hover:text-primary/80 transition-colors"
+                            >
+                              Privacy Policy
+                            </Link>
+                          </Label>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
+                  <div className="space-y-3 pt-4">
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    >
+                      {isSubmitting ? "Creating account..." : signupText}
+                    </Button>
 
-                <FormField
-                  control={form.control}
-                  name="fullName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full name</FormLabel>
-                      <FormControl>
-                        <Input
-                        {...field}
-                        id="fullName"
-                        type="text"
-                        placeholder="Enter your full name"
-                        className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                      />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-        )} />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email address</FormLabel>
-                    <FormControl>
-                      <Input
-                      {...field}
-                      id="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                      {...field}
-                      id="password"
-                      type="password"
-                      placeholder="Create a password"
-                      className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                    />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm password</FormLabel>
-                    <FormControl>
-                      <Input
-                      {...field}
-                      id="confirmPassword"
-                      type="password"
-                      placeholder="Confirm your password"
-                      className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                    />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="terms"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex items-center space-x-2 pt-2">
-                      <FormControl>
-                        <Checkbox
-                        id="terms"
-                        className="border-border/50"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <Label htmlFor="terms" className="text-sm text-muted-foreground leading-none">
-                        I agree to the{" "}
-                        <Link href="/terms" className="text-primary hover:text-primary/80 transition-colors">
-                          Terms of Service
-                        </Link>
-                        {" "}and{" "}
-                        <Link href="/privacy" className="text-primary hover:text-primary/80 transition-colors">
-                          Privacy Policy
-                        </Link>
-                      </Label>
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-border/50" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-card px-2 text-muted-foreground">
+                          Or continue with
+                        </span>
+                      </div>
                     </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-                />
 
-                <div className="space-y-3 pt-4">
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 shadow-lg hover:shadow-xl"
-                  >
-                    {isSubmitting ? "Creating account..." : signupText}
-                  </Button>
-
-                  <div className="relative">
-                    <div className="absolute inset-0 flex items-center">
-                      <span className="w-full border-t border-border/50" />
-                    </div>
-                    <div className="relative flex justify-center text-xs uppercase">
-                      <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
-                    </div>
+                    <Button
+                      variant="outline"
+                      className="w-full border-border/50 hover:bg-muted/50 transition-colors"
+                      type="button"
+                    >
+                      <FcGoogle className="mr-2 size-5" />
+                      {googleText}
+                    </Button>
                   </div>
-
-                  <Button
-                    variant="outline"
-                    className="w-full border-border/50 hover:bg-muted/50 transition-colors"
-                    type="button"
-                  >
-                    <FcGoogle className="mr-2 size-5" />
-                    {googleText}
-                  </Button>
-                </div>
-              </form>
+                </form>
               </Form>
             </CardContent>
           </Card>

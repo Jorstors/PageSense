@@ -1,6 +1,12 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   getMetadata,
   generateJSONLD,
@@ -26,7 +32,8 @@ export const generateMetadata = () => {
     type: "WebPage",
     data: {
       name: "Authentication - PageSense",
-      description: "Access your PageSense account or create a new one to save your website audits and track your optimization progress.",
+      description:
+        "Access your PageSense account or create a new one to save your website audits and track your optimization progress.",
       url: "https://pagesense.co/auth",
       isPartOf: {
         "@type": "WebSite",
@@ -84,10 +91,12 @@ export const generateMetadata = () => {
 
 export default function AuthPage() {
   return (
-    <div className="container mx-auto flex items-center justify-center h-[calc(100vh_-_4rem)]">
+    <div className="w-screen min-h-screen grid place-items-center mt-20">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome to Pagesense</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Welcome to Pagesense
+          </h1>
           <p className="text-muted-foreground">Choose an option to continue</p>
         </div>
 
