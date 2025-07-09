@@ -19,6 +19,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { auth } from "@/lib/Firebase/firebaseInit";
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { CircleXIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface LoginProps {
   heading?: string;
@@ -41,6 +45,7 @@ const Login = ({
   signupUrl = "/auth/signup",
 }: LoginProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -51,23 +56,75 @@ const Login = ({
   });
 
   const onFormSubmit = async (data: z.infer<typeof FormSchema>) => {
-    if (isSubmitting) return; // <-- block immediately
+    if (isSubmitting) return;
     setIsSubmitting(true);
 
-    console.log(data);
+    try {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      console.log("Current Auth State: ", auth);
 
-    // Send data to API endpoint
-    setTimeout(() => {
-      console.log("Form submitted");
-      // Reenable Form Submission
+      // Success - redirect to home
+      console.log("Sign in successful. Redirecting to home...");
+      router.push("/");
+
+    } catch (error) {
+      console.error("Login error:", error);
+      if (error instanceof Error) {
+        // Parse Firebase error messages to be more user-friendly
+        let errorMessage = error.message;
+        if (errorMessage.includes("auth/user-not-found")) {
+          errorMessage = "No account found with this email address.";
+        } else if (errorMessage.includes("auth/wrong-password")) {
+          errorMessage = "Incorrect password.";
+        } else if (errorMessage.includes("auth/invalid-credential")) {
+          errorMessage = "Invalid email or password. Please check your credentials.";
+        } else if (errorMessage.includes("auth/invalid-email")) {
+          errorMessage = "Invalid email address.";
+        } else if (errorMessage.includes("auth/too-many-requests")) {
+          errorMessage = "Too many failed attempts. Please try again later.";
+        } else if (errorMessage.includes("auth/user-disabled")) {
+          errorMessage = "This account has been disabled.";
+        } else if (errorMessage.includes("auth/network-request-failed")) {
+          errorMessage = "Network error. Please check your connection and try again.";
+        }
+
+        form.setError("root", { message: errorMessage });
+      } else {
+        form.setError("root", { message: "An unknown error occurred." });
+      }
+    } finally {
       setIsSubmitting(false);
-    }, 1000)
+    }
+  };
 
+  const handleGoogleSignIn = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithRedirect(auth, provider);
+      // Success - you can redirect or update UI here
+
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      if (error instanceof Error) {
+        let errorMessage = error.message;
+        if (errorMessage.includes("auth/popup-closed-by-user")) {
+          errorMessage = "Sign-in was cancelled.";
+        } else if (errorMessage.includes("auth/popup-blocked")) {
+          errorMessage = "Pop-up was blocked. Please allow pop-ups and try again.";
+        }
+
+        form.setError("root", { message: errorMessage });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section className="h-full bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
+    <section className="h-[calc(100vh-4rem)] bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
       <BlurFade delay={0.1}>
         <div className="w-full max-w-lg">
           {/* Header */}
@@ -150,6 +207,16 @@ const Login = ({
                     )}
                   />
 
+                  {/* Display form-level errors */}
+                  {form.formState.errors.root && (
+                    <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg p-4 backdrop-blur-sm">
+                      <div className="flex items-center gap-2">
+                        <CircleXIcon className="size-4 text-destructive"/>
+                        <span className="font-medium">{form.formState.errors.root.message}</span>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="space-y-3 pt-4">
                     <Button
                       type="submit"
@@ -174,6 +241,8 @@ const Login = ({
                       variant="outline"
                       className="w-full border-border/50 hover:bg-muted/50 transition-colors"
                       type="button"
+                      onClick={handleGoogleSignIn}
+                      disabled={isSubmitting}
                     >
                       <FcGoogle className="mr-2 size-5" />
                       {googleText}
