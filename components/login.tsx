@@ -294,6 +294,22 @@ const Login = ({
                 Create account
               </Link>
             </p>
+            <p className="text-muted-foreground text-xs mt-4">
+              By signing in, you agree to our{" "}
+              <Link
+                href="/terms"
+                className="text-primary hover:text-primary/80 transition-colors"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                className="text-primary hover:text-primary/80 transition-colors"
+              >
+                Privacy Policy
+              </Link>
+            </p>
           </div>
         </div>
       </BlurFade>
