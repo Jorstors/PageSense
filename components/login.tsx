@@ -19,10 +19,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { auth } from "@/lib/Firebase/firebaseInit";
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "firebase/auth";
+import { auth, db } from "@/lib/Firebase/firebaseInit";
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { CircleXIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 
 interface LoginProps {
   heading?: string;
@@ -92,7 +93,6 @@ const Login = ({
       } else {
         form.setError("root", { message: "An unknown error occurred." });
       }
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -103,12 +103,40 @@ const Login = ({
 
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
-      await getRedirectResult(auth);
-      // Success - you can redirect or update UI here
-      console.log("Google sign-in successful. Redirecting to home...");
-      router.push("/");
+      // Add scopes for better user data
+      provider.addScope('email');
+      provider.addScope('profile');
 
+      const result = await signInWithPopup(auth, provider);
+
+      if (result && result.user) {
+        console.log("Google sign-in successful:", result.user);
+
+        // Check if user already exists in the database
+        const userQuery = query(
+          collection(db, "users"),
+          where("uid", "==", result.user.uid)
+        );
+        const userDocs = await getDocs(userQuery);
+
+        if (userDocs.empty) {
+          // Save user data to Firestore if this is a new user
+          await addDoc(collection(db, "users"), {
+            uid: result.user.uid,
+            name: result.user.displayName || "Google User",
+            createdAt: new Date(),
+            subscription: "free",
+            email: result.user.email,
+          });
+          console.log("Google user data saved to Firestore");
+        } else {
+          console.log("Existing Google user logged in");
+        }
+
+        // Redirect to home page
+        console.log("Google sign-in successful. Redirecting to home...");
+        router.push("/");
+      }
     } catch (error) {
       console.error("Google sign-in error:", error);
       if (error instanceof Error) {
@@ -121,7 +149,6 @@ const Login = ({
 
         form.setError("root", { message: errorMessage });
       }
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -244,7 +271,7 @@ const Login = ({
                       variant="outline"
                       className="w-full border-border/50 hover:bg-muted/50 transition-colors"
                       type="button"
-                      onClick={handleGoogleSignIn}
+                      onClick={() => handleGoogleSignIn()}
                       disabled={isSubmitting}
                     >
                       <FcGoogle className="mr-2 size-5" />

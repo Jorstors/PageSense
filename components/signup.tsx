@@ -23,8 +23,8 @@ import {
 } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { auth, db } from "@/lib/Firebase/firebaseInit";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { CircleXIcon } from "lucide-react";
 
 interface SignupProps {
@@ -116,35 +116,65 @@ const Signup = ({
       } else {
         form.setError("root", { message: "An unknown error occurred." });
       }
-    } finally {
       setIsSubmitting(false);
     }
-
   };
 
   const handleGoogleSignIn = async () => {
-    if (isSubmitting) return;
-    setIsSubmitting(true);
+      if (isSubmitting) return;
+      setIsSubmitting(true);
 
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
+      try {
+        const provider = new GoogleAuthProvider();
+        // Add scopes for better user data
+        provider.addScope('email');
+        provider.addScope('profile');
 
-    } catch (error) {
-      console.error("Google sign-in error:", error);
-      if (error instanceof Error) {
-        let errorMessage = error.message;
-        if (errorMessage.includes("auth/popup-closed-by-user")) {
-          errorMessage = "Sign-in was cancelled.";
-        } else if (errorMessage.includes("auth/popup-blocked")) {
-          errorMessage = "Pop-up was blocked. Please allow pop-ups and try again.";
+        const result = await signInWithPopup(auth, provider);
+
+        if (result && result.user) {
+          console.log("Google sign-in successful:", result.user);
+
+          // Check if user already exists in the database
+          const userQuery = query(
+            collection(db, "users"),
+            where("uid", "==", result.user.uid)
+          );
+          const userDocs = await getDocs(userQuery);
+
+          if (userDocs.empty) {
+            // Save user data to Firestore if this is a new user
+            await addDoc(collection(db, "users"), {
+              uid: result.user.uid,
+              name: result.user.displayName || "Google User",
+              createdAt: new Date(),
+              subscription: "free",
+              email: result.user.email,
+            });
+            console.log("Google user data saved to Firestore");
+          } else {
+            console.log("Existing Google user logged in");
+          }
+
+          // Redirect to home page
+          console.log("Google sign-in successful. Redirecting to home...");
+          router.push("/");
         }
+      } catch (error) {
+        console.error("Google sign-in error:", error);
+        if (error instanceof Error) {
+          let errorMessage = error.message;
+          if (errorMessage.includes("auth/popup-closed-by-user")) {
+            errorMessage = "Sign-in was cancelled.";
+          } else if (errorMessage.includes("auth/popup-blocked")) {
+            errorMessage = "Pop-up was blocked. Please allow pop-ups and try again.";
+          }
 
-        form.setError("root", { message: errorMessage });
+          form.setError("root", { message: errorMessage });
+        }
+        setIsSubmitting(false);
       }
-      setIsSubmitting(false);
-    }
-  };
+    };
 
   return (
     <section className="h-full w-full bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">

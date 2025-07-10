@@ -84,6 +84,19 @@ const Navbar = ({
   },
 }: NavbarProps) => {
   const { user, loading, signOut } = useAuth();
+
+  async function handleSignOut(){
+    console.log("Signing out...");
+    try {
+      await signOut();
+      console.log("Sign out successful, navigating...");
+      // Force a hard navigation to the homepage
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  }
+
   return (
     <section className="py-4 grid place-items-center bg-background/100">
       <div className="container px-2 md:px-14">
@@ -134,7 +147,7 @@ const Navbar = ({
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOut} className="flex items-center gap-2 text-red-600">
+                  <DropdownMenuItem onClick={handleSignOut} className="flex items-center gap-2 text-red-600">
                     <LogOut className="size-4" />
                     <p>Sign out</p>
                   </DropdownMenuItem>
@@ -214,7 +227,7 @@ const Navbar = ({
                         </Link>
                       </Button>
                       <Button
-                        onClick={signOut}
+                        onClick={handleSignOut}
                         variant="ghost"
                         className="justify-start text-red-600 hover:text-red-700"
                       >
