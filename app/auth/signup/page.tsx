@@ -84,15 +84,17 @@ export const generateMetadata = () => {
 
 export default function SignupPage() {
   return (
-    <Signup
-      heading="Create your account"
-      logo={{
-        url: "/",
-        src: "/WOB-Big.png",
-        alt: "PageSense logo",
-        title: "PageSense",
-      }}
-      loginUrl="/auth/login"
-    />
+    <div className="w-screen min-h-screen grid place-items-center">
+      <Signup
+        heading="Create your account"
+        logo={{
+          url: "/",
+          src: "/WOB-Big.png",
+          alt: "PageSense logo",
+          title: "PageSense",
+        }}
+        loginUrl="/auth/login"
+      />
+    </div>
   );
 }

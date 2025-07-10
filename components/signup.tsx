@@ -147,9 +147,9 @@ const Signup = ({
   };
 
   return (
-    <section className="h-[calc(100vh-4rem)] bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
+    <section className="h-full w-full bg-gradient-to-b from-background via-background to-primary/5 flex items-center justify-center p-4">
       <BlurFade delay={0.1}>
-        <div className="w-full max-w-lg">
+        <div className="w-full max-w-xl">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent pb-2">
