@@ -3,10 +3,8 @@
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { BlurFade } from "@/components/magicui/blur-fade";
-import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,9 +39,6 @@ const FormSchema = z
     email: z.string().email("Invalid email address").max(255, "Email too long"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
-    terms: z.boolean().refine((val) => val === true, {
-      message: "You must accept the terms and conditions",
-    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -68,7 +63,6 @@ const Signup = ({
       email: "",
       password: "",
       confirmPassword: "",
-      terms: false,
     },
   });
 
@@ -288,44 +282,6 @@ const Signup = ({
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="terms"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex items-center space-x-2 pt-2">
-                          <FormControl>
-                            <Checkbox
-                              id="terms"
-                              className="border-border/50"
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <Label
-                            htmlFor="terms"
-                            className="text-sm text-muted-foreground leading-none"
-                          >
-                            I agree to the{" "}
-                            <Link
-                              href="/terms"
-                              className="text-primary hover:text-primary/80 transition-colors"
-                            >
-                              Terms of Service
-                            </Link>{" "}
-                            and{" "}
-                            <Link
-                              href="/privacy"
-                              className="text-primary hover:text-primary/80 transition-colors"
-                            >
-                              Privacy Policy
-                            </Link>
-                          </Label>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
 
                   {/* Display form-level errors */}
                   {form.formState.errors.root && (
@@ -382,6 +338,22 @@ const Signup = ({
                 className="text-primary font-medium hover:text-primary/80 transition-colors"
               >
                 Sign in
+              </Link>
+            </p>
+            <p className="text-muted-foreground text-xs mt-4">
+              By signing up, you agree to our{" "}
+              <Link
+                href="/terms"
+                className="text-primary hover:text-primary/80 transition-colors"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                className="text-primary hover:text-primary/80 transition-colors"
+              >
+                Privacy Policy
               </Link>
             </p>
           </div>
