@@ -217,7 +217,7 @@ const Login = ({
                         <div className="flex items-center justify-between">
                           <FormLabel>Password</FormLabel>
                           <Link
-                            href="/auth/forgot-password"
+                            href="/auth/reset-password"
                             className="text-sm text-primary hover:text-primary/80 transition-colors"
                           >
                             Forgot password?
