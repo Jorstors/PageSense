@@ -1,7 +1,9 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Menu, User, LogOut, LayoutDashboardIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
 
 import {
   Accordion,
@@ -25,6 +27,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface MenuItem {
   title: string;
@@ -70,10 +79,24 @@ const Navbar = ({
     { title: "About", url: "/about" },
   ],
   auth = {
-    login: { title: "Login", url: "#" },
-    signup: { title: "Sign up", url: "#" },
+    login: { title: "Login", url: "/auth/login" },
+    signup: { title: "Sign up", url: "/auth/signup" },
   },
 }: NavbarProps) => {
+  const { user, loading, signOut } = useAuth();
+
+  async function handleSignOut(){
+    console.log("Signing out...");
+    try {
+      await signOut();
+      console.log("Sign out successful, navigating...");
+      // Force a hard navigation to the homepage
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  }
+
   return (
     <section className="py-4 grid place-items-center bg-background/100">
       <div className="container px-2 md:px-14">
@@ -104,14 +127,42 @@ const Navbar = ({
             </div>
           </div>
 
-          {/* right side: auth buttons */}
+          {/* right side: auth buttons or user menu */}
           <div className="flex items-center gap-2">
-            <Button asChild variant="outline" size="sm">
-              <a href={auth.login.url}>{auth.login.title}</a>
-            </Button>
-            <Button asChild size="sm" variant="default" className="alt-button">
-              <a href={auth.signup.url}>{auth.signup.title}</a>
-            </Button>
+            {loading ? (
+              <div className="w-28 h-9 rounded-md bg-muted animate-pulse" />
+            ) : user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                    <User className="size-4" />
+                    {user.displayName || user.email?.split('@')[0] || 'User'}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard" className="flex items-center gap-2">
+                    <LayoutDashboardIcon className="size-4" />
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="flex items-center gap-2 text-red-600">
+                    <LogOut className="size-4" />
+                    <p>Sign out</p>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button asChild variant="outline" size="sm">
+                  <a href={auth.login.url}>{auth.login.title}</a>
+                </Button>
+                <Button asChild size="sm" variant="default" className="alt-button">
+                  <a href={auth.signup.url}>{auth.signup.title}</a>
+                </Button>
+              </>
+            )}
           </div>
         </nav>
 
@@ -165,12 +216,35 @@ const Navbar = ({
                 </Accordion>
 
                 <div className="flex flex-col gap-3">
-                  <Button asChild variant="outline">
-                    <a href={auth.login.url}>{auth.login.title}</a>
-                  </Button>
-                  <Button asChild variant="default" className="alt-button">
-                    <a href={auth.signup.url}>{auth.signup.title}</a>
-                  </Button>
+                  {loading ? (
+                    <div className="w-full h-10 rounded-md bg-muted animate-pulse" />
+                  ) : user ? (
+                    <>
+                      <Button asChild variant="outline" className="justify-start">
+                        <Link href="/dashboard" className="flex items-center gap-2">
+                          <LayoutDashboardIcon className="size-4" />
+                          Dashboard
+                        </Link>
+                      </Button>
+                      <Button
+                        onClick={handleSignOut}
+                        variant="ghost"
+                        className="justify-start text-red-600 hover:text-red-700"
+                      >
+                        <LogOut className="size-4 mr-2" />
+                        Sign out
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button asChild variant="outline">
+                        <a href={auth.login.url}>{auth.login.title}</a>
+                      </Button>
+                      <Button asChild variant="default" className="alt-button">
+                        <a href={auth.signup.url}>{auth.signup.title}</a>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </SheetContent>
