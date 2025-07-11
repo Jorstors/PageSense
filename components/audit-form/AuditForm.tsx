@@ -1,6 +1,5 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
@@ -15,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { AnimatedSubscribeButton } from "../magicui/animated-subscribe-button";
 import { ChevronRightIcon, CheckIcon, Loader2Icon } from "lucide-react";
