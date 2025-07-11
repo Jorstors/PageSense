@@ -25,7 +25,6 @@ import { toast } from "sonner";
 const FormSchema = z.object({
   url: z.string().url().max(255),
   email: z.string().email().max(255),
-  subscribe: z.boolean(),
 });
 
 export function AuditForm({ className }: { className?: string }) {
@@ -37,7 +36,6 @@ export function AuditForm({ className }: { className?: string }) {
     defaultValues: {
       url: "",
       email: "",
-      subscribe: false,
     },
   });
 
@@ -156,28 +154,6 @@ export function AuditForm({ className }: { className?: string }) {
                       <Input placeholder="Enter your email" {...field} />
                     </FormControl>
                     <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="subscribe"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex items-center space-x-3">
-                      <FormControl>
-                        <Checkbox
-                          {...field}
-                          type="button"
-                          id="subscribe"
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <Label htmlFor="subscribe">
-                        Yes, I’d like to receive 3 follow-up tips
-                      </Label>
-                    </div>
                   </FormItem>
                 )}
               />

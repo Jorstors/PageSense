@@ -466,7 +466,7 @@ async function checkRateLimit(email: string) {
 /**
  * Handles POST requests to the audit API endpoint.
  *
- * This function receives a JSON payload containing a landing page URL, user email, and subscription preference.
+ * This function receives a JSON payload containing a landing page URL and user email.
  * It performs the following steps:
  * 1. Checks and enforces rate limits for the provided email using Firebase.
  * 2. Audits the landing page URL using OpenAI's GPT model to identify conversion blockers and recommendations.
@@ -489,11 +489,9 @@ export async function POST(request: Request) {
     const recieved = await request.json();
     const url = recieved.url;
     const email = recieved.email;
-    const subscribe = recieved.subscribe;
     console.log("[handler] Received body: ", recieved);
     console.log(url);
     console.log(email);
-    console.log(subscribe);
 
     // Use Firebase logs to check audit history, rate limit
     const exceedsRateLimit = await checkRateLimit(email);
@@ -689,9 +687,6 @@ export async function POST(request: Request) {
     } catch (error) {
       console.error("[handler] Error sending email:", error);
     }
-
-    // Save email to MailerLite if user subscribed
-    // TODO...
 
     // Send PDF as a download
     console.log("[handler] Sending PDF to client...");
