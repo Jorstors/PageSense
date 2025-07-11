@@ -4,6 +4,7 @@ import { Menu, User, LogOut, LayoutDashboardIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
 
 import {
   Accordion,
@@ -84,6 +85,7 @@ const Navbar = ({
   },
 }: NavbarProps) => {
   const { user, loading, signOut } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   async function handleSignOut(){
     console.log("Signing out...");
@@ -104,7 +106,7 @@ const Navbar = ({
         <nav className="hidden lg:flex w-full items-center justify-between">
           {/* left side: logo + menu */}
           <div className="flex items-center gap-6">
-            <a href={logo.url} className="flex items-center gap-2">
+            <Link href={logo.url} className="flex items-center gap-2">
               <div className="relative w-8 h-8">
                 <Image
                   src={logo.src}
@@ -117,7 +119,7 @@ const Navbar = ({
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
               </span>
-            </a>
+            </Link>
             <div className="flex items-center gap-6">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -156,10 +158,10 @@ const Navbar = ({
             ) : (
               <>
                 <Button asChild variant="outline" size="sm">
-                  <a href={auth.login.url}>{auth.login.title}</a>
+                  <Link href={auth.login.url}>{auth.login.title}</Link>
                 </Button>
                 <Button asChild size="sm" variant="default" className="alt-button">
-                  <a href={auth.signup.url}>{auth.signup.title}</a>
+                  <Link href={auth.signup.url}>{auth.signup.title}</Link>
                 </Button>
               </>
             )}
@@ -169,7 +171,7 @@ const Navbar = ({
         {/* mobile nav (sheet trigger, etc.) */}
         <div className="flex lg:hidden items-center justify-between">
           {/* alt logo */}
-          <a href={logo.url} className="flex items-center gap-2">
+          <Link href={logo.url} className="flex items-center gap-2">
             <div className="relative w-8 h-8">
               <Image
                 src={logo.src}
@@ -182,9 +184,9 @@ const Navbar = ({
             <span className="text-lg font-semibold tracking-tighter">
               {logo.title}
             </span>
-          </a>
+          </Link>
           {/* mobile menu trigger */}
-          <Sheet>
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon">
                 <Menu className="size-4" />
@@ -193,7 +195,7 @@ const Navbar = ({
             <SheetContent className="dark overflow-y-auto bg-sidebar text-sidebar-foreground">
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2">
-                  <a href={logo.url} className="flex items-center gap-2">
+                  <Link href={logo.url} className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
                     <div className="relative w-8 h-8">
                       <Image
                         src={logo.src}
@@ -203,7 +205,7 @@ const Navbar = ({
                         className="object-contain"
                       />
                     </div>
-                  </a>
+                  </Link>
                 </SheetTitle>
               </SheetHeader>
               <div className="flex flex-col gap-6 p-4">
@@ -212,7 +214,7 @@ const Navbar = ({
                   collapsible
                   className="flex w-full flex-col gap-4"
                 >
-                  {menu.map((item) => renderMobileMenuItem(item))}
+                  {menu.map((item) => renderMobileMenuItem(item, setMobileMenuOpen))}
                 </Accordion>
 
                 <div className="flex flex-col gap-3">
@@ -221,13 +223,20 @@ const Navbar = ({
                   ) : user ? (
                     <>
                       <Button asChild variant="outline" className="justify-start">
-                        <Link href="/dashboard" className="flex items-center gap-2">
+                        <Link
+                          href="/dashboard"
+                          className="flex items-center gap-2"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
                           <LayoutDashboardIcon className="size-4" />
                           Dashboard
                         </Link>
                       </Button>
                       <Button
-                        onClick={handleSignOut}
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          handleSignOut();
+                        }}
                         variant="ghost"
                         className="justify-start text-red-600 hover:text-red-700"
                       >
@@ -237,11 +246,20 @@ const Navbar = ({
                     </>
                   ) : (
                     <>
-                      <Button asChild variant="outline">
-                        <a href={auth.login.url}>{auth.login.title}</a>
+                      <Button
+                        asChild
+                        variant="outline"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <Link href={auth.login.url}>{auth.login.title}</Link>
                       </Button>
-                      <Button asChild variant="default" className="alt-button">
-                        <a href={auth.signup.url}>{auth.signup.title}</a>
+                      <Button
+                        asChild
+                        variant="default"
+                        className="alt-button"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <Link href={auth.signup.url}>{auth.signup.title}</Link>
                       </Button>
                     </>
                   )}
@@ -283,7 +301,7 @@ const renderMenuItem = (item: MenuItem): JSX.Element => {
   );
 };
 
-const renderMobileMenuItem = (item: MenuItem): JSX.Element => {
+const renderMobileMenuItem = (item: MenuItem, setMobileMenuOpen?: (open: boolean) => void): JSX.Element => {
   if (item.items) {
     return (
       <AccordionItem key={item.title} value={item.title} className="border-b-0">
@@ -300,17 +318,22 @@ const renderMobileMenuItem = (item: MenuItem): JSX.Element => {
   }
 
   return (
-    <a key={item.title} href={item.url} className="text-md font-semibold">
+    <Link
+      key={item.title}
+      href={item.url}
+      className="text-md font-semibold"
+      onClick={() => setMobileMenuOpen?.(false)}
+    >
       {item.title}
-    </a>
+    </Link>
   );
 };
 
 const SubMenuLink = ({ item }: { item: MenuItem }): JSX.Element => {
   return (
-    <a
-      className="flex flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent"
+    <Link
       href={item.url}
+      className="flex flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent"
     >
       <div className="text-foreground">{item.icon}</div>
       <div>
@@ -321,7 +344,7 @@ const SubMenuLink = ({ item }: { item: MenuItem }): JSX.Element => {
           </p>
         )}
       </div>
-    </a>
+    </Link>
   );
 };
 

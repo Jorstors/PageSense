@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>PageSense Audit Report Preview</title>
+</head>
+
+<body
+  style="font-family:'Segoe UI', system-ui, -apple-system, sans-serif; background-color:#f9f9f9; margin:0; padding:20px; color:#333; line-height:1.5;">
+  <div
+    style="background:#fff; padding:20px; border-radius:10px; margin-bottom:30px; box-shadow:0 4px 12px rgba(0, 0, 0, 0.08);">
+    <h3 style="margin-top:0; font-size:20px; color:#393028; margin-bottom:18px; font-weight:600;">Audit Report Preview
+      Controls</h3>
+
+    <div style="margin-bottom:15px; display:flex; align-items:center;">
+      <label style="font-weight:600; margin-right:10px; min-width:150px; display:inline-block;">Overall Score:</label>
+      <input type="range" id="overallScore" min="0" max="100" value="75"
+        style="width:200px; accent-color:#393028; margin-right:8px;">
+      <span id="scoreValue" style="font-weight:bold; margin-left:10px;">75</span>
+    </div>
+
+    <div style="margin-bottom:15px; display:flex; align-items:center;">
+      <label style="font-weight:600; margin-right:10px; min-width:150px; display:inline-block;">Content Score:</label>
+      <input type="range" id="contentScore" min="0" max="100" value="80"
+        style="width:200px; accent-color:#393028; margin-right:8px;">
+      <span id="contentScoreValue" style="font-weight:bold; margin-left:10px;">80</span>
+    </div>
+
+    <div style="margin-bottom:15px; display:flex; align-items:center;">
+      <label style="font-weight:600; margin-right:10px; min-width:150px; display:inline-block;">Technical Score:</label>
+      <input type="range" id="technicalScore" min="0" max="100" value="70"
+        style="width:200px; accent-color:#393028; margin-right:8px;">
+      <span id="technicalScoreValue" style="font-weight:bold; margin-left:10px;">70</span>
+    </div>
+
+    <div style="margin-bottom:15px; display:flex; align-items:center;">
+      <label style="font-weight:600; margin-right:10px; min-width:150px; display:inline-block;">UX/Design Score:</label>
+      <input type="range" id="uxScore" min="0" max="100" value="65"
+        style="width:200px; accent-color:#393028; margin-right:8px;">
+      <span id="uxScoreValue" style="font-weight:bold; margin-left:10px;">65</span>
+    </div>
+
+    <div style="margin-bottom:15px; display:flex; align-items:center;">
+      <label style="font-weight:600; margin-right:10px; min-width:150px; display:inline-block;">Performance
+        Score:</label>
+      <input type="range" id="performanceScore" min="0" max="100" value="85"
+        style="width:200px; accent-color:#393028; margin-right:8px;">
+      <span id="performanceScoreValue" style="font-weight:bold; margin-left:10px;">85</span>
+    </div>
+
+    <button id="updatePreview"
+      style="background:#393028; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; margin-top:15px; font-weight:600; letter-spacing:0.3px; transition:background 0.2s ease;">Update
+      Preview</button>
+  </div>
+
+  <div id="reportContainer"></div>
+
+  <script>
+    // Sample API response with example blockers and recommendations
+    const sampleData = {
+      overallScore: 75,
+      categoryScores: {
+        Content: 80,
+        Technical: 70,
+        "UX/Design": 65,
+        Performance: 85
+      },
+      blockers: [
+        {
+          issue: "Unclear value proposition in hero section",
+          priority: "Critical",
+          category: "Content",
+          suggestions: [
+            "Add a clear, benefit-driven headline that communicates your unique value proposition in 5-7 words",
+            "Include a subheadline that addresses the main pain point your product solves",
+            "Add social proof elements (logos, testimonial snippet) directly under the headline to build instant credibility"
+          ]
+        },
+        {
+          issue: "CTA buttons lack urgency and clarity",
+          priority: "Critical",
+          category: "Content",
+          suggestions: [
+            "Replace generic 'Learn More' text with specific action verbs like 'Get Your Free Analysis'",
+            "Add urgency indicators such as 'Limited Time' or quantity markers where appropriate",
+            "Use contrasting colors for primary CTAs to make them stand out from the page background"
+          ]
+        },
+        {
+          issue: "Page load speed exceeds 3 seconds on mobile",
+          priority: "Medium",
+          category: "Performance",
+          suggestions: [
+            "Compress and properly size all hero images to reduce initial load time",
+            "Implement lazy loading for below-the-fold images and content",
+            "Remove or defer non-critical third-party scripts that block rendering"
+          ]
+        },
+        {
+          issue: "Form has too many fields creating friction",
+          priority: "Low",
+          category: "UX/Design",
+          suggestions: [
+            "Reduce form fields to only essential information (email, name) and collect additional data later",
+            "Add inline validation to provide immediate feedback and reduce errors",
+            "Consider implementing a multi-step form to make the process feel less overwhelming"
+          ]
+        }
+      ],
+      recommendations: [
+        "Implement A/B testing on your main headline to determine which value proposition resonates most with your audience",
+        "Consider adding a chat widget for immediate support to reduce visitor abandonment",
+        "Create dedicated landing pages for each major traffic source with messaging that matches the referring content",
+        "Add testimonials with specific results and outcomes to build credibility and address objections",
+        "Include an FAQ section addressing common customer concerns to reduce friction in the conversion process"
+      ]
+    };
+
+    // Update score displays when sliders change
+    document.getElementById('overallScore').addEventListener('input', function () {
+      document.getElementById('scoreValue').textContent = this.value;
+    });
+
+    document.getElementById('contentScore').addEventListener('input', function () {
+      document.getElementById('contentScoreValue').textContent = this.value;
+    });
+
+    document.getElementById('technicalScore').addEventListener('input', function () {
+      document.getElementById('technicalScoreValue').textContent = this.value;
+    });
+
+    document.getElementById('uxScore').addEventListener('input', function () {
+      document.getElementById('uxScoreValue').textContent = this.value;
+    });
+
+    document.getElementById('performanceScore').addEventListener('input', function () {
+      document.getElementById('performanceScoreValue').textContent = this.value;
+    });
+
+    // Generate the preview report
+    function generatePreview() {
+      // Get current values from sliders
+      const overallScore = document.getElementById('overallScore').value;
+      const contentScore = document.getElementById('contentScore').value;
+      const technicalScore = document.getElementById('technicalScore').value;
+      const uxScore = document.getElementById('uxScore').value;
+      const performanceScore = document.getElementById('performanceScore').value;
+
+      // Update sample data with slider values
+      sampleData.overallScore = parseInt(overallScore);
+      sampleData.categoryScores.Content = parseInt(contentScore);
+      sampleData.categoryScores.Technical = parseInt(technicalScore);
+      sampleData.categoryScores["UX/Design"] = parseInt(uxScore);
+      sampleData.categoryScores.Performance = parseInt(performanceScore);
+
+      // Format blockers by priority
+      let blockersHtml = "";
+
+      // Group blockers by priority
+      const criticalBlockers = sampleData.blockers.filter(b => b.priority === "Critical");
+      const highBlockers = sampleData.blockers.filter(b => b.priority === "High");
+      const mediumBlockers = sampleData.blockers.filter(b => b.priority === "Medium");
+      const lowBlockers = sampleData.blockers.filter(b => b.priority === "Low");
+
+      // Format blockers string
+      let blockersString = "";
+
+      // Helper function to format blockers by priority level
+      function formatBlockersByPriority(blockers, emoji, label, color) {
+        let result = "";
+        if (blockers.length > 0) {
+          result += `${emoji} <span style='font-weight:700; font-size:16px; color:${color};'>${label}:</span><br><br>`;
+          for (const blocker of blockers) {
+            result += `<div style='margin-bottom:20px; padding-bottom:20px; border-bottom:1px dashed #e8e8e8;'>
+<div style='background-color:${color}15; padding:8px 10px; border-left:4px solid ${color}; margin-bottom:10px; border-radius:4px; display:flex; align-items:center;'>
+<span style='font-weight:700; color:#333; font-size:16px; margin-right:5px;'>Issue:</span> ${blocker.issue}
+</div>
+<span style='font-weight:700; color:#555; font-size:14px; display:block; margin-top:12px;'>Category:</span> ${blocker.category}
+
+<span style='font-weight:700; color:#555; font-size:14px; display:block; margin-top:12px; margin-bottom:6px;'>Suggestions:</span>${blocker.suggestions.map(s => `• ${s}`).join("<br>")}
+</div>`;
+          }
+        }
+        return result;
+      }
+
+      // Format each priority level
+      blockersString += formatBlockersByPriority(criticalBlockers, "🔴", "CRITICAL ISSUES", "#e53e3e");
+      blockersString += formatBlockersByPriority(highBlockers, "🟠", "HIGH PRIORITY", "#ed8936");
+      blockersString += formatBlockersByPriority(mediumBlockers, "🟡", "MEDIUM PRIORITY", "#d69e2e");
+      blockersString += formatBlockersByPriority(lowBlockers, "🟢", "LOW PRIORITY", "#38a169");
+
+      // Format recommendations string
+      const recommendationsString = sampleData.recommendations.map(rec => `<div style='margin-bottom:16px; padding-bottom:16px; border-bottom:1px dashed #e8e8e8;'>• ${rec}</div>`).join("");
+
+      // Create score chart URL - using doughnut chart with gradient colors based on score
+      const scoreColor = overallScore >= 80 ? '75,192,192' : overallScore >= 60 ? '255,205,86' : overallScore >= 40 ? '255,159,64' : '255,99,132';
+
+      // Create chart configuration as an object first
+      const scoreChartConfig = {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: [Math.round(overallScore), 100 - Math.round(overallScore)],
+            backgroundColor: [`rgba(${scoreColor},0.8)`, 'rgba(220,220,220,0.5)'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          cutout: '70%', // Chart.js v3 syntax (replaces cutoutPercentage)
+          plugins: {
+            legend: {
+              display: false
+            },
+            datalabels: {
+              display: false
+            },
+            tooltip: {
+              enabled: false
+            }
+          },
+          elements: {
+            arc: {
+              borderWidth: 0
+            }
+          }
+        }
+      };
+
+      // Convert to JSON and encode - add devicePixelRatio for sharper images
+      const scoreChartUrl = `https://quickchart.io/chart?width=200&height=200&devicePixelRatio=2&format=png&c=${encodeURIComponent(JSON.stringify(scoreChartConfig))}`;
+
+      // Create polar area chart for category scores
+      const categories = Object.keys(sampleData.categoryScores).map(cat => cat === "UXDesign" ? "UX/Design" : cat);
+      const scores = Object.values(sampleData.categoryScores);
+
+      // Generate background colors for each category
+      const backgroundColors = [
+        'rgba(255, 99, 132, 0.7)',   // Red for Content
+        'rgba(54, 162, 235, 0.7)',   // Blue for Technical
+        'rgba(255, 206, 86, 0.7)',   // Yellow for UX/Design
+        'rgba(75, 192, 192, 0.7)',   // Teal for Performance
+      ];
+
+      // Create polar area chart config
+      const polarChartConfig = {
+        type: "polarArea",
+        data: {
+          labels: categories,
+          datasets: [{
+            data: scores,
+            backgroundColor: backgroundColors,
+            borderWidth: 1,
+            borderColor: backgroundColors.map(color => color.replace('0.7', '1'))
+          }]
+        },
+        options: {
+          scales: {
+            r: {
+              beginAtZero: true,
+              min: 0,
+              max: 100,
+              ticks: {
+                stepSize: 20,
+                callback: function (value) {
+                  return value + '%';
+                }
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              position: "right",
+              labels: {
+                font: {
+                  size: 12,
+                  weight: 'bold'
+                }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  return context.label + ': ' + context.formattedValue + '%';
+                }
+              }
+            },
+            title: {
+              display: false
+            }
+          },
+          maintainAspectRatio: true
+        }
+      };
+
+      // Convert to JSON and encode - add devicePixelRatio for sharper images
+      const polarChartUrl = `https://quickchart.io/chart?width=250&height=250&devicePixelRatio=2&format=png&c=${encodeURIComponent(JSON.stringify(polarChartConfig))}`;
+
+      // Generate HTML template
+      const domainName = "example.com";
+      const logoUrl = "https://pagesense.co/BOW-Big.png"; // Using a placeholder logo URL
+
+      const htmlContent = `
+      <div style="margin:0; padding:0; background:#f9f9f9; color:#333; font-family:'Segoe UI', system-ui, -apple-system, sans-serif; line-height:1.6;">
+        <div style="max-width:700px; margin:0 auto; background:#fff; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+          <div style="padding:32px 32px 16px 32px; text-align:left; border-bottom:1px solid #f0f0f0;">
+            <img src="${logoUrl}" alt="Logo" width="36" height="36" style="vertical-align:middle; margin-right:14px; margin-bottom:14px;">
+            <span style="font-size:28px; font-weight:600; color:#393028;">Pagesense Audit for ${domainName}</span>
+          </div>
+          <div style="padding:32px;">
+            <div style="display:flex; flex-direction:row; justify-content:space-between; margin-bottom:32px; flex-wrap:wrap;">
+              <div style="flex:1; min-width:280px; padding-right:16px; margin-bottom:16px;">
+                <h2 style="font-size:22px; color:#393028; border-bottom:1px solid #f0f0f0; padding-bottom:12px; margin-top:0;">Overall Score</h2>
+                <div style="text-align:center;">
+                  <div style="font-size:48px; font-weight:700; color:#393028; margin-bottom:12px;">${Math.round(sampleData.overallScore)}/100</div>
+                  <img src="${scoreChartUrl}" alt="Score Chart" width="200" style="margin:0 auto;">
+                </div>
+              </div>
+              <div style="flex:1; min-width:280px; padding-left:16px;">
+                <h2 style="font-size:22px; color:#393028; border-bottom:1px solid #f0f0f0; padding-bottom:12px; margin-top:0;">Category Breakdown</h2>
+                <div style="text-align:center; margin-top:35px">
+                  <img src="${polarChartUrl}" alt="Category Scores" width="300" style="margin:0 auto;">
+                </div>
+              </div>
+            </div>
+            <h2 style="font-size:22px; color:#393028; border-bottom:1px solid #f0f0f0; padding-bottom:12px;">Conversion Blockers</h2>
+            <div style="background:#f8f8f8; padding:20px; border-radius:8px; color:#333; font-size:15px; margin-bottom:24px; white-space:pre-wrap; font-family:inherit;">${blockersString}</div>
+            <h2 style="font-size:22px; color:#393028; border-bottom:1px solid #f0f0f0; padding-bottom:12px; margin-top:36px;">Recommendations</h2>
+            <div style="background:#f8f8f8; padding:20px; border-radius:8px; color:#333; font-size:15px; white-space:pre-wrap; font-family:inherit;">${recommendationsString}</div>
+            <div style="margin-top:40px; text-align:center;">
+              <a href="https://pagesense.co/templates" style="display:inline-block; color:#fff; background:#393028; padding:14px 28px; border-radius:6px; text-decoration:none; font-weight:600; letter-spacing:0.3px;">Explore Our High Conversion Templates &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      `;
+
+      document.getElementById('reportContainer').innerHTML = htmlContent;
+    }
+
+    // Update the preview when the button is clicked
+    document.getElementById('updatePreview').addEventListener('click', generatePreview);
+
+    // Generate initial preview
+    generatePreview();
+
+    // Add hover effect for buttons since we're using inline styles
+    const updateButton = document.getElementById('updatePreview');
+    updateButton.addEventListener('mouseover', function () {
+      this.style.background = '#5a4c40';
+    });
+    updateButton.addEventListener('mouseout', function () {
+      this.style.background = '#393028';
+    });
+  </script>
+</body>
+
+</html>
