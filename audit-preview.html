@@ -62,7 +62,7 @@
       categoryScores: {
         Content: 80,
         Technical: 70,
-        UXDesign: 65,
+        "UX/Design": 65,
         Performance: 85
       },
       blockers: [
@@ -150,7 +150,7 @@
       sampleData.overallScore = parseInt(overallScore);
       sampleData.categoryScores.Content = parseInt(contentScore);
       sampleData.categoryScores.Technical = parseInt(technicalScore);
-      sampleData.categoryScores.UXDesign = parseInt(uxScore);
+      sampleData.categoryScores["UX/Design"] = parseInt(uxScore);
       sampleData.categoryScores.Performance = parseInt(performanceScore);
 
       // Format blockers by priority
@@ -230,32 +230,33 @@
       // Convert to JSON and encode - add devicePixelRatio for sharper images
       const scoreChartUrl = `https://quickchart.io/chart?width=200&height=200&devicePixelRatio=2&format=png&c=${encodeURIComponent(JSON.stringify(scoreChartConfig))}`;
 
-      // Create radar chart for category scores
-      const categories = Object.keys(sampleData.categoryScores);
+      // Create polar area chart for category scores
+      const categories = Object.keys(sampleData.categoryScores).map(cat => cat === "UXDesign" ? "UX/Design" : cat);
       const scores = Object.values(sampleData.categoryScores);
 
-      // Create radar chart config as an object
-      const radarChartConfig = {
-        type: "radar",
+      // Generate background colors for each category
+      const backgroundColors = [
+        'rgba(255, 99, 132, 0.7)',   // Red for Content
+        'rgba(54, 162, 235, 0.7)',   // Blue for Technical
+        'rgba(255, 206, 86, 0.7)',   // Yellow for UX/Design
+        'rgba(75, 192, 192, 0.7)',   // Teal for Performance
+      ];
+
+      // Create polar area chart config
+      const polarChartConfig = {
+        type: "polarArea",
         data: {
           labels: categories,
           datasets: [{
-            label: "Category Scores",
             data: scores,
-            backgroundColor: `rgba(${scoreColor},0.4)`,
-            borderColor: `rgba(${scoreColor},0.8)`,
-            pointBackgroundColor: `rgba(${scoreColor},1)`,
-            pointHoverBackgroundColor: "#fff"
+            backgroundColor: backgroundColors,
+            borderWidth: 1,
+            borderColor: backgroundColors.map(color => color.replace('0.7', '1'))
           }]
         },
         options: {
           scales: {
             r: {
-              angleLines: {
-                display: true
-              },
-              suggestedMin: 0,
-              suggestedMax: 100,
               beginAtZero: true,
               min: 0,
               max: 100,
@@ -264,25 +265,28 @@
                 callback: function (value) {
                   return value + '%';
                 }
-              },
-              pointLabels: {
-                font: {
-                  size: 12,
-                  weight: 'bold'
-                }
               }
             }
           },
           plugins: {
             legend: {
-              position: "bottom"
+              position: "right",
+              labels: {
+                font: {
+                  size: 12,
+                  weight: 'bold'
+                }
+              }
             },
             tooltip: {
               callbacks: {
                 label: function (context) {
-                  return context.dataset.label + ': ' + context.parsed.r + '%';
+                  return context.label + ': ' + context.formattedValue + '%';
                 }
               }
+            },
+            title: {
+              display: false
             }
           },
           maintainAspectRatio: true
@@ -290,7 +294,7 @@
       };
 
       // Convert to JSON and encode - add devicePixelRatio for sharper images
-      const radarChartUrl = `https://quickchart.io/chart?width=250&height=250&devicePixelRatio=2&format=png&c=${encodeURIComponent(JSON.stringify(radarChartConfig))}`;
+      const polarChartUrl = `https://quickchart.io/chart?width=250&height=250&devicePixelRatio=2&format=png&c=${encodeURIComponent(JSON.stringify(polarChartConfig))}`;
 
       // Generate HTML template
       const domainName = "example.com";
@@ -301,7 +305,7 @@
         <div style="max-width:700px; margin:0 auto; background:#fff; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.08);">
           <div style="padding:32px 32px 16px 32px; text-align:left; border-bottom:1px solid #f0f0f0;">
             <img src="${logoUrl}" alt="Logo" width="36" height="36" style="vertical-align:middle; margin-right:14px; margin-bottom:14px;">
-            <span style="font-size:28px; font-weight:600; color:#393028;">PageSense Audit for ${domainName}</span>
+            <span style="font-size:28px; font-weight:600; color:#393028;">Pagesense Audit for ${domainName}</span>
           </div>
           <div style="padding:32px;">
             <div style="display:flex; flex-direction:row; justify-content:space-between; margin-bottom:32px; flex-wrap:wrap;">
@@ -315,7 +319,7 @@
               <div style="flex:1; min-width:280px; padding-left:16px;">
                 <h2 style="font-size:22px; color:#393028; border-bottom:1px solid #f0f0f0; padding-bottom:12px; margin-top:0;">Category Breakdown</h2>
                 <div style="text-align:center; margin-top:35px">
-                  <img src="${radarChartUrl}" alt="Category Scores" width="300" style="margin:0 auto;">
+                  <img src="${polarChartUrl}" alt="Category Scores" width="300" style="margin:0 auto;">
                 </div>
               </div>
             </div>

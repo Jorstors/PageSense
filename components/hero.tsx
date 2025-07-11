@@ -89,7 +89,7 @@ const Hero = ({
                     height={height}
                     aboveFold={true}
                     quality={90}
-                    className="relative max-h-[450px] md:max-h-[550px] w-auto rounded-t-2xl object-contain bg-background/10 antialiased"
+                    className="relative max-h-[400px] md:max-h-[500px] w-auto rounded-t-2xl object-contain bg-background/10 antialiased"
                   />
                 </div>
               </div>

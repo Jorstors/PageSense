@@ -264,7 +264,7 @@ async function generateAuditPDF(
  * @param url - The landing page URL to audit.
  * @returns A Promise resolving to an object containing:
  *   - overallScore: A number from 0-100 representing the overall quality score.
- *   - categoryScores: An object with scores for Content, Technical, UX/Design, and Performance.
+ *   - categoryScores: An object with scores for Content, Technical, UXDesign, and Performance.
  *   - blockers: An array of objects, each with "issue", "priority", "category", and "suggestions" properties.
  *   - recommendations: An array of recommendation strings.
  *   Returns null if the audit fails or the response is invalid.
@@ -291,7 +291,7 @@ async function audit(url: string) {
 - Be incredibly thorough, prioritizing the highest‐impact changes
 - Output strictly valid JSON matching the user's schema
 - Provide specific, practical, and immediately implementable recommendations
-- Categorize issues into Content, Technical, UX/Design, or Performance
+- Categorize issues into Content, Technical, UXDesign, or Performance
 - Assign priority levels (Critical, High, Medium, Low) based on impact
 - Provide numerical scores (0-100) for different categories of the site
 - Ensure your JSON is clean and parsable without any formatting artifacts
@@ -304,31 +304,30 @@ When given a landing page URL, analyze its strengths and weaknesses thoroughly. 
           role: "user",
           content: `Analyze the following landing page URL: ${url}.
 - Provide an overall conversion optimization score (0-100)
-- Break down the score by category (Content, Technical, UX/Design, Performance)
+- Break down the score by category (Content, Technical, UXDesign, Performance)
 - Identify 3–5 major conversion blockers
 - For each blocker, assign a priority level (Critical, High, Medium, Low)
-- For each blocker, indicate the category (Content, Technical, UX/Design, Performance)
+- For each blocker, indicate the category (Content, Technical, UXDesign, Performance)
 - Suggest exactly 3 concrete improvements for each blocker
 - Add 3-5 general recommendations for further improvement
-Provide your response as JSON:
+Provide your response as JSON with the following structure:
 {
-  "overallScore": 75,
+  "overallScore": number,
   "categoryScores": {
-    "Content": 80,
-    "Technical": 70,
-    "UX/Design": 65,
-    "Performance": 85
+    "Content": number,
+    "Technical": number,
+    "UXDesign": number,
+    "Performance": number
   },
   "blockers": [
     {
-      "issue": "Unclear value proposition in hero section",
-      "priority": "Critical",
-      "category": "Content",
-      "suggestions": ["Add benefit-driven headline", "Include social proof", "Clarify target audience"]
-    },
-    ...
+      "issue": string,
+      "priority": string,
+      "category": string,
+      "suggestions": [string, string, string]
+    }
   ],
-  "recommendations": ["…", "…"]
+  "recommendations": [string, string, string, string, string]
 }`,
         },
       ],
@@ -531,7 +530,7 @@ export async function POST(request: Request) {
     const categoryScores = result.categoryScores || {
       "Content": 50,
       "Technical": 50,
-      "UX/Design": 50,
+      "UXDesign": 50,
       "Performance": 50
     };
 
@@ -572,32 +571,33 @@ export async function POST(request: Request) {
     // Convert to JSON and encode for URL usage
     const scoreChartUrl = `https://quickchart.io/chart?width=200&height=200&devicePixelRatio=2&format=png&c=${encodeURIComponent(JSON.stringify(scoreChartConfig))}`;
 
-    // Create radar chart for category scores with better styling
-    const categories = Object.keys(categoryScores);
+    // Create polar area chart for category scores
+    const categories = Object.keys(categoryScores).map(cat => cat === "UXDesign" ? "UX/Design" : cat);
     const scores = Object.values(categoryScores);
 
-    // Create radar chart config as a proper JavaScript object
+    // Generate background colors for each category
+    const backgroundColors = [
+      'rgba(255, 99, 132, 0.7)',   // Red for Content
+      'rgba(54, 162, 235, 0.7)',   // Blue for Technical
+      'rgba(255, 206, 86, 0.7)',   // Yellow for UXDesign
+      'rgba(75, 192, 192, 0.7)',    // Teal for Performance
+    ];
+
+    // Create polar area chart config
     const radarChartConfig = {
-      type: "radar",
+      type: "polarArea",
       data: {
         labels: categories,
         datasets: [{
-          label: "Category Scores",
           data: scores,
-          backgroundColor: `rgba(${scoreColor},0.4)`,
-          borderColor: `rgba(${scoreColor},0.8)`,
-          pointBackgroundColor: `rgba(${scoreColor},1)`,
-          pointHoverBackgroundColor: "#fff"
+          backgroundColor: backgroundColors,
+          borderWidth: 1,
+          borderColor: backgroundColors.map(color => color.replace('0.7', '1'))
         }]
       },
       options: {
         scales: {
           r: {
-            angleLines: {
-              display: true
-            },
-            suggestedMin: 0,
-            suggestedMax: 100,
             beginAtZero: true,
             min: 0,
             max: 100,
@@ -606,25 +606,28 @@ export async function POST(request: Request) {
               callback: function(value) {
                 return value + '%';
               }
-            },
-            pointLabels: {
-              font: {
-                size: 12,
-                weight: 'bold'
-              }
             }
           }
         },
         plugins: {
           legend: {
-            position: "bottom"
+            position: "right",
+            labels: {
+              font: {
+                size: 12,
+                weight: 'bold'
+              }
+            }
           },
           tooltip: {
             callbacks: {
               label: function(context) {
-                return context.dataset.label + ': ' + context.parsed.r + '%';
+                return context.label + ': ' + context.formattedValue + '%';
               }
             }
+          },
+          title: {
+            display: false
           }
         },
         maintainAspectRatio: true
@@ -666,7 +669,7 @@ export async function POST(request: Request) {
     blockers += formatBlockersByPriority(lowBlockers, "🟢", "LOW PRIORITY", "#38a169");
 
     // Format recommendations as bullet points with styling
-    recommendations = result.recommendations.map(rec => `<div style='margin-bottom:16px; padding-bottom:16px; border-bottom:1px dashed #e8e8e8;'>• ${rec}</div>`).join("");
+    recommendations = result.recommendations.map(rec => `<div style='margin-bottom:16px; padding-bottom:16px; border-bottom:1px dashed #e8e8e8;'>• ${rec}</div>`).join("<br>");
 
     console.log("[handler] Genenerating PDF...");
 
