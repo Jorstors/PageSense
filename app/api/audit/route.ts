@@ -651,7 +651,7 @@ export async function POST(request: Request) {
 <div style='background-color:${color}15; padding:8px 10px; border-left:4px solid ${color}; margin-bottom:10px; border-radius:4px; display:flex; align-items:center;'>
 <span style='font-weight:700; color:#333; font-size:16px; margin-right:5px;'>Issue:</span> ${blocker.issue}
 </div>
-<span style='font-weight:700; color:#555; font-size:14px; display:block; margin-top:12px;'>Category:</span> ${blocker.category}
+<span style='font-weight:700; color:#555; font-size:14px; display:block; margin-top:12px;'>Category:</span> ${blocker.category === "UXDesign" ? "UX/Design" : blocker.category}
 
 <span style='font-weight:700; color:#555; font-size:14px; display:block; margin-top:12px; margin-bottom:6px;'>Suggestions:</span>${blocker.suggestions.map(s => `• ${s}`).join("<br>")}
 </div>`;

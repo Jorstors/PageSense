@@ -175,7 +175,7 @@
 <div style='background-color:${color}15; padding:8px 10px; border-left:4px solid ${color}; margin-bottom:10px; border-radius:4px; display:flex; align-items:center;'>
 <span style='font-weight:700; color:#333; font-size:16px; margin-right:5px;'>Issue:</span> ${blocker.issue}
 </div>
-<span style='font-weight:700; color:#555; font-size:14px; display:block; margin-top:12px;'>Category:</span> ${blocker.category}
+<span style='font-weight:700; color:#555; font-size:14px; display:block; margin-top:12px;'>Category:</span> ${blocker.category === "UXDesign" ? "UX/Design" : blocker.category}
 
 <span style='font-weight:700; color:#555; font-size:14px; display:block; margin-top:12px; margin-bottom:6px;'>Suggestions:</span>${blocker.suggestions.map(s => `• ${s}`).join("<br>")}
 </div>`;
@@ -191,7 +191,7 @@
       blockersString += formatBlockersByPriority(lowBlockers, "🟢", "LOW PRIORITY", "#38a169");
 
       // Format recommendations string
-      const recommendationsString = sampleData.recommendations.map(rec => `<div style='margin-bottom:16px; padding-bottom:16px; border-bottom:1px dashed #e8e8e8;'>• ${rec}</div>`).join("");
+      const recommendationsString = sampleData.recommendations.map(rec => `<div style='margin-bottom:16px; padding-bottom:16px; border-bottom:1px dashed #e8e8e8;'>• ${rec}</div>`).join("<br>");
 
       // Create score chart URL - using doughnut chart with gradient colors based on score
       const scoreColor = overallScore >= 80 ? '75,192,192' : overallScore >= 60 ? '255,205,86' : overallScore >= 40 ? '255,159,64' : '255,99,132';
@@ -238,12 +238,12 @@
       const backgroundColors = [
         'rgba(255, 99, 132, 0.7)',   // Red for Content
         'rgba(54, 162, 235, 0.7)',   // Blue for Technical
-        'rgba(255, 206, 86, 0.7)',   // Yellow for UX/Design
-        'rgba(75, 192, 192, 0.7)',   // Teal for Performance
+        'rgba(255, 206, 86, 0.7)',   // Yellow for UXDesign
+        'rgba(75, 192, 192, 0.7)',    // Teal for Performance
       ];
 
       // Create polar area chart config
-      const polarChartConfig = {
+      const radarChartConfig = {
         type: "polarArea",
         data: {
           labels: categories,
@@ -294,7 +294,7 @@
       };
 
       // Convert to JSON and encode - add devicePixelRatio for sharper images
-      const polarChartUrl = `https://quickchart.io/chart?width=250&height=250&devicePixelRatio=2&format=png&c=${encodeURIComponent(JSON.stringify(polarChartConfig))}`;
+      const radarChartUrl = `https://quickchart.io/chart?width=250&height=250&devicePixelRatio=2&format=png&c=${encodeURIComponent(JSON.stringify(radarChartConfig))}`;
 
       // Generate HTML template
       const domainName = "example.com";
@@ -319,7 +319,7 @@
               <div style="flex:1; min-width:280px; padding-left:16px;">
                 <h2 style="font-size:22px; color:#393028; border-bottom:1px solid #f0f0f0; padding-bottom:12px; margin-top:0;">Category Breakdown</h2>
                 <div style="text-align:center; margin-top:35px">
-                  <img src="${polarChartUrl}" alt="Category Scores" width="300" style="margin:0 auto;">
+                  <img src="${radarChartUrl}" alt="Category Scores" width="250" style="margin:0 auto;">
                 </div>
               </div>
             </div>
