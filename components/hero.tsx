@@ -83,13 +83,13 @@ const Hero = ({
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary to-background blur-lg opacity-80 transition-all duration-500 group-hover:opacity-100 group-hover:blur-xl"></div>
                 <div className="relative [mask-image:linear-gradient(to_bottom,white_15%,transparent_97%)]">
                   <OptimizedImage
-                    src={imageSrc}
+                    src={`${imageSrc}?v=${Date.now()}`}
                     alt={imageAlt}
                     width={width}
                     height={height}
                     aboveFold={true}
                     quality={90}
-                    className="relative max-h-[350px] md:max-h-[450px] w-auto rounded-t-2xl object-contain bg-background/10 antialiased"
+                    className="relative max-h-[450px] md:max-h-[550px] w-auto rounded-t-2xl object-contain bg-background/10 antialiased"
                   />
                 </div>
               </div>
