@@ -1,10 +1,12 @@
-import Construction from "@/components/Construction";
 import {
   generateJSONLD,
   generateBreadcrumbSchema,
   getMetadata,
 } from "@/lib/seo";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
+import dynamic from "next/dynamic";
+
+// Import the client wrapper that handles auth protection
+const ClientWrapper = dynamic(() => import("./ClientWrapper"));
 
 export async function generateMetadata() {
   const metadata = getMetadata({
@@ -86,10 +88,8 @@ export async function generateMetadata() {
 
 export default function Dashboard() {
   return (
-  <div className="dark w-screen min-h-screen grid place-items-center">
-    <ProtectedRoute >
-        <Construction />
-    </ProtectedRoute>
-  </div>
-  );
+    <div className="w-screen min-h-screen grid place-items-center mt-20">
+      <ClientWrapper />
+    </div>
+  )
 }
