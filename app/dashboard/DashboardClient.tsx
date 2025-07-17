@@ -35,7 +35,7 @@ export default function DashboardClient() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-background flex flex-col md:flex-row px-2 md:px-14">
+    <div className="relative flex flex-col md:flex-row px-2 md:px-14">
       {/* Sidebar - desktop only */}
       <div className="hidden md:sticky md:top-0 md:left-0 md:z-10 md:h-full md:w-64 md:flex-col md:border-r md:bg-background md:p-6 md:flex">
         <div className="mb-8">

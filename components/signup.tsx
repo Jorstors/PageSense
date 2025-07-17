@@ -22,7 +22,7 @@ import {
 import { useRouter } from "next/navigation";
 import { auth, db } from "@/lib/Firebase/firebaseInit";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { CircleXIcon } from "lucide-react";
 
 interface SignupProps {
@@ -76,7 +76,7 @@ const Signup = ({
       console.log("User created:", userCredential.user);
 
       // Success - log user information in db, then redirect to home
-      await addDoc(collection(db, "users"), {
+      await setDoc(doc(db, "users", data.email), {
         uid: userCredential.user.uid,
         name: data.fullName,
         createdAt: new Date(),
@@ -138,7 +138,7 @@ const Signup = ({
 
           if (userDocs.empty) {
             // Save user data to Firestore if this is a new user
-            await addDoc(collection(db, "users"), {
+            await setDoc(doc(db, "users", result.user.email), {
               uid: result.user.uid,
               name: result.user.displayName || "Google User",
               createdAt: new Date(),
