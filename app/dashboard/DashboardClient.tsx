@@ -3,7 +3,6 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import {
-  User,
   LayoutDashboard,
   History,
   FileText,
@@ -12,7 +11,9 @@ import {
   ChevronRight,
   Calendar,
   Globe,
-  BookOpen
+  BookOpen,
+  UserPenIcon,
+  MailIcon
 } from "lucide-react";
 import Link from "next/link";
 import { Dock } from "@/components/magicui/dock";
@@ -122,12 +123,12 @@ export default function DashboardClient() {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <User size={16} className="text-muted-foreground" />
+                  <MailIcon size={16} className="text-muted-foreground" />
                   <span className="font-medium">Email:</span> {user?.email}
                 </div>
                 {user?.displayName && (
                   <div className="flex items-center gap-2">
-                    <User size={16} className="text-muted-foreground" />
+                    <UserPenIcon size={16} className="text-muted-foreground" />
                     <span className="font-medium">Name:</span> {user.displayName}
                   </div>
                 )}
