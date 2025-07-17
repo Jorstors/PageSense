@@ -82,31 +82,27 @@ export default function DashboardClient() {
             active={activeTab === "overview"}
             onClick={() => setActiveTab("overview")}
             icon={<LayoutDashboard size={activeTab === "overview" ? 26 : 24} />}
-            label="Overview"
           />
           <EnhancedDockIcon
             active={activeTab === "audits"}
             onClick={() => setActiveTab("audits")}
             icon={<FileText size={activeTab === "audits" ? 26 : 24} />}
-            label="Audits"
           />
           <EnhancedDockIcon
             active={activeTab === "templates"}
             onClick={() => setActiveTab("templates")}
             icon={<BookOpen size={activeTab === "templates" ? 26 : 24} />}
-            label="Templates"
           />
           <EnhancedDockIcon
             active={activeTab === "history"}
             onClick={() => setActiveTab("history")}
             icon={<History size={activeTab === "history" ? 26 : 24} />}
-            label="Activity"
           />
         </Dock>
       </div>
 
       {/* Main Content */}
-      <div className="md:ml-64 p-4 md:p-6 pt-6 pb-24 md:pb-6">
+      <div className="lg:ml-64 p-4 md:p-6 pt-6 pb-24 md:pb-6">
         {/* Account Info Header */}
         <div className="flex justify-between items-center mb-8 text-wrap">
           <h1 className="text-xl md:text-2xl font-bold">Welcome, {user?.displayName || user?.email?.split('@')[0] || "User"}!</h1>
@@ -139,14 +135,6 @@ export default function DashboardClient() {
                   <Calendar size={16} className="text-muted-foreground" />
                   <span className="font-medium">Member since:</span> {user?.metadata?.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString() : "N/A"}
                 </div>
-              </div>
-              <div className="mt-4">
-                <Link
-                  href="/account"
-                  className="inline-flex items-center gap-1 px-3 py-1.5 text-sm bg-primary/10 text-primary hover:bg-primary/20 rounded-md transition-colors"
-                >
-                  Edit Profile <ChevronRight size={14} />
-                </Link>
               </div>
             </div>
 
@@ -282,7 +270,7 @@ export default function DashboardClient() {
                 </div>
               ) : (
                 <div className="text-center py-10">
-                  <p className="text-muted-foreground">You haven't purchased any templates yet.</p>
+                  <p className="text-muted-foreground">You haven&apos;t purchased any templates yet.</p>
                   <Link href="/templates" className="mt-4 inline-flex items-center justify-center px-4 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90">
                     Browse Templates
                   </Link>
