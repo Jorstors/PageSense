@@ -222,9 +222,6 @@ export default function DashboardClient() {
                         <button className="p-2 rounded-md hover:bg-muted">
                           <Eye size={16} />
                         </button>
-                        <button className="p-2 rounded-md hover:bg-muted">
-                          <Download size={16} />
-                        </button>
                       </div>
                     </div>
                   ))}

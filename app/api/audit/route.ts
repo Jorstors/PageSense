@@ -82,7 +82,7 @@ async function getBrowser() {
   return browser;
 }
 
-async function sendHTMLToFirestore(htmlContent: string, email: string) {
+async function sendHTMLToFirestore(htmlContent: string, email: string, websiteUrl: string, overallScore: number) {
   if (!email) {
     console.error("[sendHTMLToFirestore] Email is required but was not provided");
     return;
@@ -110,20 +110,32 @@ async function sendHTMLToFirestore(htmlContent: string, email: string) {
 
       // Update the existing document instead of creating a new one
       await auditRequestsRef.doc(auditId).update({
+        id: auditId,
         html: htmlContent,
+        url: websiteUrl,
+        score: overallScore
       });
 
       console.log(`[sendHTMLToFirestore] Successfully updated audit request ${auditId} with HTML content`);
+
     } else {
       console.log("[sendHTMLToFirestore] No recent audit request found, creating new document");
 
       // If no recent audit exists, create a new one
       const newDoc = await auditRequestsRef.add({
-        html: htmlContent,
-        timestamp: admin.firestore.FieldValue.serverTimestamp()
+        timestamp: admin.firestore.FieldValue.serverTimestamp(),
       });
 
       console.log(`[sendHTMLToFirestore] Created new audit document with ID: ${newDoc.id}`);
+
+      await newDoc.update({
+        id: admin.firestore.FieldValue.serverTimestamp(),
+        html: htmlContent,
+        url: websiteUrl,
+        score: overallScore
+      })
+
+      console.log(`[sendHTMLToFirestore] Successfully updated audit request ${newDoc.id} with HTML content`)
     }
   } catch (error) {
     // Log the error but don't throw it to prevent interrupting the process
@@ -265,7 +277,7 @@ async function generateAuditPDF(
     console.log("[generateAuditPDF] sending HTML to firestore...");
     try {
       if (email) {
-        await sendHTMLToFirestore(htmlContent, email);
+        await sendHTMLToFirestore(htmlContent, email, url, overallScore);
       } else {
         console.log("[generateAuditPDF] No email provided, skipping Firestore storage");
       }
