@@ -48,7 +48,7 @@ export default function DashboardClient() {
             score: auditData.score
           };
         });
-        if (audits.length > 0) setRecentAudits(audits);
+        if (audits.length > 0) setRecentAudits(audits.sort((a, b) => Number(b.id) - Number(a.id)));
       } catch (error) {
         console.error("Error fetching audits:", error);
       }
@@ -313,7 +313,6 @@ export default function DashboardClient() {
                 <div className="space-y-4">
                   {/* Show audit activities */}
                   {recentAudits
-                    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
                     .map((audit) => (
                       <div key={audit.id} className="border-l-2 border-primary pl-4 py-1">
                         <p className="font-medium">Ran website audit for {audit.domain}</p>
