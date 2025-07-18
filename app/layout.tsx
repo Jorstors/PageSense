@@ -96,7 +96,7 @@ export default function RootLayout({
                   "md:[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
                   "lg:[mask-image:radial-gradient(1000px_circle_at_center,white,transparent)]",
                   "inset-x-0 inset-y-[-30%] h-[200%]",
-                  "transform-[perspective(800px)_rotateX(12deg)_scaleY(1.08)]",
+                  "transform-[perspective(800px)_rotateX(20deg)_scaleY(1.08)]",
                   "opacity-20"
                 )}
               />
