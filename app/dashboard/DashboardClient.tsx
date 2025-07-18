@@ -312,20 +312,36 @@ export default function DashboardClient() {
             <div className="p-5 rounded-lg bg-card border">
               <h2 className="text-xl font-semibold mb-4">Activity History</h2>
 
-              <div className="space-y-4">
-                <div className="border-l-2 border-primary pl-4 py-1">
-                  <p className="font-medium">Ran website audit for example.com</p>
-                  <p className="text-sm text-muted-foreground">July 10, 2025</p>
+              {recentAudits.length > 0 || user?.metadata?.creationTime ? (
+                <div className="space-y-4">
+                  {/* Show audit activities */}
+                  {recentAudits
+                    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                    .map((audit) => (
+                      <div key={audit.id} className="border-l-2 border-primary pl-4 py-1">
+                        <p className="font-medium">Ran website audit for {audit.domain}</p>
+                        <p className="text-sm text-muted-foreground">{audit.date}</p>
+                      </div>
+                    ))}
+
+                  {/* Show account creation */}
+                  {user?.metadata?.creationTime && (
+                    <div className="border-l-2 border-muted pl-4 py-1">
+                      <p className="font-medium">Account created</p>
+                      <p className="text-sm text-muted-foreground">
+                        {new Date(user.metadata.creationTime).toLocaleDateString()}
+                      </p>
+                    </div>
+                  )}
                 </div>
-                <div className="border-l-2 border-primary pl-4 py-1">
-                  <p className="font-medium">Ran website audit for testsite.org</p>
-                  <p className="text-sm text-muted-foreground">July 5, 2025</p>
+              ) : (
+                <div className="text-center py-10">
+                  <p className="text-muted-foreground">No activity history yet.</p>
+                  <Link href="/tool" className="mt-4 inline-flex items-center justify-center px-4 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90">
+                    Run Your First Audit
+                  </Link>
                 </div>
-                <div className="border-l-2 border-primary pl-4 py-1">
-                  <p className="font-medium">Account created</p>
-                  <p className="text-sm text-muted-foreground">{user?.metadata?.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString() : "N/A"}</p>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         )}
