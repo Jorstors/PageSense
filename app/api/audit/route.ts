@@ -82,6 +82,67 @@ async function getBrowser() {
   return browser;
 }
 
+async function sendHTMLToFirestore(htmlContent: string, email: string, websiteUrl: string, overallScore: number) {
+  if (!email) {
+    console.error("[sendHTMLToFirestore] Email is required but was not provided");
+    return;
+  }
+
+  try {
+    console.log("[sendHTMLToFirestore] Fetching most recent audit request...");
+
+    // Get the most recent audit request
+    const auditRequestsRef = db
+      .collection("users")
+      .doc(email.toLowerCase())
+      .collection("audit_requests");
+
+    const snapshot = await auditRequestsRef
+      .orderBy("timestamp", "desc")
+      .limit(1)
+      .get();
+
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0];
+      const auditId = doc.id;
+
+      console.log(`[sendHTMLToFirestore] Found recent audit with ID: ${auditId}, updating...`);
+
+      // Update the existing document instead of creating a new one
+      await auditRequestsRef.doc(auditId).update({
+        id: auditId,
+        html: htmlContent,
+        url: websiteUrl,
+        score: overallScore,
+      });
+
+      console.log(`[sendHTMLToFirestore] Successfully updated audit request ${auditId} with HTML content`);
+
+    } else {
+      console.log("[sendHTMLToFirestore] No recent audit request found, creating new document");
+
+      // If no recent audit exists, create a new one
+      const newDoc = await auditRequestsRef.add({
+        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      console.log(`[sendHTMLToFirestore] Created new audit document with ID: ${newDoc.id}`);
+
+      await newDoc.update({
+        id: admin.firestore.FieldValue.serverTimestamp(),
+        html: htmlContent,
+        url: websiteUrl,
+        score: overallScore
+      })
+
+      console.log(`[sendHTMLToFirestore] Successfully updated audit request ${newDoc.id} with HTML content`)
+    }
+  } catch (error) {
+    // Log the error but don't throw it to prevent interrupting the process
+    console.error("[sendHTMLToFirestore] Error updating Firestore:", error);
+  }
+}
+
 
 // Helper to generate PDF from audit result (serverless safe)
 
@@ -112,7 +173,8 @@ async function generateAuditPDF(
   recommendations: string,
   overallScore: number = 0,
   scoreChartUrl: string = "",
-  radarChartUrl: string = ""
+  radarChartUrl: string = "",
+  email: string = ""
 ) {
   let browser;
 
@@ -211,6 +273,18 @@ async function generateAuditPDF(
 </html>
 
 `;
+
+    console.log("[generateAuditPDF] sending HTML to firestore...");
+    try {
+      if (email) {
+        await sendHTMLToFirestore(htmlContent, email, url, overallScore);
+      } else {
+        console.log("[generateAuditPDF] No email provided, skipping Firestore storage");
+      }
+    } catch (firestoreError) {
+      console.error("[generateAuditPDF] Error saving to Firestore, but continuing process:", firestoreError);
+      // We continue execution even if Firestore fails
+    }
 
     console.log("[generateAuditPDF] Setting page content...");
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
@@ -444,8 +518,13 @@ async function checkRateLimit(email: string) {
     }
 
     // Otherwise log this audit:
-    await auditRequestsRef.add({
-      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+    // Create a string timestamp for the document ID
+    const docId = Date.now().toString();
+    // Use serverTimestamp() as a field value, not as document ID
+    const serverTimestamp = admin.firestore.FieldValue.serverTimestamp();
+
+    await auditRequestsRef.doc(docId).set({
+      timestamp: serverTimestamp,
     });
 
     console.log("[checkRateLimit] Audit request logged for:", email);
@@ -677,7 +756,8 @@ export async function POST(request: Request) {
       recommendations,
       overallScore,
       scoreChartUrl,
-      radarChartUrl
+      radarChartUrl,
+      email
     );
 
     // Send to user's email with Brevo API

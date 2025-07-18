@@ -3,6 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { Loader } from "@/components/ui/loader";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -23,9 +24,7 @@ export function ProtectedRoute({
   }, [user, loading, router, redirectTo]);
 
   if (loading) {
-    return (
-      <div className="loader"></div>
-    );
+    return <Loader />;
   }
 
   if (!user) {
