@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LayoutDashboard,
   History,
@@ -18,16 +18,45 @@ import {
 import Link from "next/link";
 import { Dock } from "@/components/magicui/dock";
 import { EnhancedDockIcon } from "@/components/magicui/enhanced-dock-icon";
+import { db } from "@/lib/Firebase/firebaseInit";
+import { collection, getDocs } from "firebase/firestore";
 
 export default function DashboardClient() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
 
-  // Sample data for UI demonstration - these would come from your database in a real implementation
-  const recentAudits = [
-    { id: 1, date: "July 10, 2025", url: "https://example.com", score: 84 },
-    { id: 2, date: "July 5, 2025", url: "https://testsite.org", score: 76 }
-  ];
+
+  // Populate recentAudits with user firestore db
+
+  const [recentAudits, setRecentAudits] = useState([]);
+
+  useEffect(() => {
+    async function fetchRecentAudits() {
+      if (!user?.email) return;
+      try {
+        const recentAuditsRef = collection(db, `users/${user.email}/audit_requests`);
+        const snapshot = await getDocs(recentAuditsRef);
+        const audits = snapshot.docs.map((doc) => {
+          const auditData = doc.data();
+          const auditDate = new Date(parseInt(doc.id));
+          const domainName = new URL(auditData.url).hostname;
+          return {
+            html: auditData.html,
+            id: doc.id,
+            date:auditDate.toLocaleDateString(),
+            domain: domainName,
+            score: auditData.score
+          };
+        });
+        if (audits.length > 0) setRecentAudits(audits);
+      } catch (error) {
+        console.error("Error fetching audits:", error);
+      }
+    }
+    if (user?.uid) {
+      fetchRecentAudits();
+    }
+  }, [user?.uid, user?.email]);
 
   const purchasedTemplates = [
     { id: 1, name: "E-commerce Starter", category: "Shop", downloadUrl: "#" },
@@ -37,7 +66,7 @@ export default function DashboardClient() {
   return (
     <div className="relative flex flex-col md:flex-row px-2 md:px-14">
       {/* Sidebar - desktop only */}
-      <div className="hidden md:sticky md:top-0 md:left-0 md:z-10 md:h-full md:w-64 md:flex-col md:border-r md:bg-background md:p-6 md:flex">
+      <div className="hidden md:sticky md:top-0 md:left-0 md:z-10 md:h-full md:w-64 md:flex-col md:border-r md:p-6 md:flex">
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-6">Dashboard</h2>
           <div className="space-y-1">
@@ -171,7 +200,7 @@ export default function DashboardClient() {
                       <div>
                         <div className="font-medium flex items-center gap-2 break-all">
                           <Globe size={16} className="flex-shrink-0" />
-                          <span className="truncate max-w-[200px] sm:max-w-xs">{audit.url}</span>
+                          <span className="truncate max-w-[200px] sm:max-w-xs">{audit.domain}</span>
                         </div>
                         <div className="text-sm text-muted-foreground">{audit.date}</div>
                       </div>
@@ -211,7 +240,7 @@ export default function DashboardClient() {
                       <div>
                         <div className="font-medium flex items-center gap-2 break-all">
                           <Globe size={16} className="flex-shrink-0" />
-                          <span className="truncate max-w-[200px] sm:max-w-xs">{audit.url}</span>
+                          <span className="truncate max-w-[200px] sm:max-w-xs">{audit.domain}</span>
                         </div>
                         <div className="text-sm text-muted-foreground">{audit.date}</div>
                       </div>

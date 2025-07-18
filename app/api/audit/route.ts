@@ -113,7 +113,7 @@ async function sendHTMLToFirestore(htmlContent: string, email: string, websiteUr
         id: auditId,
         html: htmlContent,
         url: websiteUrl,
-        score: overallScore
+        score: overallScore,
       });
 
       console.log(`[sendHTMLToFirestore] Successfully updated audit request ${auditId} with HTML content`);

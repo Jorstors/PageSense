@@ -88,7 +88,7 @@ export async function generateMetadata() {
 
 export default function Dashboard() {
   return (
-    <div className="container min-h-screen grid place-items-center mt-20 mx-auto">
+    <div className="container min-h-screen flex items-start justify-center mt-20 mx-auto">
       <ClientWrapper />
     </div>
   )
