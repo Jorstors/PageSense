@@ -506,8 +506,13 @@ async function checkRateLimit(email: string) {
     }
 
     // Otherwise log this audit:
-    await auditRequestsRef.add({
-      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+    // Create a string timestamp for the document ID
+    const docId = Date.now().toString();
+    // Use serverTimestamp() as a field value, not as document ID
+    const serverTimestamp = admin.firestore.FieldValue.serverTimestamp();
+
+    await auditRequestsRef.doc(docId).set({
+      timestamp: serverTimestamp,
     });
 
     console.log("[checkRateLimit] Audit request logged for:", email);
