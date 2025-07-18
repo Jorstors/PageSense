@@ -58,10 +58,7 @@ export default function DashboardClient() {
     }
   }, [user?.uid, user?.email]);
 
-  const purchasedTemplates = [
-    { id: 1, name: "E-commerce Starter", category: "Shop", downloadUrl: "#" },
-    { id: 2, name: "Agency Portfolio", category: "Business", downloadUrl: "#" }
-  ];
+  const purchasedTemplates = [];
 
   return (
     <div className="relative flex flex-col md:flex-row px-2 md:px-14">
