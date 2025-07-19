@@ -22,7 +22,6 @@ import {
 import { auth, db } from "@/lib/Firebase/firebaseInit";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { CircleXIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 
 interface LoginProps {
@@ -46,7 +45,6 @@ const Login = ({
   signupUrl = "/auth/signup",
 }: LoginProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -66,7 +64,10 @@ const Login = ({
 
       // Success - redirect to home
       console.log("Sign in successful. Redirecting to home...");
-      router.push("/");
+
+      // Reset scroll position by using hard navigation
+      window.location.href = "/";
+      return;
 
     } catch (error) {
       console.error("Login error:", error);
@@ -135,7 +136,8 @@ const Login = ({
 
         // Redirect to home page
         console.log("Google sign-in successful. Redirecting to home...");
-        router.push("/");
+        window.location.href = "/";
+        return;
       }
     } catch (error) {
       console.error("Google sign-in error:", error);
