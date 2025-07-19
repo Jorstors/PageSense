@@ -7,15 +7,15 @@ import {
 
 export const generateMetadata = () => {
   const metadata = getMetadata({
-    title: "Login - Access Your PageSense Account",
+    title: "Pagesense | Login",
     description:
-      "Sign in to your PageSense account to access your website audit history, saved reports, and premium features.",
+      "Sign in to your Pagesense account to access your website audit history, saved reports, and premium features.",
     path: "/auth/login",
     keywords: [
       "login",
       "sign in",
       "account access",
-      "PageSense login",
+      "Pagesense login",
       "website audit account",
       "user dashboard",
     ],
@@ -24,17 +24,17 @@ export const generateMetadata = () => {
   const webPageSchema = generateJSONLD({
     type: "WebPage",
     data: {
-      name: "Login - PageSense",
-      description: "Sign in to your PageSense account to access your website audit history, saved reports, and premium features.",
+      name: "Pagesense | Login",
+      description: "Sign in to your Pagesense account to access your website audit history, saved reports, and premium features.",
       url: "https://pagesense.co/auth/login",
       isPartOf: {
         "@type": "WebSite",
-        name: "PageSense",
+        name: "Pagesense",
         url: "https://pagesense.co",
       },
       mainEntity: {
         "@type": "WebApplication",
-        name: "PageSense Login",
+        name: "Pagesense Login",
         applicationCategory: "BusinessApplication",
         operatingSystem: "Web Browser",
         offers: {
@@ -55,23 +55,23 @@ export const generateMetadata = () => {
     },
     openGraph: {
       type: "website",
-      title: "Login - PageSense",
-      description: "Sign in to access your PageSense account and audit history",
+      title: "Pagesense | Login",
+      description: "Sign in to access your Pagesense account and audit history",
       url: "https://pagesense.co/auth/login",
       images: [
         {
           url: "https://pagesense.co/WOB-Big.png",
           width: 512,
           height: 512,
-          alt: "PageSense Logo",
+          alt: "Pagesense Logo",
         },
       ],
-      siteName: "PageSense",
+      siteName: "Pagesense",
     },
     twitter: {
       card: "summary",
-      title: "Login - PageSense",
-      description: "Sign in to access your PageSense account",
+      title: "Pagesense | Login",
+      description: "Sign in to access your Pagesense account",
       images: ["https://pagesense.co/WOB-Big.png"],
     },
     other: {

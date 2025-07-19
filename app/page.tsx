@@ -10,9 +10,9 @@ import {
 
 export const generateMetadata = () => {
   const metadata = getMetadata({
-    title: "AI-Powered Website Audit Tool - Improve Your Site in Minutes",
+    title: "Pagesense | Home",
     description:
-      "Transform your website's performance with PageSense's AI-powered audit tool. Get instant insights and actionable recommendations for SEO, accessibility, and conversion rate optimization.",
+      "Transform your website's performance with Pagesense's AI-powered audit tool. Get instant insights and actionable recommendations for SEO, accessibility, and conversion rate optimization.",
     path: "/",
     keywords: [
       "website analysis",
@@ -33,8 +33,8 @@ export const generateMetadata = () => {
   const websiteSchema = generateJSONLD({
     type: "WebSite",
     data: {
-      name: "PageSense",
-      description: "AI-Powered Website Optimization Platform",
+      name: "Pagesense",
+      description: "Pagesense | AI-Powered Website Optimization Platform",
       url: "https://pagesense.co",
       potentialAction: {
         "@type": "SearchAction",
@@ -50,7 +50,7 @@ export const generateMetadata = () => {
   const organizationSchema = generateJSONLD({
     type: "Organization",
     data: {
-      name: "PageSense",
+      name: "Pagesense",
       url: "https://pagesense.co",
       logo: "https://pagesense.co/WOB-Big.png",
       sameAs: ["https://twitter.com/pagesense", "https://github.com/pagesense"],
@@ -64,7 +64,7 @@ export const generateMetadata = () => {
     },
     openGraph: {
       type: "website",
-      title: "PageSense - AI-Powered Website Optimization Tool",
+      title: "Pagesense | Home",
       description:
         "Transform your website's performance with instant AI-powered insights and recommendations.",
       url: "https://pagesense.co",
@@ -73,13 +73,13 @@ export const generateMetadata = () => {
           url: "https://pagesense.co/Hero.png",
           width: 1200,
           height: 630,
-          alt: "PageSense - AI-Powered Website Optimization",
+          alt: "Pagesense - AI-Powered Website Optimization",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "PageSense - AI-Powered Website Optimization",
+      title: "Pagesense | Home",
       description:
         "Transform your website's performance with instant AI-powered insights",
       images: ["https://pagesense.co/Hero.png"],

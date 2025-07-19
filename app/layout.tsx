@@ -12,13 +12,13 @@ import { ScrollRestoration } from "@/components/ScrollRestoration";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || "https://pagesense.co"),
   title: {
-    default: "PageSense - AI-Powered Website Optimization",
-    template: "%s | PageSense",
+    default: "Pagesense | Instant Website Audits",
+    template: "%s",
   },
   description:
-    "Transform your website's performance with PageSense's AI-powered audit tool. Get instant insights and actionable recommendations for SEO, accessibility, and user experience.",
-  applicationName: "PageSense",
-  authors: [{ name: "PageSense Team" }],
+    "Transform your website's performance with Pagesense's AI-powered audit tool. Get instant insights and actionable recommendations for SEO, accessibility, and user experience.",
+  applicationName: "Pagesense",
+  authors: [{ name: "Pagesense Team" }],
   generator: "Next.js",
   keywords: [
     "AI audit tool",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     "accessibility checker",
     "performance audit",
     "web optimization",
-    "PageSense",
+    "Pagesense",
     "automated audit",
     "usability audit",
     "web compliance",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    siteName: "PageSense",
+    siteName: "Pagesense",
     locale: "en_US",
   },
   twitter: {

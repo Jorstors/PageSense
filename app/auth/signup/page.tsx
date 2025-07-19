@@ -7,15 +7,15 @@ import {
 
 export const generateMetadata = () => {
   const metadata = getMetadata({
-    title: "Sign Up - Create Your PageSense Account",
+    title: "Pagesense | Create Account",
     description:
-      "Create a free PageSense account to save your website audits, track improvements, and access premium features for better conversion optimization.",
+      "Create a free Pagesense account to save your website audits, track improvements, and access premium features for better conversion optimization.",
     path: "/auth/signup",
     keywords: [
       "sign up",
       "create account",
       "register",
-      "PageSense account",
+      "Pagesense account",
       "free registration",
       "website audit account",
       "conversion optimization",
@@ -25,17 +25,17 @@ export const generateMetadata = () => {
   const webPageSchema = generateJSONLD({
     type: "WebPage",
     data: {
-      name: "Sign Up - PageSense",
-      description: "Create a free PageSense account to save your website audits, track improvements, and access premium features for better conversion optimization.",
+      name: "Pagesense | Create Account",
+      description: "Create a free Pagesense account to save your website audits, track improvements, and access premium features for better conversion optimization.",
       url: "https://pagesense.co/auth/signup",
       isPartOf: {
         "@type": "WebSite",
-        name: "PageSense",
+        name: "Pagesense",
         url: "https://pagesense.co",
       },
       mainEntity: {
         "@type": "WebApplication",
-        name: "PageSense Registration",
+        name: "Pagesense Registration",
         applicationCategory: "BusinessApplication",
         operatingSystem: "Web Browser",
         offers: {
@@ -57,23 +57,23 @@ export const generateMetadata = () => {
     },
     openGraph: {
       type: "website",
-      title: "Sign Up - PageSense",
-      description: "Create your free PageSense account for website optimization",
+      title: "Pagesense | Create Account",
+      description: "Create your free Pagesense account for website optimization",
       url: "https://pagesense.co/auth/signup",
       images: [
         {
           url: "https://pagesense.co/WOB-Big.png",
           width: 512,
           height: 512,
-          alt: "PageSense Logo",
+          alt: "Pagesense Logo",
         },
       ],
-      siteName: "PageSense",
+      siteName: "Pagesense",
     },
     twitter: {
       card: "summary",
-      title: "Sign Up - PageSense",
-      description: "Create your free PageSense account",
+      title: "Pagesense | Create Account",
+      description: "Create your free Pagesense account",
       images: ["https://pagesense.co/WOB-Big.png"],
     },
     other: {
@@ -90,8 +90,8 @@ export default function SignupPage() {
         logo={{
           url: "/",
           src: "/WOB-Big.png",
-          alt: "PageSense logo",
-          title: "PageSense",
+          alt: "Pagesense logo",
+          title: "Pagesense",
         }}
         loginUrl="/auth/login"
       />

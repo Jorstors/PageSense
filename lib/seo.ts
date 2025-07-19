@@ -121,10 +121,7 @@ export function getMetadata({
   const allKeywords = [...new Set([...baseKeywords, ...keywords])];
 
   const metadata: Metadata = {
-    title: {
-      default: `${title} | Pagesense`,
-      template: "%s | Pagesense",
-    },
+    title: title,
     description,
     keywords: allKeywords,
     metadataBase: new URL(baseUrl),

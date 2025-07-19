@@ -10,7 +10,7 @@ const ClientWrapper = dynamic(() => import("./ClientWrapper"));
 
 export async function generateMetadata() {
   const metadata = getMetadata({
-    title: "Dashboard | PageSense - Manage Your SEO Audits",
+    title: "Pagesense | Dashboard",
     description:
       "View and manage your website audits, reports, and SEO optimization suggestions in one place.",
     path: "/dashboard",
@@ -21,7 +21,7 @@ export async function generateMetadata() {
       "performance tracking",
       "SEO reports",
       "website optimization",
-      "PageSense dashboard",
+      "Pagesense dashboard",
       "user account",
     ],
   });
@@ -29,7 +29,7 @@ export async function generateMetadata() {
   const jsonLd = generateJSONLD({
     type: "WebPage",
     data: {
-      name: "User Dashboard | PageSense",
+      name: "Pagesense | Dashboard",
       description:
         "View and manage your website audits, reports, and SEO optimization suggestions in one place.",
       mainEntity: {
@@ -66,7 +66,7 @@ export async function generateMetadata() {
       canonical: "https://pagesense.co/dashboard",
     },
     openGraph: {
-      title: "Dashboard | PageSense - Manage Your SEO Audits",
+      title: "Pagesense | Dashboard",
       description:
         "View and manage your website audits, reports, and SEO optimization suggestions in one place.",
       url: "https://pagesense.co/dashboard",
@@ -76,7 +76,7 @@ export async function generateMetadata() {
           url: "https://pagesense.co/Hero.png",
           width: 1200,
           height: 630,
-          alt: "PageSense Dashboard",
+          alt: "Pagesense Dashboard",
         },
       ],
     },

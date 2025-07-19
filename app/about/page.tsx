@@ -24,20 +24,20 @@ export const generateMetadata = () => {
 
   const jsonLd = generateJSONLD({
     type: "WebPage",
-    name: "About PageSense",
+    name: "Pagesense | About",
     description:
-      "Learn about PageSense's mission to revolutionize conversion rate optimization with AI technology.",
+      "Learn about Pagesense's mission to revolutionize conversion rate optimization with AI technology.",
   });
 
   const breadcrumbSchema = generateBreadcrumbSchema(["about"]);
 
   return {
     ...metadata,
-    title: "About Us | PageSense - AI-Powered CRO",
+    title: "Pagesense | About",
     openGraph: {
-      title: "About Us | PageSense - AI-Powered CRO",
+      title: "Pagesense | About",
       description:
-        "Learn about PageSense's platform for website conversion optimization. Use without an account or sign up to save your audit history.",
+        "Learn about Pagesense's platform for website conversion optimization. Use without an account or sign up to save your audit history.",
       url: "/about",
     },
     alternates: {

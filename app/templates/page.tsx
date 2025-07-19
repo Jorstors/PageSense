@@ -7,7 +7,7 @@ import {
 
 export async function generateMetadata() {
   const metadata = getMetadata({
-    title: "CRO Templates | PageSense - AI-Powered Analysis",
+    title: "Pagesense | Templates",
     description:
       "Browse our collection of conversion rate optimization templates for instant website analysis and improvement.",
     path: "/templates",
@@ -19,14 +19,14 @@ export async function generateMetadata() {
       "website analysis templates",
       "SEO templates",
       "performance optimization templates",
-      "PageSense templates",
+      "Pagesense templates",
     ],
   });
 
   const jsonLd = generateJSONLD({
     type: "CollectionPage",
     data: {
-      name: "CRO Templates | PageSense",
+      name: "Pagesense | Templates",
       description:
         "Browse our collection of conversion rate optimization templates for instant website analysis and improvement.",
       mainEntityOfPage: {
@@ -66,7 +66,7 @@ export async function generateMetadata() {
       canonical: "https://pagesense.co/templates",
     },
     openGraph: {
-      title: "CRO Templates | PageSense - AI-Powered Analysis",
+      title: "Pagesense | Templates",
       description:
         "Browse our collection of conversion rate optimization templates for instant website analysis and improvement.",
       url: "https://pagesense.co/templates",
@@ -76,7 +76,7 @@ export async function generateMetadata() {
           url: "https://pagesense.co/Hero.png",
           width: 1200,
           height: 630,
-          alt: "PageSense CRO Templates",
+          alt: "Pagesense CRO Templates",
         },
       ],
     },
