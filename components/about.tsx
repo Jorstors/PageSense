@@ -64,15 +64,15 @@ const defaultCompanies = [
 ];
 
 const defaultAchievements = [
-  { label: "Page Speed Insights", value: "15+" },
-  { label: "WCAG Guidelines", value: "85+" },
-  { label: "UX Metrics Tracked", value: "25+" },
+  { label: "Websites Audited", value: "1,500+" },
+  { label: "Conversion Metrics", value: "85+" },
+  { label: "UX Factors Analyzed", value: "25+" },
   { label: "Analysis Points", value: "200+" },
 ];
 
 const About = ({
   title = "About Pagesense",
-  description = "Pagesense is an AI-powered tool that analyzes website performance, accessibility, and user experience in real-time. Our technology helps identify conversion bottlenecks and provides actionable recommendations.",
+  description = "Pagesense is an AI-powered website audit platform that analyzes performance, accessibility, and user experience in real-time. Use our tool without signing up or create a free account to save your audit history. Our technology helps identify conversion bottlenecks and provides actionable recommendations to improve your website's effectiveness.",
   mainVideo = {
     src: "/pagesensedemo.mp4",
     thumb: "/pagesensestill.png",
@@ -87,14 +87,14 @@ const About = ({
     alt: "Pagesense logo light",
     title: "Instant Website Analysis",
     description:
-      "Our AI engine analyzes your website's key metrics including load time, accessibility compliance, and user interaction patterns to identify improvement opportunities.",
+      "Our AI engine analyzes your website's key metrics including load time, accessibility compliance, and user interaction patterns to identify improvement opportunities. Run up to 3 audits per day, with or without an account.",
     buttonText: "Try it now",
     buttonUrl: "/tool",
   },
   companiesTitle = "Built with modern technologies",
   companies = defaultCompanies,
-  achievementsTitle = "Comprehensive Analysis Coverage",
-  achievementsDescription = "Pagesense provides detailed insights across multiple aspects of your website's performance and user experience.",
+  achievementsTitle = "Focused on Conversion Optimization",
+  achievementsDescription = "Pagesense goes beyond basic SEO analysis to provide actionable insights that directly impact your conversion rates. Create a free account to track improvements over time.",
   achievements = defaultAchievements,
 }: AboutProps = {}) => {
   return (
@@ -111,13 +111,13 @@ const About = ({
           </div>
         </BlurFade>
         <BlurFade delay={delay * 5}>
-          <div className="grid gap-10 lg:grid-cols-3 mb-32">
+          <div className="grid gap-10 xl:grid-cols-3 mb-32">
             <HeroVideoDialog
               videoSrc={mainVideo.src}
               thumbnailSrc={mainVideo.thumb}
               thumbnailAlt={secondaryImage.alt}
               animationStyle="top-in-bottom-out"
-              className="size-full max-h-[620px] rounded-xl object-cover lg:col-span-2 shadow-lg"
+              className="size-full h-fit rounded-xl object-cover lg:col-span-2 shadow-lg"
             />
             <div className="flex flex-col gap-8">
               <div className="flex flex-col justify-between gap-8 rounded-xl bg-muted/50 backdrop-blur-sm p-8 lg:w-1/2 xl:w-auto border border-border/50">
@@ -127,6 +127,7 @@ const About = ({
                     alt={breakout.alt}
                     width={50}
                     height={50}
+                    className="w-auto h-full"
                     aboveFold
                   />
                 </div>
