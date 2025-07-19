@@ -70,7 +70,7 @@ export const generateMetadata = () => {
       url: "https://pagesense.co",
       images: [
         {
-          url: "https://pagesense.co/Hero.png",
+          url: "https://pagesense.co/Title-WOB.png",
           width: 1200,
           height: 630,
           alt: "Pagesense - AI-Powered Website Optimization",
@@ -82,7 +82,7 @@ export const generateMetadata = () => {
       title: "Pagesense | Home",
       description:
         "Transform your website's performance with instant AI-powered insights",
-      images: ["https://pagesense.co/Hero.png"],
+      images: ["https://pagesense.co/Title-WOB.png"],
     },
     other: {
       "script:ld+json": [

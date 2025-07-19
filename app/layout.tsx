@@ -37,10 +37,6 @@ export const metadata: Metadata = {
     "CRO tool",
     "website analytics",
   ],
-  icons: {
-    icon: "/WOB-Big.ico",
-    apple: "/WOB-Big.ico",
-  },
   openGraph: {
     type: "website",
     siteName: "Pagesense",
