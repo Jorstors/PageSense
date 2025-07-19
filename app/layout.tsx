@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
 import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ScrollRestoration } from "@/components/ScrollRestoration";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || "https://pagesense.co"),
@@ -84,11 +85,12 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <AuthProvider>
           <div className="dark w-full h-screen bg-background text-primary flex flex-col">
-          <div className="sticky z-10 top-0 w-full h-fit">
+          <div className="sticky z-50 top-0 w-full h-fit">
             <Navbar />
           </div>
           <div className="flex-1 w-full overflow-hidden relative">
-            <ScrollArea type="always" className="w-full h-full">
+            <ScrollRestoration />
+            <ScrollArea type="always" className="w-full h-full scrollToTop">
               <AnimatedGridPattern
                 maxOpacity={0.3}
                 className={cn(

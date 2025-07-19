@@ -19,7 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useRouter } from "next/navigation";
 import { auth, db } from "@/lib/Firebase/firebaseInit";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
@@ -53,7 +52,6 @@ const Signup = ({
   loginUrl = "/auth/login",
 }: SignupProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
   let errorMessage = "";
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -88,7 +86,8 @@ const Signup = ({
 
       // Success - redirect to home
       console.log("Sign up successful. Redirecting to home...");
-      router.push("/");
+      window.location.href = "/";
+      return;
     } catch (error) {
       console.error("Signup error:", error);
       if (error instanceof Error) {
@@ -152,7 +151,8 @@ const Signup = ({
 
           // Redirect to home page
           console.log("Google sign-in successful. Redirecting to home...");
-          router.push("/");
+          window.location.href = "/";
+          return;
         }
       } catch (error) {
         console.error("Google sign-in error:", error);
