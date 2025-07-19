@@ -9,13 +9,14 @@ export const generateMetadata = () => {
   const metadata = getMetadata({
     title: "About Pagesense",
     description:
-      "Learn about Pagesense, the AI-powered website audit platform revolutionizing how developers and businesses optimize their web presence.",
+      "Learn about Pagesense, the AI-powered website audit platform that helps businesses optimize conversions. Use it without an account or sign up to save your audit history.",
     path: "/about",
     keywords: [
       "about pagesense",
-      "website audit company",
-      "AI technology",
-      "web optimization platform",
+      "website audit platform",
+      "AI audit tool",
+      "conversion rate optimization",
+      "web optimization",
       "digital analysis tool",
       "website improvement platform",
     ],
@@ -36,7 +37,7 @@ export const generateMetadata = () => {
     openGraph: {
       title: "About Us | PageSense - AI-Powered CRO",
       description:
-        "Learn about PageSense's mission to revolutionize conversion rate optimization with AI technology.",
+        "Learn about PageSense's platform for website conversion optimization. Use without an account or sign up to save your audit history.",
       url: "/about",
     },
     alternates: {
@@ -48,13 +49,13 @@ export const generateMetadata = () => {
         data: {
           name: "About Pagesense",
           description:
-            "Learn about Pagesense and our mission to improve the web",
+            "Learn about Pagesense and our mission to improve website conversion rates",
           url: "https://pagesense.co/about",
           mainEntity: {
             "@type": "Article",
             headline: "About Pagesense",
             description:
-              "Pagesense is an AI-powered website audit platform helping businesses optimize their online presence",
+              "Pagesense is an AI-powered website audit platform helping businesses optimize their conversion rates. Use it with or without an account.",
             publisher: {
               "@type": "Organization",
               name: "Pagesense",

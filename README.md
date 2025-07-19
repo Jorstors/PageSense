@@ -156,6 +156,32 @@ Test endpoint for health checks.
 - Dock navigation for mobile interfaces
 - Interactive dialogs for viewing audit reports
 
+## ❓ Frequently Asked Questions
+
+### How does PageSense work?
+PageSense uses advanced AI to analyze websites and identify conversion optimization opportunities. Users can run audits on any website and receive detailed reports. The AI examines factors like user experience, layout, content clarity, and call-to-action effectiveness to provide actionable recommendations.
+
+### Do I need to create an account to use PageSense?
+No, you don't need an account to use our basic audit features. Anyone can analyze a website without signing up. However, creating a free account gives you access to our dashboard where you can save and track your audit history over time.
+
+### How many audits can I run?
+All users, both with and without accounts, can run up to 3 audits per 24 hours. This helps us maintain service quality while covering our API costs. Premium plans with higher limits may be available in the future.
+
+### Can I see my previous audits?
+If you have an account, all your audits are saved in your personal dashboard. You can revisit them anytime, compare results between different websites, or track improvements to the same site over time. Guest users can only access their current audit results.
+
+### How is PageSense different from other SEO tools?
+PageSense focuses specifically on conversion optimization rather than just technical SEO. We identify actual conversion blockers that prevent sales and leads, and provide specific recommendations to improve your website's effectiveness at converting visitors.
+
+### Is my data secure?
+Absolutely. For registered users, we use Firebase Authentication and secure database practices to ensure your account information and audit data remain private. We only store the information necessary to provide our service. For guest users, we don't store any personal information beyond what's needed for rate limiting.
+
+### Can I audit any website?
+Yes, you can audit any publicly accessible website, including competitor sites. This is perfect for competitive analysis and benchmarking your performance against industry leaders.
+
+### How accurate are the AI recommendations?
+Our AI recommendations are based on current web standards, conversion rate optimization best practices, and proven techniques used by high-converting websites. Each suggestion includes specific implementation guidance.
+
 ## 📝 License
 
 This project is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
