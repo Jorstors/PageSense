@@ -20,14 +20,14 @@ import { Dock } from "@/components/magicui/dock";
 import { EnhancedDockIcon } from "@/components/magicui/enhanced-dock-icon";
 import { db } from "@/lib/Firebase/firebaseInit";
 import { collection, getDocs } from "firebase/firestore";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
 
 export default function DashboardClient() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
 
-
   // Populate recentAudits with user firestore db
-
   const [recentAudits, setRecentAudits] = useState([]);
 
   useEffect(() => {
@@ -59,6 +59,69 @@ export default function DashboardClient() {
   }, [user?.uid, user?.email]);
 
   const purchasedTemplates = [];
+
+  // Function to shrink or expand html container to fit screen size (responsive iframe)
+  const formatHTML = (html: string): string => {
+    if (!html) return '';
+
+    // Add viewport meta tag and responsive styling
+    const responsiveStyle = `
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        max-width: 100%;
+      }
+      table {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      table[width="700"] {
+        width: 100% !important;
+        max-width: 700px !important;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      /* Disable links */
+      a {
+        pointer-events: none;
+        cursor: default;
+        text-decoration: none;
+        color: inherit;
+      }
+      @media (max-width: 768px) {
+        table[width="700"] td {
+          padding: 16px !important;
+        }
+        table td[style*="width:50%"] {
+          display: block !important;
+          width: 100% !important;
+          padding: 0 0 16px 0 !important;
+        }
+        h2 {
+          font-size: 20px !important;
+        }
+        div[style*="font-size:48px"] {
+          font-size: 36px !important;
+        }
+      }
+    </style>`;
+
+    // Insert responsive style into the head
+    if (html.includes('<head>')) {
+      html = html.replace('<head>', `<head>${responsiveStyle}`);
+    } else if (html.includes('<html>')) {
+      html = html.replace('<html>', `<html><head>${responsiveStyle}</head>`);
+    } else {
+      html = `<head>${responsiveStyle}</head>${html}`;
+    }
+
+    return html;
+  }
 
   return (
     <div className="relative flex flex-col md:flex-row px-2 md:px-14">
@@ -192,7 +255,7 @@ export default function DashboardClient() {
 
               {recentAudits.length > 0 ? (
                 <div className="space-y-3">
-                  {recentAudits.map((audit) => (
+                  {recentAudits.slice(0, 3).map((audit) => (
                     <div key={audit.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 rounded-md bg-muted/30">
                       <div>
                         <div className="font-medium flex items-center gap-2 break-all">
@@ -205,9 +268,25 @@ export default function DashboardClient() {
                         <div className={`px-2 py-1 rounded text-xs ${audit.score > 80 ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}`}>
                           Score: {audit.score}
                         </div>
-                        <button className="p-2 rounded-md hover:bg-muted">
-                          <Eye size={16} />
-                        </button>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <button className="p-2 rounded-md hover:bg-muted">
+                              <Eye size={16} />
+                            </button>
+                          </DialogTrigger>
+                          <DialogContent className="w-full max-w-screen-xl p-0">
+                            <DialogTitle className="mb-2 px-6 pt-6">Audit Details</DialogTitle>
+                            <div className="w-full h-[70vh] max-h-[80vh] min-h-[300px] rounded-lg p-0 flex items-center justify-center">
+                              <iframe
+                                srcDoc={formatHTML(audit.html)}
+                                style={{ width: '100%', height: '100%', border: 'none', borderRadius: '0.5rem' }}
+                                scrolling="auto"
+                                sandbox="allow-same-origin allow-scripts"
+                                allowFullScreen
+                                />
+                            </div>
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </div>
                   ))}
@@ -245,9 +324,25 @@ export default function DashboardClient() {
                         <div className={`px-2 py-1 rounded text-xs ${audit.score > 80 ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}`}>
                           Score: {audit.score}
                         </div>
-                        <button className="p-2 rounded-md hover:bg-muted">
-                          <Eye size={16} />
-                        </button>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <button className="p-2 rounded-md hover:bg-muted">
+                              <Eye size={16} />
+                            </button>
+                          </DialogTrigger>
+                          <DialogContent className="w-full max-w-screen-xl p-0">
+                            <DialogTitle className="mb-2 px-6 pt-6">Audit Details</DialogTitle>
+                            <div className="w-full h-[70vh] max-h-[80vh] min-h-[300px] rounded-lg p-0 flex items-center justify-center">
+                              <iframe
+                                srcDoc={formatHTML(audit.html)}
+                                style={{ width: '100%', height: '100%', border: 'none', borderRadius: '0.5rem' }}
+                                scrolling="auto"
+                                sandbox="allow-same-origin allow-scripts"
+                                allowFullScreen
+                                />
+                            </div>
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </div>
                   ))}
