@@ -18,13 +18,6 @@
 
 🌐 **Available at: [pagesense.co](https://www.pagesense.co/)**
 </div>
-<br/>
-<div align="center">
-
-[![Vercel](https://img.shields.io/badge/deploy-on%20Vercel-blue?logo=vercel)](https://vercel.com/new)
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-
-</div>
 
 ## ✨ Features
 
