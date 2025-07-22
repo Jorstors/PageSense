@@ -1,5 +1,5 @@
 // Function to shrink or expand html container to fit screen size (responsive iframe)
-export default formatHTML = (html: string): string => {
+const formatHTML = (html: string): string => {
     if (!html) return '';
 
     // Add viewport meta tag and responsive styling
@@ -60,3 +60,5 @@ export default formatHTML = (html: string): string => {
 
     return html;
   }
+
+export default formatHTML;
