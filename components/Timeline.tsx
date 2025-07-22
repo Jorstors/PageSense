@@ -26,7 +26,7 @@ const timelineData: TimelineEntry[] = [
     date: "Step 3",
     title: "Click 'Email' to Run the Audit",
     content:
-      "Hit the <strong>Email</strong> button. In seconds, your personalized audit will automatically download to your computer <em>and</em> be sent to your inbox. No waiting, no strings attached.",
+      "Hit the <strong>Email</strong> button. In seconds, your personalized audit will be sent to your inbox <em>and</em> available for optional download. No waiting, no strings attached.",
   },
 ];
 
