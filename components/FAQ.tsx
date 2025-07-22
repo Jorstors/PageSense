@@ -26,7 +26,7 @@ const faqData = [
   {
     question: "How can I access my audit results?",
     answer:
-      "For guest users, audit results are displayed immediately after completion. If you have an account, all your audit results are also saved in your personal dashboard. Simply log in to your account and navigate to the 'Saved Audits' tab to view your previous audits in detail.",
+      "For guest users, audit results are displayed immediately after completion and can be optionally downloaded as a PDF. The audit is also sent to your email. If you have an account, all your audit results are saved in your personal dashboard. Simply log in to your account and navigate to the 'Saved Audits' tab to view your previous audits in detail.",
   },
   {
     question: "What specific issues does the audit identify?",

@@ -550,11 +550,11 @@ async function checkRateLimit(email: string) {
  * 1. Checks and enforces rate limits for the provided email using Firebase.
  * 2. Audits the landing page URL using OpenAI's GPT model to identify conversion blockers and recommendations.
  * 3. Formats the audit results, generates a PDF report, and sends the report via email using the Brevo API.
- * 4. Returns the generated PDF as a downloadable response.
+ * 4. Returns the generated PDF for optional download by the user.
  *
  * If the rate limit is exceeded, returns a 429 error.
  * If the audit fails or the OpenAI model returns invalid JSON, returns a 500 error.
- * If successful, returns the PDF audit report as an attachment.
+ * If successful, returns the PDF audit report for optional download.
  *
  * @param request - The incoming HTTP request containing the JSON payload.
  * @returns A Response object with the PDF report or an error message.
@@ -768,7 +768,7 @@ export async function POST(request: Request) {
       console.error("[handler] Error sending email:", error);
     }
 
-    // Send PDF as a download
+    // Send PDF for optional download
     console.log("[handler] Sending PDF to client...");
     console.log("Exiting audit handler...");
 
