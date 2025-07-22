@@ -4,14 +4,14 @@
 
 <div align="center">
   <a href="https://www.pagesense.co/">
-    <img src="public/Title-WOB.png" alt="PageSense Logo" width="400">
+    <img src="public/Title-WOB.png" alt="Pagesense Logo" width="400">
   </a>
   <h2>An intelligent website auditing platform with user dashboard
 </div>
 
 
 
-#### PageSense is an AI-powered website auditing platform that analyzes landing pages and provides actionable conversion optimization recommendations. Built with Next.js 15 and powered by OpenAI, it generates comprehensive reports that users can access from their personal dashboard.
+#### Pagesense is an AI-powered website auditing platform that analyzes landing pages and provides actionable conversion optimization recommendations. Built with Next.js 15 and powered by OpenAI, it generates comprehensive reports that users can access from their personal dashboard.
 
 
 <div align="center">
@@ -28,14 +28,15 @@
 
 ## ✨ Features
 
-- **🤖 AI-Powered Analysis** - Uses OpenAI's GPT-4o to identify conversion blockers and optimization opportunities
-- **📊 User Dashboard** - Personal dashboard to view, manage and track all your website audits
-- **🔑 User Authentication** - Secure authentication system using Firebase Authentication
-- **🧠 Audit History** - View and revisit past audits with detailed reports
-- **🔒 Rate Limiting** - Firebase-powered rate limiting to prevent abuse
-- **⚡ Real-time Processing** - Serverless functions for fast, scalable auditing
-- **🎨 Modern UI** - Beautiful interface built with Tailwind CSS, shadcn/ui, and motion primitives
-- **📱 Responsive Design** - Works seamlessly across all devices with mobile-optimized dashboard
+- **AI-Powered Analysis** - Uses OpenAI's GPT-4o to identify conversion blockers and optimization opportunities
+- **User Dashboard** - Personal dashboard to view, manage and track all your website audits
+- **User Authentication** - Secure authentication system using Firebase Authentication
+- **Audit History** - View and revisit past audits with detailed reports
+- **Optional Downloads** - Download your audit reports as PDFs or access them via email
+- **Rate Limiting** - Firebase-powered rate limiting to prevent abuse
+- **Real-time Processing** - Serverless functions for fast, scalable auditing
+- **Modern UI** - Beautiful interface built with Tailwind CSS, shadcn/ui, and motion primitives
+- **Responsive Design** - Works seamlessly across all devices with mobile-optimized dashboard
 
 ## 🚀 Tech Stack
 
@@ -86,6 +87,7 @@ pagesense/
 ├── lib/
 │   ├── Firebase/
 │   │   └── firebaseInit.ts       # Firebase configuration
+│   ├── formatHTML.ts             # HTML formatter for dashboard display
 │   ├── utils.ts
 │   └── seo.ts
 └── public/
@@ -108,7 +110,8 @@ Main audit endpoint that processes website analysis requests.
 **Response:**
 - Analyzes the website using OpenAI
 - Stores the audit result in the user's Firebase collection
-- Returns HTML report data that can be viewed in the dashboard
+- Sends the audit report via email to the user
+- Provides PDF report for optional download
 - Implements rate limiting for free users
 
 ### GET `/api/hello`
@@ -119,9 +122,10 @@ Test endpoint for health checks.
 1. **User Authentication** - Users sign up or log in to access the platform
 2. **URL Submission** - User enters a website URL to audit from their dashboard
 3. **AI Analysis** - OpenAI analyzes the landing page for conversion optimization opportunities
-4. **Report Generation** - The system generates a detailed HTML report
-5. **Dashboard Access** - Users can view all their audits in their personal dashboard
-6. **Historical Data** - Previous audits are stored and can be accessed at any time
+4. **Report Generation** - The system generates a detailed PDF report
+5. **Email & Download Options** - Reports are sent via email and available for optional download
+6. **Dashboard Access** - Users can view all their audits in their personal dashboard
+7. **Historical Data** - Previous audits are stored and can be accessed at any time
 
 
 ## 🔍 Key Features
@@ -156,19 +160,19 @@ Test endpoint for health checks.
 - Dock navigation for mobile interfaces
 - Interactive dialogs for viewing audit reports
 
-## ❓ Frequently Asked Questions
+## ❓ Q&A
 
-### How does PageSense work?
-PageSense uses advanced AI to analyze websites and identify conversion optimization opportunities. Users can run audits on any website and receive detailed reports. The AI examines factors like user experience, layout, content clarity, and call-to-action effectiveness to provide actionable recommendations.
+### How does Pagesense work?
+Pagesense uses advanced AI to analyze websites and identify conversion optimization opportunities. Users can run audits on any website and receive detailed reports. The AI examines factors like user experience, layout, content clarity, and call-to-action effectiveness to provide actionable recommendations.
 
-### Do I need to create an account to use PageSense?
+### Do I need to create an account to use Pagesense?
 No, you don't need an account to use our basic audit features. Anyone can analyze a website without signing up. However, creating a free account gives you access to our dashboard where you can save and track your audit history over time.
 
 ### How many audits can I run?
 All users, both with and without accounts, can run up to 3 audits per 24 hours. This helps us maintain service quality while covering our API costs. Premium plans with higher limits may be available in the future.
 
-### Can I see my previous audits?
-If you have an account, all your audits are saved in your personal dashboard. You can revisit them anytime, compare results between different websites, or track improvements to the same site over time. Guest users can only access their current audit results.
+### How can I access my audit results?
+For guest users, audit results are displayed immediately after completion and can be optionally downloaded as a PDF. The audit is also sent to your email. If you have an account, all your audit results are saved in your personal dashboard. Simply log in to your account and navigate to the 'Saved Audits' tab to view your previous audits in detail.
 
 ### How is PageSense different from other SEO tools?
 PageSense focuses specifically on conversion optimization rather than just technical SEO. We identify actual conversion blockers that prevent sales and leads, and provide specific recommendations to improve your website's effectiveness at converting visitors.
