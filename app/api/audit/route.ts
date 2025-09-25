@@ -5,8 +5,7 @@ import admin from "firebase-admin";
 export const dynamic = "force-dynamic";
 
 // CDN URL for Chromium binary - more reliable than @sparticuz/chromium
-const CHROMIUM_PATH =
-  "https://vomrghiulbmrfvmhlflk.supabase.co/storage/v1/object/public/chromium-pack/chromium-v123.0.0-pack.tar";
+const CHROMIUM_PATH = process.env.CHROMIUM_PATH;
 
 if (!admin.apps.length) {
   try {
